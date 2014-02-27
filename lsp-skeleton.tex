@@ -1,0 +1,184 @@
+%% -*- coding:utf-8 -*-
+\documentclass[number=?? %replace by your number in series
+                ,series=lnls, %lnls= Lecture Notes in Language Sciences. Choose series abbreviation as appropriate
+                ,isbn=xxx-x-xxxxxx-xx-x, %add your isbn here
+                ,url=http://langsci-press.org/catalog/book/0, %change to the running number of your book
+	        ,output=long    % long|short|inprep              
+	        %,blackandwhite
+	        %,smallfont
+	        ,draftmode  
+		  ]{LSP/langsci}    
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%            General Setup                     %%%
+%%%            do not change this                %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hypersetup{pdfdisplaydoctitle=true}
+\usepackage{xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+\usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}
+\newcommand{\bibtex}{\BibTeX\xspace}
+% \usepackage{lsp-avm}
+% \usepackage{lsp-makros}
+% \usepackage{german}\selectlanguage{USenglish}
+% \usepackage{lsp-eng-hyp}
+% \usepackage{abbrev}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%      Optimality Theory                       %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If you are using OT, uncomment the following lines      
+% % OT pointing hand
+% \usepackage{pifont}
+% \newcommand{\hand}{\ding{43}}
+% % OT tableaux                                                
+% \usepackage{pstricks,colortab}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             DRS                              %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DRS package by Alexis Dimitriadis
+\usepackage{drs}
+
+\usepackage{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%       Attribute Value Matrices               %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%If you are using Attribute-Value-Matrices, uncomment the following lines 
+% \usepackage{avm}
+% \avmfont{\sc} 
+% \avmvalfont{\it} 
+% % command to fontify the type values of an avm 
+% \newcommand{\tpv}[1]{{\avmjvalfont #1}} 
+% % command to fontify the type of an avm and avmspan it
+% \newcommand{\tp}[1]{\avmspan{\tpv{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%          Trees                               %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% For trees, uncomment the following lines
+% \usepackage{tikz-qtree}
+% % has strange side effects
+% %\tikzset{every tree node/.style={align=left, anchor=north}}
+% \tikzset{every roof node/.append style={inner sep=0.1pt,text height=2ex,text depth=0.3ex}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%           Examples                           %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\byline}[2]{{\rm #1}~{(\rm #2)}\\}
+% if you want the source line of examples to be in italics, uncomment the following line
+%\def\exfont{\it}
+
+
+% to add additional information to the right of examples, uncomment the following line
+% \usepackage{jambox}
+\usepackage{lsp-gb4e} 
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%        Other scripts                         %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% For Chinese characters, uncomment the following lines
+% \usepackage[indentfirst=false]{xeCJK}
+% \setCJKmainfont{SimSun}
+
+% for bidirectional text and support for Arabic/Persian, uncomment the following lines
+%% \usepackage{fontspec}
+% \newfontfamily\Parsifont[Script=Arabic]{XB Niloofar}
+% %\usepackage{bidi}
+% \usepackage{lsp-bidi}
+% \newcommand{\PRL}[1]{\RL{\Parsifont #1}}
+% %\TeXXeTOff
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   final general settings                     %%%
+%%%   no need to touch this                      %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iflsDraft
+\proofmodetrue
+\fi
+
+% This is needed to allow for hyphenation in \texttt
+% http://tex.stackexchange.com/questions/44361/how-to-automatically-hyphenate-within-texttt
+% usually this is not required, but since we show index entries for packages in the margin and since
+% the package names a re typeset in tt, we need the hyphenation.
+\DeclareFontFamily{OT1}{cmtt}{\hyphenchar \font=-1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%            Metadata                          %%%
+%%%    fill in as appropriate                    %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Change your booktitle in the master file}  %look no further, you can change those things right here. 
+\subtitle{Change your subtitle in the master file}
+\BackTitle{Change backtitle in the master file}
+\BackBody{Change backbody in the master file}
+\dedication{Change dedication in master file}
+\typesetter{Change typesetter in masterfile}
+\proofreader{Change proofreaders in master file}
+\author{Change your name in the master file}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%        page layout                           %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\def\verbatim@font{\scriptsize\ttfamily}
+\makeatother
+         
+\begin{document}               
+                           
+\maketitle                
+
+\frontmatter
+
+\chapter*{Preface} 
+\section*{Acknowledgements} 
+
+\tableofcontents      
+
+\mainmatter         
+
+\include{chapters/introduction}  %add a percentage sign in front of the line to exclude this chapter from book
+\include{chapters/filename}
+\include{chapters/anotherfilename}
+% \include{chapters/sleepingfilename} %uncomment to include this file in your book
+\include{chapters/yetanotherfilename} 
+
+\backmatter
+
+\bibliography{mybibliography.bib}
+                               
+\end{document}
+      
+%      <!-- Local IspellDict: en_US-w_accents -->
