@@ -173,7 +173,7 @@
   \newcommand{\lsSpineAuthorFont}{\fontsize{12pt}{14pt}\selectfont}
   \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{16pt}{14pt}\selectfont}
   
-  \renewcommand{\bfseries}{\textsb}  	% bold -> semibold
+%   \renewcommand{\bfseries}{\textsb}  	% bold -> semibold
 \fi
 
 \setkomafont{sectioning}{\normalcolor\bfseries}
@@ -182,7 +182,7 @@
 % ptm = times
 % phv = helvet
 % fxlj = libertine
-
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Colors:
 
