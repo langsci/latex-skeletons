@@ -1,9 +1,23 @@
 %% -*- coding:utf-8 -*-
-\documentclass[number=?? %replace by your number in series
-                ,series=lnls, %lnls= Lecture Notes in Language Sciences. Choose series abbreviation as appropriate
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%     Language Science Press Master File       %%%
+%%%         follow the instructions below        %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% please fill in some information in the following lines as soon
+% as you have it
+% Everything following a % is ignored
+% Some lines start with %. Remove the % to include them
+
+\documentclass[number=??                 %replace by your number in series
+                ,series=lnls,            %lnls= Lecture Notes in Language Sciences. Choose series abbreviation as appropriate
                 ,isbn=xxx-x-xxxxxx-xx-x, %add your isbn here
-                ,url=http://langsci-press.org/catalog/book/0, %change to the running number of your book
-	        ,output=long    % long|short|inprep              
+                ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
+	        ,output=long             % long|short|inprep              
 	        %,blackandwhite
 	        %,smallfont
 	        ,draftmode  
@@ -14,57 +28,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%            General Setup                     %%%
-%%%            do not change this                %%%
+%%%         no need to change this               %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \hypersetup{pdfdisplaydoctitle=true}
 \usepackage{xspace}
-\newcommand{\latex}{\LaTeX\xspace}
-\usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}
-\newcommand{\bibtex}{\BibTeX\xspace}
-% \usepackage{lsp-avm}
-% \usepackage{lsp-makros}
-% \usepackage{german}\selectlanguage{USenglish}
-% \usepackage{lsp-eng-hyp}
-% \usepackage{abbrev}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%      Optimality Theory                       %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% If you are using OT, uncomment the following lines      
-% % OT pointing hand
-% \usepackage{pifont}
-% \newcommand{\hand}{\ding{43}}
-% % OT tableaux                                                
-% \usepackage{pstricks,colortab}   
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%             DRS                              %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DRS package by Alexis Dimitriadis
-\usepackage{drs}
-
 \usepackage{tabularx}
-
+\selectlanguage{USenglish} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
-%%%       Attribute Value Matrices               %%%
+%%%           Examples                           %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%If you are using Attribute-Value-Matrices, uncomment the following lines 
-% \usepackage{avm}
-% \avmfont{\sc} 
-% \avmvalfont{\it} 
-% % command to fontify the type values of an avm 
-% \newcommand{\tpv}[1]{{\avmjvalfont #1}} 
-% % command to fontify the type of an avm and avmspan it
-% \newcommand{\tp}[1]{\avmspan{\tpv{#1}}}
+% remove the percentage signs in the following lines
+% if your book makes use of linguistic examples
+
+% \usepackage{lsp-gb4e} 
+%% to add additional information to the right of examples, uncomment the following line
+% \usepackage{jambox}
+%% if you want the source line of examples to be in italics, uncomment the following line
+% \def\exfont{\it}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -80,29 +65,55 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
-%%%           Examples                           %%%
+%%%      Optimality Theory                       %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\byline}[2]{{\rm #1}~{(\rm #2)}\\}
-% if you want the source line of examples to be in italics, uncomment the following line
-%\def\exfont{\it}
-
-
-% to add additional information to the right of examples, uncomment the following line
-% \usepackage{jambox}
-\usepackage{lsp-gb4e} 
- 
+% If you are using OT, uncomment the following lines      
+% % OT pointing hand
+% \usepackage{pifont}
+% \newcommand{\hand}{\ding{43}}
+% % OT tableaux                                                
+% \usepackage{pstricks,colortab}    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
-%%%        Other scripts                         %%%
+%%%       Attribute Value Matrices               %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%If you are using Attribute-Value-Matrices, uncomment the following lines 
+% \usepackage{lsp-avm}
+% \usepackage{avm}
+% \avmfont{\sc} 
+% \avmvalfont{\it} 
+% % command to fontify the type values of an avm 
+% \newcommand{\tpv}[1]{{\avmjvalfont #1}} 
+% % command to fontify the type of an avm and avmspan it
+% \newcommand{\tp}[1]{\avmspan{\tpv{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%     Discourse Representation Structures      %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DRS package by Alexis Dimitriadis
+% \usepackage{drs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%            Chinese Japanese Korean           %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % For Chinese characters, uncomment the following lines
 % \usepackage[indentfirst=false]{xeCJK}
 % \setCJKmainfont{SimSun}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%               Arabic / Persian               %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for bidirectional text and support for Arabic/Persian, uncomment the following lines
 %% \usepackage{fontspec}
@@ -111,28 +122,12 @@
 % \usepackage{lsp-bidi}
 % \newcommand{\PRL}[1]{\RL{\Parsifont #1}}
 % %\TeXXeTOff
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%   final general settings                     %%%
-%%%   no need to touch this                      %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\iflsDraft
-\proofmodetrue
-\fi
-
-% This is needed to allow for hyphenation in \texttt
-% http://tex.stackexchange.com/questions/44361/how-to-automatically-hyphenate-within-texttt
-% usually this is not required, but since we show index entries for packages in the margin and since
-% the package names a re typeset in tt, we need the hyphenation.
-\DeclareFontFamily{OT1}{cmtt}{\hyphenchar \font=-1}
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
-%%%            Metadata                          %%%
-%%%    fill in as appropriate                    %%%
+%%%                 Metadata                     %%%
+%%%          fill in as appropriate              %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -145,40 +140,76 @@
 \proofreader{Change proofreaders in master file}
 \author{Change your name in the master file}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%          additional packages                 %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% put all additional commands you need in the 
+% following files
+
+\usepackage{localpackages}
+\usepackage{localhyphenation}
+\usepackage{localcommands}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
-%%%        page layout                           %%%
+%%%               END PREAMBLE                   %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\makeatletter
-\def\verbatim@font{\scriptsize\ttfamily}
-\makeatother
-         
-\begin{document}               
-                           
+% -----------------------------------------------%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             BEGIN DOCUMENT                   %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      
+\begin{document}       
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Frontmatter                      %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
 \maketitle                
-
 \frontmatter
-
-\chapter*{Preface} 
-\section*{Acknowledgements} 
-
+% %% uncomment if you have preface and/or acknowledgements
+% \chapter*{Preface} 
+% \include{chapters/preface}
+% \section*{Acknowledgements} 
+% \include{chapters/acknowledgements}
 \tableofcontents      
-
 \mainmatter         
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Chapters                         %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include{chapters/introduction}  %add a percentage sign in front of the line to exclude this chapter from book
 \include{chapters/filename}
 \include{chapters/anotherfilename}
 % \include{chapters/sleepingfilename} %uncomment to include this file in your book
 \include{chapters/yetanotherfilename} 
+%you can add additional chapters below if you want to 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Backmatter                       %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
+\bibliography{mybibliography.bib} %change to the name of your bib file
+\end{document} 
 
-\bibliography{mybibliography.bib}
-                               
-\end{document}
-      
-%      <!-- Local IspellDict: en_US-w_accents -->
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%                  END                         %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% you should be able to create a pdf from this file 
+% with the following command 
+% xelatex lsp-skeleton.tex
+% If this does not work, please get in contact with 
+% Language Science Press
