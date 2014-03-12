@@ -125,8 +125,8 @@
 			BoldItalicFont = LinLibertine_RZI_B.otf ]		% semi-bold
 			{LinLibertine_R_B.otf}			
   
-  \usepackage[libertine]{newtxmath}
-  
+%   \usepackage[libertine]{newtxmath}
+%   
   \let\oldtabular\tabular	% number in tabulars
   \let\endoldtabular\endtabular
   \renewenvironment{tabular}{\normalfont\addfontfeatures{Numbers=Lining}\selectfont\oldtabular}{\endoldtabular}
