@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.14)  12 MAR 2014 16:57
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.14)  12 MAR 2014 17:10
 entering extended mode
  %&-line parsing enabled.
 **lsp-skeleton.tex
@@ -846,9 +846,8 @@ Type  H <return>  for immediate help.
                                                   
 l.174 \maketitle
                 
-Characters128-191areonlyallowedasargumentstocharacters194-244
-
-<./lsp-logos/FULogo_sw_CMYK.pdf, id=71, 483.8075pt x 128.48pt>
+? 
+<./lsp-logos/FULogo_sw_CMYK.pdf, id=72, 483.8075pt x 128.48pt>
 File: ./lsp-logos/FULogo_sw_CMYK.pdf Graphic file (type pdf)
 
 <use ./lsp-logos/FULogo_sw_CMYK.pdf> [2 <./lsp-logos/FULogo_sw_CMYK.pdf>]
@@ -967,20 +966,21 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Here is how much of TeX's memory you used:
  26623 strings out of 495021
  339376 string characters out of 1181035
- 575941 words of memory out of 3000000
+ 576019 words of memory out of 3000000
  29344 multiletter control sequences out of 15000+50000
  199290 words of font info for 164 fonts, out of 3000000 for 9000
  31 hyphenation exceptions out of 8191
  50i,13n,68p,859b,625s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf-texli
-ve/fonts/enc/dvips/libertine/xl-8x.enc}</usr/share/texmf-texlive/fonts/type1/pu
-blic/libertine/fxbr.pfb></usr/share/texmf-texlive/fonts/type1/public/libertine/
-fxlb.pfb></usr/share/texmf-texlive/fonts/type1/public/libertine/fxlr.pfb></usr/
-share/texmf-texlive/fonts/type1/public/libertine/fxlri.pfb></usr/share/texmf-te
-xlive/fonts/type1/urw/helvetic/uhvb8a.pfb>
-Output written on lsp-skeleton.pdf (15 pages, 437182 bytes).
+ve/fonts/enc/dvips/libertine/xl-8x.enc}{/usr/share/texmf-texlive/fonts/enc/dvip
+s/libertine/xb-8x.enc}</usr/share/texmf-texlive/fonts/type1/public/libertine/fx
+br.pfb></usr/share/texmf-texlive/fonts/type1/public/libertine/fxlb.pfb></usr/sh
+are/texmf-texlive/fonts/type1/public/libertine/fxlr.pfb></usr/share/texmf-texli
+ve/fonts/type1/public/libertine/fxlri.pfb></usr/share/texmf-texlive/fonts/type1
+/urw/helvetic/uhvb8a.pfb>
+Output written on lsp-skeleton.pdf (15 pages, 441761 bytes).
 PDF statistics:
- 164 PDF objects out of 1000 (max. 8388607)
+ 167 PDF objects out of 1000 (max. 8388607)
  28 named destinations out of 1000 (max. 500000)
  58960 words of extra memory for PDF output out of 61914 (max. 10000000)
 
