@@ -32,11 +32,10 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\hypersetup{pdfdisplaydoctitle=true} 
-\usepackage{tabularx}
+% \hypersetup{pdfdisplaydoctitle=true} % This should all go to *cls
+% \usepackage{tabularx}
 % \selectlanguage{USenglish} 
-
-\usepackage{abbrev}
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -125,22 +124,7 @@
 % %\TeXXeTOff
  
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%                 Metadata                     %%%
-%%%          fill in as appropriate              %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\title{Change your booktitle in the master file}  %look no further, you can change those things right here. 
-\subtitle{Change your subtitle in the master file}
-\BackTitle{Change backtitle in the master file}
-\BackBody{Change backbody in the master file}
-\dedication{Change dedication in master file}
-\typesetter{Change typesetter in masterfile}
-\proofreader{Change proofreaders in master file}
-\author{Change your name in the master file}
-
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%          additional packages                 %%%
@@ -150,6 +134,7 @@
 % put all additional commands you need in the 
 % following files
 
+\usepackage{localmetadata}
 \usepackage{localpackages}
 \usepackage{localhyphenation}
 \usepackage{localcommands}
