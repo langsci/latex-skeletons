@@ -1,0 +1,986 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.5.14)  12 MAR 2014 17:10
+entering extended mode
+ %&-line parsing enabled.
+**lsp-skeleton.tex
+(./lsp-skeleton.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, ngerman, german, german-x-2009-06-19, ngerman-x-2009-06-19, loaded.
+
+(./langsci.cls
+Document Class: langsci 2014/03/03 Language Science Press
+(/usr/share/texmf-texlive/tex/latex/tools/xspace.sty
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2009/08/13 v3.4 Keyval support for LaTeX options (HO)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2009/07/30 v1.5 Key value parser with default handler suppor
+t (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2007/12/12 v1.2 Prefix for e-TeX command names (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/share/texmf-texlive/tex/latex/koma-script/scrbook.cls
+Document Class: scrbook 2009/07/24 v3.04a KOMA-Script document class (book)
+(/usr/share/texmf-texlive/tex/latex/koma-script/scrkbase.sty
+Package: scrkbase 2009/07/24 v3.04a KOMA-Script package (KOMA-Script-dependent 
+basics and keyval usage)
+
+(/usr/share/texmf-texlive/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2009/07/24 v3.04a KOMA-Script package (KOMA-Script-independent
+ basics and keyval usage)
+
+(/usr/share/texmf-texlive/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2009/03/25 v3.03 KOMA-Script package (loading files)
+
+Package scrlfile, 2009/03/25 v3.03 KOMA-Script package (loading files)
+                  Copyright (C) Markus Kohm
+
+))) (/usr/share/texmf-texlive/tex/latex/koma-script/tocbasic.sty
+Package: tocbasic 2009/06/08 v3.03b KOMA-Script package (handling toc-files)
+)
+Package tocbasic Info: omitting babel extension for `toc'
+(tocbasic)             because of feature `nobabel' available
+(tocbasic)             for `toc' on input line 117.
+Package tocbasic Info: omitting babel extension for `lof'
+(tocbasic)             because of feature `nobabel' available
+(tocbasic)             for `lof' on input line 118.
+Package tocbasic Info: omitting babel extension for `lot'
+(tocbasic)             because of feature `nobabel' available
+(tocbasic)             for `lot' on input line 119.
+Class scrbook Info: File `scrsize11pt.clo' used to setup font sizes on input li
+ne 1272.
+
+(/usr/share/texmf-texlive/tex/latex/koma-script/scrsize11pt.clo
+File: scrsize11pt.clo 2009/07/24 v3.04a KOMA-Script font size class option (11p
+t)
+)
+(/usr/share/texmf-texlive/tex/latex/koma-script/typearea.sty
+Package: typearea 2009/07/24 v3.04a KOMA-Script package (type area)
+
+Package typearea, 2009/07/24 v3.04a KOMA-Script package (type area)
+                  Copyright (C) Frank Neukam, 1992-1994
+                  Copyright (C) Markus Kohm, 1994-
+
+\ta@bcor=\skip41
+\ta@div=\count79
+\ta@hblk=\skip42
+\ta@vblk=\skip43
+\ta@temp=\skip44
+Package typearea Info: These are the values describing the layout:
+(typearea)             DIV  = 10
+(typearea)             BCOR = 0.0pt
+(typearea)             \paperwidth      = 597.50793pt
+(typearea)              \textwidth      = 418.25555pt
+(typearea)              DIV departure   = -6%
+(typearea)              \evensidemargin = 47.2316pt
+(typearea)              \oddsidemargin  = -12.5192pt
+(typearea)             \paperheight     = 845.04694pt
+(typearea)              \textheight     = 595.80026pt
+(typearea)              \topmargin      = -25.16531pt
+(typearea)              \headheight     = 17.0pt
+(typearea)              \headsep        = 20.40001pt
+(typearea)              \topskip        = 11.0pt
+(typearea)              \footskip       = 47.60002pt
+(typearea)              \baselineskip   = 13.6pt
+(typearea)              on input line 1115.
+)
+\c@part=\count80
+\c@chapter=\count81
+\c@section=\count82
+\c@subsection=\count83
+\c@subsubsection=\count84
+\c@paragraph=\count85
+\c@subparagraph=\count86
+\abovecaptionskip=\skip45
+\belowcaptionskip=\skip46
+\c@pti@nb@sid@b@x=\box26
+\c@figure=\count87
+\c@table=\count88
+\bibindent=\dimen102
+) (/usr/share/texmf-texlive/tex/latex/etex-pkg/etex.sty
+Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
+\et@xins=\count89
+)
+(/usr/share/texmf-texlive/tex/latex/geometry/geometry.sty
+Package: geometry 2008/12/21 v4.2 Page Geometry
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+\Gm@cnth=\count90
+\Gm@cntv=\count91
+\c@Gm@tempcnt=\count92
+\Gm@bindingoffset=\dimen103
+\Gm@wd@mp=\dimen104
+\Gm@odd@mp=\dimen105
+\Gm@even@mp=\dimen106
+\Gm@dimlist=\toks15
+)
+(/usr/share/texmf-texlive/tex/latex/textpos/textpos.sty
+Package: textpos 2009/05/28 v1.7f
+
+Package: `textpos' 1.7f <2009 May 28>
+(/usr/share/texmf-texlive/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+)
+\TP@textbox=\box27
+\TP@holdbox=\box28
+\TPHorizModule=\dimen107
+\TPVertModule=\dimen108
+\TP@margin=\dimen109
+\TP@absmargin=\dimen110
+
+Grid set 16 x 16 = 30.23105pt x 42.67912pt
+\TPboxrulesize=\dimen111
+\TP@ox=\dimen112
+\TP@oy=\dimen113
+\TP@tbargs=\toks16
+\TP@prevdepth=\dimen114
+TextBlockOrigin set to 0pt x 0pt
+)
+TextBlockOrigin set to 0mm x 0mm
+(/usr/share/texmf-texlive/tex/latex/pbox/pbox.sty
+Package: pbox 2003/04/06 v1.0 Dynamic parboxes
+
+(/usr/share/texmf-texlive/tex/latex/tools/calc.sty
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count93
+\calc@Bcount=\count94
+\calc@Adimen=\dimen115
+\calc@Bdimen=\dimen116
+\calc@Askip=\skip47
+\calc@Bskip=\skip48
+LaTeX Info: Redefining \setlength on input line 76.
+LaTeX Info: Redefining \addtolength on input line 77.
+\calc@Ccount=\count95
+\calc@Cskip=\skip49
+)
+(/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\pb@xlen=\skip50
+)
+(/usr/share/texmf-texlive/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2009/01/23 v0.5 Provides ifxetex conditional
+)
+(/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+(/usr/share/texmf-texlive/tex/latex/base/t1enc.def
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+(/usr/share/texmf-texlive/tex/latex/ucs/ucs.sty
+Package: ucs 2004/10/17 UCS: Unicode input support
+
+(/usr/share/texmf-texlive/tex/latex/ucs/data/uni-global.def
+File: uni-global.def 2004/10/17 UCS: Unicode global data
+)
+\uc@secondtry=\count96
+\uc@combtoks=\toks17
+\uc@combtoksb=\toks18
+\uc@temptokena=\toks19
+)
+(/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
+Package: inputenc 2008/03/30 v1.1d Input encoding file
+\inpenc@prehook=\toks20
+\inpenc@posthook=\toks21
+
+(/usr/share/texmf-texlive/tex/latex/ucs/utf8x.def
+File: utf8x.def 2004/10/17 UCS: Input encoding UTF-8
+))
+(/usr/share/texmf-texlive/tex/latex/libertine/libertine.sty
+Package: libertine 2009/05/22a - 4.5.1a -LaTeX: Font libertine - (License GPL) 
+Michael Niedermair
+
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+\Gread@gobject=\count97
+)
+LaTeX Info: Redefining \color on input line 702.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texmf-texlive/tex/latex/libertine/fxl.inc)
+(/usr/share/texmf-texlive/tex/latex/libertine/fxb.inc))
+(/usr/share/texmf-texlive/tex/latex/microtype/microtype.sty
+Package: microtype 2009/03/27 v2.3d Micro-typography with pdfTeX (RS)
+\MT@toks=\toks22
+\MT@count=\count98
+LaTeX Info: Redefining \lsstyle on input line 1608.
+LaTeX Info: Redefining \lslig on input line 1608.
+\MT@outer@space=\skip51
+LaTeX Info: Redefining \textls on input line 1616.
+\MT@outer@kern=\dimen117
+LaTeX Info: Redefining \textmicrotypecontext on input line 2167.
+Package microtype Info: Loading configuration file microtype.cfg.
+
+(/usr/share/texmf-texlive/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2009/03/27 v2.3d microtype main configuration file (RS)
+))
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+)
+\Gin@req@height=\dimen118
+\Gin@req@width=\dimen119
+)
+Class scrbook Info: You've told me to redefine the font selection of the
+(scrbook)           element `sectioning' that is an alias of element
+(scrbook)           `disposition' on input line 179.
+
+(/usr/share/texmf-texlive/tex/latex/datetime/datetime.sty
+Package: datetime 2007/08/20 v2.55 Date Time Package
+
+(/usr/share/texmf-texlive/tex/latex/fmtcount/fmtcount.sty
+Package: fmtcount 2009/10/02 v1.31
+
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks23
+\ex@=\dimen120
+)
+\c@padzeroesN=\count99
+
+(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-english.def
+File: fc-english 2007/05/26
+)
+(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-USenglish.def
+File: fc-USenglish 2007/06/14
+)
+(/usr/share/texmf-texlive/tex/latex/fmtcount/fc-german.def
+File: fc-german.def 2007/06/14
+)
+No configuration file fmtcount.cfg found.
+\@DT@modctr=\count100
+\@ordinalctr=\count101
+\@orgargctr=\count102
+\@strctr=\count103
+\@tmpstrctr=\count104
+\@DT@loopN=\count105
+\@DT@X=\count106
+)
+\@day=\count107
+\@month=\count108
+\@year=\count109
+Package datetime Info: No datetime.cfg file found, using default settings on in
+put line 167.
+\@dtctr=\count110
+\dayofyear=\count111
+\dayofweek=\count112
+LaTeX Info: Redefining \today on input line 428.
+\c@HOUR=\count113
+\c@HOURXII=\count114
+\c@MINUTE=\count115
+\c@TOHOUR=\count116
+\c@TOMINUTE=\count117
+\dt@a=\toks24
+\dt@b=\toks25
+) (/usr/share/texmf-texlive/tex/latex/koma-script/scrpage2.sty
+Package: scrpage2 2008/12/08 v2.3 LaTeX2e KOMA-Script package
+LaTeX Info: Redefining \pagemark on input line 176.
+)
+(/usr/share/texmf-texlive/tex/latex/natbib/natbib.sty
+Package: natbib 2009/07/16 8.31 (PWD, AO)
+\bibhang=\skip52
+\bibsep=\skip53
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count118
+)
+(/usr/share/texmf-texlive/tex/latex/index/index.sty
+Package: index 2004/01/20 v4.2beta Improved index support (dmj)
+\@indexbox=\insert233
+\indexproofstyle=\toks26
+)
+\idxtitle@default=\toks27
+\tf@default=\write3
+\openout3 = `lsp-skeleton.idx'.
+
+Package index Info: Writing index file lsp-skeleton.idx on input line 384.
+\idxtitle@lan=\toks28
+\tf@lan=\write4
+\openout4 = `lsp-skeleton.ldx'.
+
+Package index Info: Writing index file lsp-skeleton.ldx on input line 385.
+\idxtitle@aut=\toks29
+\tf@aut=\write5
+\openout5 = `lsp-skeleton.adx'.
+
+Package index Info: Writing index file lsp-skeleton.adx on input line 386.
+\openout3 = `lsp-skeleton.idx'.
+
+Package index Info: Writing index file lsp-skeleton.idx on input line 387.
+\idxtitle@wrd=\toks30
+\tf@wrd=\write6
+\openout6 = `lsp-skeleton.wdx'.
+
+Package index Info: Writing index file lsp-skeleton.wdx on input line 388.
+\idxtitle@rwrd=\toks31
+\tf@rwrd=\write7
+\openout7 = `lsp-skeleton.rdx'.
+
+Package index Info: Writing index file lsp-skeleton.rdx on input line 389.
+
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+(/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/hycolor.sty
+Package: hycolor 2009/10/02 v1.5 Code for color options of hyperref/bookmark (H
+O)
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/xcolor-patch.sty
+Package: xcolor-patch 2009/10/02 xcolor patch
+))
+\@linkdim=\dimen121
+\Hy@linkcounter=\count119
+\Hy@pagecounter=\count120
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texmf-texlive/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `bookmarks' set `true' on input line 2864.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 2864.
+Package hyperref Info: Option `hyperindex' set `true' on input line 2864.
+Package hyperref Info: Option `breaklinks' set `true' on input line 2864.
+Package hyperref Info: Option `draft' set `false' on input line 2864.
+Package hyperref Info: Option `plainpages' set `false' on input line 2864.
+Package hyperref Info: Option `pdfusetitle' set `true' on input line 2864.
+Package hyperref Info: Hyper figures OFF on input line 2975.
+Package hyperref Info: Link nesting OFF on input line 2980.
+Package hyperref Info: Hyper index ON on input line 2983.
+Package hyperref Info: Plain pages OFF on input line 2990.
+Package hyperref Info: Backreferencing OFF on input line 2995.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 3191.
+LaTeX Info: Redefining \url on input line 3428.
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bitset.sty
+Package: bitset 2007/09/28 v1.0 Data type bit set (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/intcalc.sty
+Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bigintcalc.sty
+Package: bigintcalc 2007/11/11 v1.1 Expandable big integer calculations (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2009/09/23 v0.6 LuaTeX support for pdfTeX utility functions
+ (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2009/04/17 v1.2 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2009/08/05 v1.0 Some LaTeX kernel commands for general use (HO
+)
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+)))
+\Fld@menulength=\count121
+\Field@Width=\dimen122
+\Fld@charsize=\dimen123
+\Field@toks=\toks32
+Package hyperref Info: Hyper figures OFF on input line 4377.
+Package hyperref Info: Link nesting OFF on input line 4382.
+Package hyperref Info: Hyper index ON on input line 4385.
+Package hyperref Info: backreferencing OFF on input line 4392.
+Package hyperref Info: Link coloring OFF on input line 4397.
+Package hyperref Info: Link coloring with OCG OFF on input line 4402.
+Package hyperref Info: PDF/A mode OFF on input line 4407.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2008/07/31 v1.9 At begin shipout hook (HO)
+)
+\Hy@abspage=\count122
+\c@Item=\count123
+\c@Hfootnote=\count124
+)
+*hyperref using default driver hpdftex*
+(/usr/share/texmf-texlive/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2009/10/09 v6.79a Hyperref driver for pdfTeX
+\Fld@listcount=\count125
+)
+
+Class scrbook Warning: Change of `\@footnotemark' detected!
+(scrbook)              Use of `footnotes=multiple' may break
+(scrbook)              another package!
+(scrbook)              Maybe you should remove the usage of
+(scrbook)              option `footnotes=multiple' on input line 797.
+
+(/usr/share/texmf-texlive/tex/latex/rotating/rotating.sty
+Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
+\c@r@tfl@t=\count126
+\rotFPtop=\skip54
+\rotFPbot=\skip55
+\rot@float@box=\box29
+\rot@mess@toks=\toks33
+)
+Package hyperref Info: Option `unicode' set `true' on input line 866.
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/puenc.def
+File: puenc.def 2009/10/09 v6.79a Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Option `unicode' set `true' on input line 866.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/stringenc.sty
+Package: stringenc 2008/10/27 v1.6 Converts strings between encodings (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/pdfescape.sty
+Package: pdfescape 2007/11/11 v1.8 Provides hex, PDF name and string conversion
+s (HO)
+))
+(/usr/share/texmf-texlive/tex/latex/authorindex/authorindex.sty
+Package: authorindex 2005/03/22 make index of authors cited in a work
+))
+Package hyperref Info: Option `pdfdisplaydoctitle' set `true' on input line 35.
+
+
+(/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen124
+\extrarowheight=\dimen125
+\NC@list=\toks34
+\extratabsurround=\skip56
+\backup@length=\skip57
+)
+\TX@col@width=\dimen126
+\TX@old@table=\dimen127
+\TX@old@col=\dimen128
+\TX@target=\dimen129
+\TX@delta=\dimen130
+\TX@cols=\count127
+\TX@ftn=\toks35
+) (./abbrev.sty
+\c@abr@ctr=\count128
+\c@abr@level=\count129
+\symtlaitalics=\mathgroup4
+\abr@csctr=\count130
+)
+(./lsp-gb4e.sty
+Package: lsp-gb4e 2000/09/05
+ (./lsp-cgloss.sty
+\lineone=\box30
+\linetwo=\box31
+\linethree=\box32
+\wordone=\box33
+\wordtwo=\box34
+\wordthree=\box35
+\gline=\box36
+\glossglue=\skip58
+)
+\c@fnx=\count131
+\@xnumdepth=\count132
+\c@xnumi=\count133
+\c@xnumii=\count134
+\c@xnumiii=\count135
+\c@xnumiv=\count136
+\c@rxnumi=\count137
+\c@rxnumii=\count138
+\c@rxnumiii=\count139
+\c@rxnumiv=\count140
+\lcommentsep=\skip59
+) (./localpackages.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip60
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen131
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count141
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count142
+\leftroot@=\count143
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count144
+\DOTSCASE@=\count145
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box37
+\strutbox@=\box38
+\big@size=\dimen132
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count146
+\c@MaxMatrixCols=\count147
+\dotsspace@=\muskip11
+\c@parentequation=\count148
+\dspbrk@lvl=\count149
+\tag@help=\toks36
+\row@=\count150
+\column@=\count151
+\maxfields@=\count152
+\andhelp@=\toks37
+\eqnshift@=\dimen133
+\alignsep@=\dimen134
+\tagshift@=\dimen135
+\tagwidth@=\dimen136
+\totwidth@=\dimen137
+\lineht@=\dimen138
+\@envbody=\toks38
+\multlinegap=\skip61
+\multlinetaggap=\skip62
+\mathdisplay@stack=\toks39
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+))
+(/usr/share/texmf-texlive/tex/latex/tools/multicol.sty
+Package: multicol 2008/12/05 v1.6h multicolumn formatting (FMi)
+\c@tracingmulticols=\count153
+\mult@box=\box39
+\multicol@leftmargin=\dimen139
+\c@unbalance=\count154
+\c@collectmore=\count155
+\doublecol@number=\count156
+\multicoltolerance=\count157
+\multicolpretolerance=\count158
+\full@width=\dimen140
+\page@free=\dimen141
+\premulticols=\dimen142
+\postmulticols=\dimen143
+\multicolsep=\skip63
+\multicolbaselineskip=\skip64
+\partial@page=\box40
+\last@line=\box41
+\mult@rightbox=\box42
+\mult@grightbox=\box43
+\mult@gfirstbox=\box44
+\mult@firstbox=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\@tempa=\box53
+\@tempa=\box54
+\@tempa=\box55
+\@tempa=\box56
+\@tempa=\box57
+\@tempa=\box58
+\@tempa=\box59
+\@tempa=\box60
+\@tempa=\box61
+\@tempa=\box62
+\c@columnbadness=\count159
+\c@finalcolumnbadness=\count160
+\last@try=\dimen144
+\multicolovershoot=\dimen145
+\multicolundershoot=\dimen146
+\mult@nat@firstbox=\box63
+\colbreak@box=\box64
+) (./localhyphenation.sty) (./localcommands.sty) (./lsp-skeleton.aux (./chapter
+s/introduction.aux)
+(./chapters/filename.aux) (./chapters/anotherfilename.aux)
+(./chapters/yetanotherfilename.aux))
+\openout1 = `lsp-skeleton.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 168.
+LaTeX Font Info:    ... okay on input line 168.
+LaTeX Font Info:    Try loading font information for T1+fxl on input line 168.
+
+(/usr/share/texmf-texlive/tex/latex/libertine/t1fxl.fd
+File: t1fxl.fd 2009/05/22 scaled font definitions for libertine T1/fxl (Nm).
+)
+LaTeX Font Info:    Font shape `T1/fxl/m/n' will be
+(Font)              scaled to size 10.95pt on input line 168.
+
+*geometry auto-detecting driver*
+*geometry detected driver: pdftex*
+-------------------- Geometry parameters
+paper: user defined
+landscape: --
+twocolumn: --
+twoside: true
+asymmetric: --
+h-parts: 56.9055pt, 355.65945pt, 71.13188pt
+v-parts: 77.96053pt, 487.96483pt, 116.94078pt
+hmarginratio: --
+vmarginratio: 2:3
+lines: --
+heightrounded: --
+bindingoffset: 0.0pt
+truedimen: --
+includehead: --
+includefoot: --
+includemp: --
+driver: pdftex
+-------------------- Page layout dimensions and switches
+\paperwidth  483.69684pt
+\paperheight 682.86613pt
+\textwidth  355.65945pt
+\textheight 487.96483pt
+\oddsidemargin  -15.36449pt
+\evensidemargin -1.1381pt
+\topmargin  -31.70947pt
+\headheight 17.0pt
+\headsep    20.40001pt
+\footskip   47.60002pt
+\marginparwidth 50.0pt
+\marginparsep   12.8401pt
+\columnsep  10.0pt
+\skip\footins  10.0pt plus 4.0pt minus 2.0pt
+\hoffset 0.0pt
+\voffset 0.0pt
+\mag 1000
+\@twosidetrue \@mparswitchtrue 
+(1in=72.27pt, 1cm=28.45pt)
+-----------------------
+ABD: EveryShipout initializing macros
+(/usr/share/texmf-texlive/tex/latex/ucs/ucsencs.def
+File: ucsencs.def 2003/11/29 Fixes to fontencodings LGR, T3
+)
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count161
+\scratchdimen=\dimen147
+\scratchbox=\box65
+\nofMPsegments=\count162
+\nofMParguments=\count163
+\everyMPshowfont=\toks40
+\MPscratchCnt=\count164
+\MPscratchDim=\dimen148
+\MPnumerator=\count165
+\everyMPtoPDFconversion=\toks41
+)
+LaTeX Info: Redefining \microtypecontext on input line 168.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `basictext'.
+Package microtype Info: No tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+Package hyperref Info: Link coloring OFF on input line 168.
+ (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
+Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
+)
+\c@section@level=\count166
+)
+LaTeX Info: Redefining \ref on input line 168.
+LaTeX Info: Redefining \pageref on input line 168.
+ (./lsp-skeleton.out) (./lsp-skeleton.out)
+\@outlinefile=\write8
+\openout8 = `lsp-skeleton.out'.
+
+\AtBeginShipoutBox=\box66
+ (/usr/share/texmf-texlive/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2008/02/29 v1.9a microtype config. file: Computer Modern Roman
+ (RS)
+)
+LaTeX Font Info:    Font shape `T1/fxl/m/n' will be
+(Font)              scaled to size 8.0pt on input line 174.
+LaTeX Font Info:    Try loading font information for T1+fxb on input line 174.
+ (/usr/share/texmf-texlive/tex/latex/libertine/t1fxb.fd
+File: t1fxb.fd 2009/05/22 scaled font definitions for libertine T1/fxb (Nm).
+)
+LaTeX Font Info:    Font shape `T1/fxb/m/n' will be
+(Font)              scaled to size 10.95pt on input line 174.
+LaTeX Font Info:    Try loading font information for T1+fxlj on input line 174.
+
+
+(/usr/share/texmf-texlive/tex/latex/libertine/t1fxlj.fd
+File: t1fxlj.fd 2009/05/22 scaled font definitions for libertine T1/fxlj (Nm).
+)
+LaTeX Font Info:    Font shape `T1/fxlj/m/n' will be
+(Font)              scaled to size 52.0pt on input line 174.
+LaTeX Font Info:    Font shape `T1/fxlj/m/n' will be
+(Font)              scaled to size 25.0pt on input line 174.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 174.
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+)
+
+LaTeX Font Warning: Font shape `T1/phv/sc/n' undefined
+(Font)              using `T1/phv/m/n' instead on input line 174.
+
+<./lsp-logos/langsci_logo_nocolor.pdf, id=35, 88.19951pt x 42.67944pt>
+File: ./lsp-logos/langsci_logo_nocolor.pdf Graphic file (type pdf)
+
+<use ./lsp-logos/langsci_logo_nocolor.pdf>
+(/usr/share/texmf-texlive/tex/generic/oberdiek/se-pdfdoc.def
+File: se-pdfdoc.def 2008/10/27 v1.6 stringenc: PDFDocEncoding
+) [-5{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+
+
+ <./lsp-logos/langsci_logo_nocolor.pdf>]
+LaTeX Font Info:    Font shape `T1/fxlj/m/n' will be
+(Font)              scaled to size 10.95pt on input line 174.
+
+[-4]
+<./lsp-logos/langsci_spinelogo_nocolor.pdf, id=53, 28.45631pt x 22.36356pt>
+File: ./lsp-logos/langsci_spinelogo_nocolor.pdf Graphic file (type pdf)
+
+<use ./lsp-logos/langsci_spinelogo_nocolor.pdf>
+LaTeX Font Info:    Font shape `T1/fxb/m/n' will be
+(Font)              scaled to size 16.0pt on input line 174.
+LaTeX Font Info:    Calculating math sizes for size <16> on input line 174.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <16> not available
+(Font)              size <17.28> substituted on input line 174.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <16> not available
+(Font)              size <17.28> substituted on input line 174.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <16> not available
+(Font)              size <17.28> substituted on input line 174.
+
+
+LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <16> not available
+(Font)              size <17.28> substituted on input line 174.
+
+
+LaTeX Font Warning: Font shape `T1/cmr/m/it' in size <16> not available
+(Font)              size <17.28> substituted on input line 174.
+
+LaTeX Font Info:    Font shape `T1/fxl/m/n' will be
+(Font)              scaled to size 12.0pt on input line 174.
+[-3 <./lsp-logos/langsci_spinelogo_nocolor.pdf>] [-2]
+File: ./lsp-logos/langsci_logo_nocolor.pdf Graphic file (type pdf)
+
+<use ./lsp-logos/langsci_logo_nocolor.pdf> [1
+
+
+]
+
+Package hyperref Warning: Option `colorlinks' has already been used,
+(hyperref)                setting the option has no effect on input line 174.
+
+
+! Package utf8x Error: Character169appearedalone.
+
+See the utf8x package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.174 \maketitle
+                
+? 
+<./lsp-logos/FULogo_sw_CMYK.pdf, id=72, 483.8075pt x 128.48pt>
+File: ./lsp-logos/FULogo_sw_CMYK.pdf Graphic file (type pdf)
+
+<use ./lsp-logos/FULogo_sw_CMYK.pdf> [2 <./lsp-logos/FULogo_sw_CMYK.pdf>]
+LaTeX Font Info:    Font shape `T1/fxlj/m/n' will be
+(Font)              scaled to size 15.0pt on input line 174.
+LaTeX Font Info:    Font shape `T1/fxl/m/sl' in size <10.95> not available
+(Font)              Font shape `T1/fxl/m/it' tried instead on input line 174.
+LaTeX Font Info:    Font shape `T1/fxl/m/it' will be
+(Font)              scaled to size 10.95pt on input line 174.
+
+[3] [4
+
+
+
+]
+LaTeX Font Info:    Font shape `T1/fxl/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/fxl/b/n' tried instead on input line 181.
+LaTeX Font Info:    Font shape `T1/fxl/b/n' will be
+(Font)              scaled to size 10.95pt on input line 181.
+LaTeX Font Info:    Font shape `T1/fxl/bx/n' in size <20.74> not available
+(Font)              Font shape `T1/fxl/b/n' tried instead on input line 181.
+LaTeX Font Info:    Font shape `T1/fxl/b/n' will be
+(Font)              scaled to size 20.74pt on input line 181.
+ (./lsp-skeleton.toc
+Class scrbook Info: You've told me to use the font selection of the element
+(scrbook)           `sectioning' that is an alias of element `disposition'
+(scrbook)            on input line 1.
+LaTeX Font Info:    Font shape `T1/fxlj/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/fxlj/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `T1/fxlj/b/n' will be
+(Font)              scaled to size 10.95pt on input line 1.
+Class scrbook Info: You've told me to use the font selection of the element
+(scrbook)           `sectioning' that is an alias of element `disposition'
+(scrbook)            on input line 4.
+Class scrbook Info: You've told me to use the font selection of the element
+(scrbook)           `sectioning' that is an alias of element `disposition'
+(scrbook)            on input line 8.
+)
+\tf@toc=\write9
+\openout9 = `lsp-skeleton.toc'.
+
+ [5] [6
+
+
+]
+\openout2 = `chapters/introduction.aux'.
+
+ (./chapters/introduction.tex)
+\openout2 = `chapters/filename.aux'.
+
+
+(./chapters/filename.tex
+Chapter 1.
+LaTeX Font Info:    Font shape `T1/fxl/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/fxl/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `T1/fxl/b/n' will be
+(Font)              scaled to size 14.4pt on input line 2.
+LaTeX Font Info:    Font shape `T1/fxl/bx/n' in size <12> not available
+(Font)              Font shape `T1/fxl/b/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `T1/fxl/b/n' will be
+(Font)              scaled to size 12.0pt on input line 3.
+LaTeX Font Info:    Font shape `T1/fxlj/m/n' will be
+(Font)              scaled to size 8.0pt on input line 6.
+LaTeX Font Info:    Font shape `T1/fxl/m/n' will be
+(Font)              scaled to size 9.0pt on input line 6.
+LaTeX Font Info:    Font shape `T1/fxl/m/n' will be
+(Font)              scaled to size 6.0pt on input line 6.
+LaTeX Font Info:    Font shape `T1/fxl/m/it' will be
+(Font)              scaled to size 9.0pt on input line 6.
+(/usr/share/texmf-texlive/tex/latex/ucs/data/uni-1.def
+File: uni-1.def 2004/10/17 UCS: Unicode data U+0100..U+01FF
+)) [1
+
+
+
+
+
+]
+\openout2 = `chapters/anotherfilename.aux'.
+
+
+(./chapters/anotherfilename.tex [2
+
+
+
+
+]
+Chapter 2.
+LaTeX Font Info:    Font shape `T1/fxlj/m/it' will be
+(Font)              scaled to size 10.95pt on input line 8.
+LaTeX Font Info:    Font shape `T1/fxlj/m/sc' will be
+(Font)              scaled to size 10.95pt on input line 12.
+) [3]
+\openout2 = `chapters/yetanotherfilename.aux'.
+
+ (./chapters/yetanotherfilename.tex) [4
+
+
+
+
+
+] (./lsp-skeleton.bbl) [5
+
+
+]
+(./lsp-skeleton.aux (./chapters/introduction.aux) (./chapters/filename.aux)
+(./chapters/anotherfilename.aux) (./chapters/yetanotherfilename.aux))
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 1.28pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 26623 strings out of 495021
+ 339376 string characters out of 1181035
+ 576019 words of memory out of 3000000
+ 29344 multiletter control sequences out of 15000+50000
+ 199290 words of font info for 164 fonts, out of 3000000 for 9000
+ 31 hyphenation exceptions out of 8191
+ 50i,13n,68p,859b,625s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf-texli
+ve/fonts/enc/dvips/libertine/xl-8x.enc}{/usr/share/texmf-texlive/fonts/enc/dvip
+s/libertine/xb-8x.enc}</usr/share/texmf-texlive/fonts/type1/public/libertine/fx
+br.pfb></usr/share/texmf-texlive/fonts/type1/public/libertine/fxlb.pfb></usr/sh
+are/texmf-texlive/fonts/type1/public/libertine/fxlr.pfb></usr/share/texmf-texli
+ve/fonts/type1/public/libertine/fxlri.pfb></usr/share/texmf-texlive/fonts/type1
+/urw/helvetic/uhvb8a.pfb>
+Output written on lsp-skeleton.pdf (15 pages, 441761 bytes).
+PDF statistics:
+ 167 PDF objects out of 1000 (max. 8388607)
+ 28 named destinations out of 1000 (max. 500000)
+ 58960 words of extra memory for PDF output out of 61914 (max. 10000000)
+
