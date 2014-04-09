@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langsci}[2014/03/03 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/03/03 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -15,10 +15,8 @@
 \newif\iflsDraft \lsDraftfalse
 \newif\iflsIndex \lsIndextrue
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         Option handling              %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Option handling:
 \RequirePackage{kvoptions}		% for key-value options
 \SetupKeyvalOptions{
 	family=langsci,
@@ -67,11 +65,8 @@
 \usepackage{etex}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%                  Page size and text area:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Page size and text area:
+ 
 \usepackage[ papersize={170mm,240mm}
 			,top=27.4mm % TODO nachgemessen, nach Vermassung eigentlich 30mm-16pt = 25.8mm
 			,inner=20mm, 
@@ -91,51 +86,21 @@
 \usepackage{pbox}   % boxes with maximum width
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%		 Fonts, language and graphics:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Fonts, language and graphics:
 
 \usepackage{ifxetex}
 \ifxetex
  	
   \usepackage{amssymb} % has to be loaded before other stuff			
   \usepackage{fontspec}
-  \newcommand{\fontpath}{./lsp-fonts/}
+  \newcommand{\fontpath}{./LSP/lsp-fonts/}
 			
-  \setsansfont[
-  			%Ligatures={TeX,Common},		% not supported by ttf
-  			Scale=MatchLowercase,
-  			Path=\fontpath,
-			BoldFont = Arimo-Bold_B.ttf ,
-			ItalicFont = Arimo-Italic_B.ttf ,				
-			BoldItalicFont = Arimo-BoldItalic_B.ttf 		
-			]
-			{Arimo_B.ttf}
-			
-  \setmonofont[
-  			Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-			BoldFont = FreeMonoBold_B.otf ,
-			SlantedFont = FreeMonoOblique_B.otf ,				
-			BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-			]
-			{FreeMono_B.otf}
-
-
-  \setmainfont[
-  			Ligatures={TeX,Common},
-  			Path=\fontpath,
-  			PunctuationSpace=0,							
-%  			Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-  			Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-			BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
-			ItalicFont = LinLibertine_RI_B.otf ,			
-			BoldItalicFont = LinLibertine_RZI_B.otf ]		% semi-bold
-			{LinLibertine_R_B.otf}			
+%   \setsansfont{Arimo_B.ttf}		
+%   \setmonofont{FreeMono_B.otf}
+%   \setmainfont{LinLibertine_R_B.otf}			
   
-%   \usepackage[libertine]{newtxmath}
-%   
+  \usepackage[libertine]{newtxmath}
+  
   \let\oldtabular\tabular	% number in tabulars
   \let\endoldtabular\endtabular
   \renewenvironment{tabular}{\normalfont\addfontfeatures{Numbers=Lining}\selectfont\oldtabular}{\endoldtabular}
@@ -182,7 +147,7 @@
   \newcommand{\lsSpineAuthorFont}{\fontsize{12pt}{14pt}\selectfont}
   \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{16pt}{14pt}\selectfont}
   
-%   \renewcommand{\bfseries}{\textsb}  	% bold -> semibold
+  \renewcommand{\bfseries}{\textsb}  	% bold -> semibold
 \fi
 
 \setkomafont{sectioning}{\normalcolor\bfseries}
@@ -191,13 +156,9 @@
 % ptm = times
 % phv = helvet
 % fxlj = libertine
- 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 			Colors:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Colors:
 
 \usepackage{xcolor}
 \definecolor{lsLightBlue}{cmyk}{0.6,0.05,0.05,0}
@@ -224,11 +185,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 		Special commands for authors:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Special commands for authors:
 
 % defaults:
 \newcommand{\lsBackBody}{Europan lingues es membres del sam familie. Lor separat existentie es un
@@ -252,11 +209,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %\def\@author{\@latex@warning@no@line{No \noexpand\author given}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%			 Series information:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Series information:
 
 \newcommand{\eotms}{eotms}
 \newcommand{\eotmsig}{eotmsig}
@@ -265,7 +218,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\tmnlp}{tmnlp}
 \newcommand{\nc}{nc}			%Niger Congo
 \newcommand{\lnls}{lnls}		%Lecture Notes in Language Sciences
-\newcommand{\labphon}{labphon}		%Studies in Laboratory Phonology
+\newcommand{\labphon}{labphon}%Studies in Laboratory Phonology
 \newcommand{\tdgi}{tdgi}		%Topics at the Discourse Grammar Interface
 \newcommand{\dummyseries}{dummyseries}
 \newcommand{\lsSeriesFontColor}{white}
@@ -316,11 +269,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
  	{\renewcommand{\lsSeriesColor}{black}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 % Header and footer:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \usepackage{datetime}
 \usepackage{scrpage2}
@@ -343,18 +292,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \pagestyle{scrheadings}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 % Citation:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \usepackage{natbib}
 \setlength{\bibsep}{0mm}
 % unified style sheet for linguistics journals
 % put directory in BST_INPUTS
 % http://celxj.org/downloads/unified.bst
-\bibliographystyle{unified} 
+\bibliographystyle{./LSP/lsp-bst/unified} 
 % This does not work ...
 %% \setcitestyle{
 %% notesep={: }, % 2002: 125
@@ -364,7 +309,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 % check what the unified people have to say on this.
 \bibpunct[: ]{(}{)}{;}{a}{}{,}
 % They do not say anything about citations in the running text.
-% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
+% As was shown in \citew{Meier2002} -> As was shown in Meier (2002), ...
 % This is what De Gruyter does:
 \let\citew=\citet
 % This is what Stefan did:
@@ -373,11 +318,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 		Indexes:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Indexes:
 
 \iflsIndex
 \usepackage{index}
@@ -438,7 +379,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\is}[1]{\if@noftnote%
 \index{#1}%
 \else%
-% irgendwie muss man ihn dazu bringen den Wert für footnote auch einzusetzen
+% irgendwie muss man ihn dazu bringen den Wert fÃ¼r footnote auch einzusetzen
 \index{#1|fn{*}}%
 %\indexftn{#1}{\value{footnotemark}}%
 \fi%
@@ -468,7 +409,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 }
 
 
-% \index[lan] für Einträge in separaten Index
+% \index[lan] fÃ¼r EintrÃ¤ge in separaten Index
 
 \newcommand{\il}[1]{%
 \if@noftnote%
@@ -490,11 +431,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 				Hyperref:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Hyperref:
 
 % Xelatex likes this:
 \usepackage[hyphens]{url}
@@ -519,13 +456,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 				Cover:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cover:
 
-
-\newcommand{\logopath}{./lsp-logos}
+\newcommand{\logopath}{./LSP/lsp-logos}
 \newcommand{\lsCoverFontColor}{white}
 \newcommand{\lsCoverBlockColor}{\lsSeriesColor}
 
@@ -690,12 +623,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \color{black}
 \lsInsideFont
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 				Impressum:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Impressum:
 \ifx\lsOutput\lsOutputInprep{}
 \else{\lsImpressum}
 \fi
@@ -730,27 +658,19 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 				Series history:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Series history:
 
 \newcommand{\lsSeriesHistory}{
 \color{black}
 \raggedright\lsCoverSeriesHistoryFont
 
-\IfFileExists{./lsp-seriesinfo/\lsSeries-info.tex}{\input{./lsp-seriesinfo/\lsSeries-info}}{
-  Series information: ./lsp-seriesinfo/\lsSeries-info.tex not found!} 
+\IfFileExists{./LSP/lsp-seriesinfo/\lsSeries-info.tex}{\input{./LSP/lsp-seriesinfo/\lsSeries-info}}{
+  Series information: ./LSP/lsp-seriesinfo/\lsSeries-info.tex not found!} 
 
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 			Impressum (bis?)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Impressum:
 
 \newcommand{\lsImpressum}{
 \renewcommand{\newlineCover}{}
@@ -774,7 +694,7 @@ Habelschwerdter Allee 45\\
 This title can be downloaded at:\\
 \url{\lsURL}
 
-© \@author, \the\year 
+Â© \the\year, \@author 
 
 \newcommand{\ccby}{CC-BY} 
 \ifx\lsCopyright\ccby 
@@ -823,11 +743,7 @@ guarantee the accuracy of such information thereafter.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%		 Dedication:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Dedication:
 
 \newcommand{\lsDedication}{
 	\vspace*{.2\textheight}	
@@ -841,11 +757,7 @@ guarantee the accuracy of such information thereafter.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 			footnotes:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% footnotes:
 
 \ifxetex
 \addtokomafont{footnote}{\addfontfeatures{Numbers=Lining}} 			% numbers in footnotes
@@ -870,11 +782,7 @@ guarantee the accuracy of such information thereafter.
 
 %\deffootnote{1.5em}{1em}{% 
 %    \makebox[1.5em][l]{\thefootnotemark}}
-
-%% % this should be removed here, temporary
-%% \newif\if@noftnote\@noftnotetrue
-%% \newif\if@xrec\@xrecfalse
-%% \@definecounter{fnx}
+ 
 
 %% %%%% adapted from latex.tex to get examples in footnotes right
 %% \long\def\@footnotetext#1{%
@@ -891,11 +799,7 @@ guarantee the accuracy of such information thereafter.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 			subsubsubsection:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% subsubsubsection:
 
 \setcounter{secnumdepth}{4} % und (f"urs Inhaltsverzeichnis)
 % \setcounter{tocdepth}{4} (oder so) angegeben werden.
@@ -911,48 +815,11 @@ guarantee the accuracy of such information thereafter.
 %
 \let\subsubsubsubsectionmark\@gobble
 % needed for hyperref
-\def\toclevel@subsubsubsection{4}
-%    
-
-% bidi has to be loaded in the individual documents
-%\ifxetex
-%\usepackage{bidi} 		% wants to be placed below hyperref, natbib, graphicx, ...
-%\fi
+\def\toclevel@subsubsubsection{4} 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 		miscellaneous:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\usepackage[figuresright]{rotating}
-
-% gets rid of the warnings:
-% Failed to convert input string to UTF16
-% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
-\hypersetup{unicode,pdfencoding=auto}
-
-
-% this is required by authorindex
-\newif\ifshowindex \showindexfalse
-
-\usepackage{authorindex}
-
-
-% \usepackage{./LSP/lsp-styles/lsp-eng-hyp} % this is very idiosyncratic and should be removed. Not many people will want to refer to Prze-piór-kow-ski
-
-
-% % The following allows for a quick reference to following or preceeding examples (\mex{1}) or
-% % (\mex{0}) but also (\mex{-1})
-% % taken from covington.sty (check)
-% \newcounter{lsptempcnt}
-% 
-% \newcommand{\mex}[1]{\setcounter{lsptempcnt}{\value{equation}}%
-% \addtocounter{lsptempcnt}{#1}%
-% \arabic{lsptempcnt}}% 			This has nothing to do in the cls file, but should be moved to an individual package
+% quotes and quotations
 
 % quotes are indented at one side only.
 \renewenvironment{quote}
@@ -968,18 +835,26 @@ guarantee the accuracy of such information thereafter.
                         %\rightmargin   \leftmargin
                         \parsep        \z@ \@plus\p@}%
                 \item\relax}
-               {\endlist}
-
-% \usepackage[english]{varioref} %This has nothing to do in the cls file, but should be moved to an individual package
+               {\endlist} 
 
 
 
-% % usefull commands for glossings:
-% \newlength{\LSPTmp}
-% % a) hspace over width of something without showing it
-% \newcommand*{\hspaceThis}[1]{\settowidth{\LSPTmp}{#1}\hspace*{\LSPTmp}}
-% % This has nothing to do in the cls file, but should be moved to an individual package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% miscellaneous:
 
+
+\usepackage[figuresright]{rotating}
+
+% gets rid of the warnings:
+% Failed to convert input string to UTF16
+% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
+\hypersetup{unicode,pdfencoding=auto}
+
+
+% this is required by authorindex
+\newif\ifshowindex \showindexfalse
+
+\usepackage{authorindex}
 
 \endinput
 
