@@ -99,7 +99,7 @@
 %   \setmonofont{FreeMono_B.otf}
 %   \setmainfont{LinLibertine_R_B.otf}			
   
-  \usepackage[libertine]{newtxmath}
+%  \usepackage[libertine]{newtxmath}
   
   \let\oldtabular\tabular	% number in tabulars
   \let\endoldtabular\endtabular
