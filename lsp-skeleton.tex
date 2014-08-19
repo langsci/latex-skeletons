@@ -12,13 +12,13 @@
 
 \documentclass[number=??                 %replace by your number in series
                 ,series=dummyseries,     % Choose series abbreviation as appropriate
-                ,isbn=xxx-x-xxxxxx-xx-x, %add your isbn here
+                ,isbn=978-3-xxxxxx-xx-x, %add your isbn here
                 ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
-	        ,output=long             % long|short|inprep              
+	        ,output=short             % long|short|inprep              
 	        %,blackandwhite
 	        %,smallfont
 	        ,draftmode  
-		  ]{langsci}    
+		  ]{LSP/langsci}    
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -62,12 +62,10 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include{chapters/introduction}  %add a percentage sign in front of the line to exclude this chapter from book
-\include{chapters/filename}
-\include{chapters/anotherfilename}
-% \include{chapters/sleepingfilename} %uncomment to include this file in your book
-\include{chapters/yetanotherfilename} 
-%you can add additional chapters below if you want to 
+\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
+\include{chapters/02}
+\include{chapters/03}
+% copy the lines above and adapt as necessary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -75,7 +73,7 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
-\bibliography{mybibliography.bib} %change to the name of your bib file
+\bibliography{localbibliography.bib} %change to the name of your bib file
 \end{document} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
