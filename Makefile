@@ -1,5 +1,5 @@
 # specify your main target here:
-all: lsp-skeleton.pdf
+all: lsp-edskeleton.pdf
 
 # specify teh main file and all the files that you are including
 SOURCE= chapters/01.tex chapters/02.tex chapters/03.tex\
