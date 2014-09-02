@@ -26,6 +26,7 @@ LSP/langsci.cls
 
 cover: lsp-skeleton.pdf
 	convert lsp-skeleton.pdf\[0\] -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
+	display cover.png
 
 clean:
 	rm -f *.bak *~ *.log *.blg *.aux *.toc *.cut *.out *.tmp *.tpm *.adx *.adx.hyp *.idx *.ilg \
