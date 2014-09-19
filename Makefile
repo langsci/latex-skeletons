@@ -28,6 +28,14 @@ cover: lsp-skeleton.pdf
 	convert lsp-skeleton.pdf\[0\] -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
 	display cover.png
 
+bodcover: lsp-skeleton.pdf
+	pdftk A=lsp-skeleton.pdf cat  A1  output front.pdf 
+	pdftk A=lsp-skeleton.pdf cat A2 output back.pdf 
+	pdftk A=lsp-skeleton.pdf cat A3 output spine.pdf
+	xelatex cover.tex
+
+ 
+
 clean:
 	rm -f *.bak *~ *.log *.blg *.aux *.toc *.cut *.out *.tmp *.tpm *.adx *.adx.hyp *.idx *.ilg \
 	*.and *.glg *.glo *.gls *.wdx *.wnd *.wrd *.wdv *.ldx *.lnd *.rdx *.rnd *.xdv 

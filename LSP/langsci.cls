@@ -1,11 +1,11 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/08/19 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/09/16 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
 \newcommand{\lsp}{Language Science Press\xspace}
 \newcommand{\lsSeriesNumber}{??}
-\newcommand{\lsISBN}{????????}
+\newcommand{\lsISBN}{000-0-000000-00-0}
 \newcommand{\lsURL}{http://langsci-press.org/catalog}
 \newcommand{\lsSeries}{eotms}
 \newcommand{\lsSpineBreadth}{20mm}
@@ -30,7 +30,7 @@
 \DeclareStringOption{number}[??]
 	\define@key{langsci}{number}{%
 		\renewcommand{\lsSeriesNumber}{#1}}
-\DeclareStringOption{isbn}[????????]
+\DeclareStringOption{isbn}[000-0-000000-00-0]
 	\define@key{langsci}{isbn}{%
 		\renewcommand{\lsISBN}{#1}}
 \DeclareStringOption{url}[http://langsci-press.org/catalog]
@@ -116,6 +116,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage{xstring} 	% for manipulating strings
 \usepackage{ifxetex}
 \ifxetex
 	
@@ -215,7 +216,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage[table]{xcolor}
+\usepackage{xcolor}
 \definecolor{lsLightBlue}{cmyk}{0.6,0.05,0.05,0}
 \definecolor{lsMidBlue}{cmyk}{0.75,0.15,0,0}
 \definecolor{lsMidDarkBlue}{cmyk}{0.9,0.4,0.05,0}
@@ -304,48 +305,56 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsSeriesFontColor}{white}
 
 \ifx\lsSeries\eotms
-	\newcommand{\lsSeriesTitle}{Empirically Oriented Theoretical \\ Morphology and Syntax, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Empirically Oriented Theoretical \\ Morphology and Syntax~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidBlue}
 \fi
 \ifx\lsSeries\eotmsig
-	\newcommand{\lsSeriesTitle}{Implemented Grammars, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Implemented Grammars~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidBlue}
 \fi
 \ifx\lsSeries\sidl
-	\newcommand{\lsSeriesTitle}{Studies in Diversity Linguistics, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Studies in Diversity Linguistics~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRichGreen}
 \fi
 \ifx\lsSeries\algad
-	\newcommand{\lsSeriesTitle}{African Language Grammars\\ and Dictionaries, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{African Language Grammars\\ and Dictionaries~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsLightOrange}
 \fi
+\ifx\lsSeries\algad
+	\newcommand{\lsSeriesTitle}{Studies in Caribbean Languages~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsDarkOrange}
+\fi
 \ifx\lsSeries\tmnlp
-	\newcommand{\lsSeriesTitle}{Translation and Multilingual Natural\\ Language Processing, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Translation and Multilingual Natural\\ Language Processing~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkBlue}
 \fi
 \ifx\lsSeries\lnls
-	\newcommand{\lsSeriesTitle}{Lecture Notes in Language Sciences, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Lecture Notes in Language Sciences~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsYellow}
 \fi	
 \ifx\lsSeries\nc
-	\newcommand{\lsSeriesTitle}{Monographs on Comparative Niger-Congo, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Monographs on Comparative Niger-Congo~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRed}
 \fi	
 \ifx\lsSeries\labphon
-	\newcommand{\lsSeriesTitle}{Studies in Laboratory Phonology, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Studies in Laboratory Phonology~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsLightWine}
 \fi	
 \ifx\lsSeries\tdgi
-	\newcommand{\lsSeriesTitle}{Topics at the Discourse Grammar Interface, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Topics at the Discourse Grammar Interface~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidDarkBlue}
 \fi	
 \ifx\lsSeries\cmle
-	\newcommand{\lsSeriesTitle}{Computational Models of Language Evolution, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Computational Models of Language Evolution~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsNightBlue}
 \fi	
 \ifx\lsSeries\cfls
-	\newcommand{\lsSeriesTitle}{Conceptual Foundation of the Language Sciences, No \lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Conceptual Foundations of Language Science~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsNightGreen}
+\fi	
+\ifx\lsSeries\cfls
+	\newcommand{\lsSeriesTitle}{Language Variation~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsDarkWine}
 \fi	
 \ifx\lsSeries\dummyseries
 	\newcommand{\lsSeriesTitle}{~}
@@ -404,7 +413,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		eprint=false,
 		backend=\lsBiblatexBackend
 		]{biblatex}
-	\renewcommand{\postnotedelim}{: $\!$}%
+	\renewcommand{\postnotedelim}{: }%
+	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
 	\DeclareFieldFormat{postnote}{#1}%
 	%\renewcommand{\nameyeardelim}{ }%		
 \else	%BibTeX
@@ -439,6 +449,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \usepackage{floatrow}					% For adjusting the position of the caption (default is below).
 \floatsetup[table]{capposition=top} 	% As for tables, the caption appears above.
+
+
+\usepackage{booktabs} %for nicer lines
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -590,10 +603,17 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%\usepackage[ISBN=\lsISBN,SC4]{ean13isbn}	% for generating bar codes; remove this?
+\usepackage{pst-barcode}					% for generating bar codes
 \newcommand{\logopath}{./LSP/lsp-logos}
 \newcommand{\lsCoverFontColor}{white}
 \newcommand{\lsCoverBlockColor}{\lsSeriesColor}
 \newcommand{\lsEditorPrefix}{}
+\newcommand{\lsEditorPostfixSpine}{}
+% \edef\authorTMP{\@author}
+% \IfSubStr{\authorTMP}{}{}{}
+%\IfSubStr{\author}{,}{\renewcommand{\lsEditorPostfixSpine}{(eds.)}}{}    
+%\IfSubStr{\@author}{\&}{\renewcommand{\lsEditorPostfixSpine}{(eds.)}}{\renewcommand{\lsEditorPostfixSpine}{(ed.)}}      
 
 \newcommand{\lsCoverBlock}{
 	\begin{textblock}{155}(7.6,7.5)
@@ -670,17 +690,22 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\lsBackBody
 	\end{textblock}
 
-	\begin{textblock}{40}(115,212.5)
-	\lsBackBodyFont
-	\sffamily
-	ISBN \lsISBN			
+	\begin{textblock}{40}(105,200)
+	\lsBackBodyFont\sffamily
+	\colorbox{white}{%
+	\begin{pspicture}(0,0)(4.1,1in)
+	\psbarcode[transx=0.4,transy=0.3]{\lsISBN}{includetext height=0.7}{isbn}
+	\end{pspicture}
+	%\EANisbn%			% remove this?
+	%{\EAN \lsISBN }  	% bar code without isbn line
+	}%	
 	\end{textblock}}
 
 \newcommand{\lsSpine}{			% Book spine
 	\renewcommand{\newlineSpine}{\\}
 	\renewcommand{\newlineCover}{}
 	\begin{textblock}{40}(65,0)
-	\rotatebox{90}{\color{black}\fbox{\begin{minipage}[c][\lsSpineBreadth][c]{\paperheight}
+	\rotatebox{90}{\color{black}\begin{minipage}[c][\lsSpineBreadth][c]{\paperheight}
 		\color{\lsSeriesColor}
 		\hspace{7.5mm}
 		\IfFileExists{\logopath/langsci_spinelogo_nocolor.pdf}{$\vcenter{\hbox{\includegraphics[angle=-90,origin=c]{\logopath/langsci_spinelogo_nocolor.pdf}}}$}{logo}
@@ -690,7 +715,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\hspace{13mm}
 		{\lsSpineAuthorFont 
 			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\@author}}}
-	\end{minipage}}} 
+	\end{minipage}} 
 	\end{textblock}}
 
 
@@ -1134,9 +1159,8 @@ guarantee the accuracy of such information thereafter.
 % gets rid of the warnings:
 % Failed to convert input string to UTF16
 % http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
-\hypersetup{unicode,pdfencoding=auto}
-
-
+\hypersetup{unicode,pdfencoding=auto,bookmarksopenlevel=0}
+ 
 % this is required by authorindex
 \newif\ifshowindex \showindexfalse
 
