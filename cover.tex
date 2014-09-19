@@ -1,5 +1,6 @@
 \documentclass[a3paper,10pt,landscape]{article}
 \usepackage{graphicx}
+\usepackage{tabularx}
 \usepackage{array}
 \usepackage{calc}
 
@@ -19,6 +20,7 @@
 
 \newlength{\spinewidth}
 \setlength{\spinewidth}{21mm}  
+% \setlength{\spinewidth}{.07*\pagecount}  
 
 \newlength{\totalwidth}
 \setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
@@ -32,9 +34,9 @@
 \begin{document}
 \pagestyle{empty}
 \setlength{\tabcolsep}{0mm}
-\begin{tabular}{p{.5\seitenbreite+.5\spinewidth}p{.5\seitenbreite}r}
+\begin{tabularx}{\totalwidth}{p{.5\seitenbreite+.5\spinewidth}p{.5\seitenbreite}r}
 \includegraphics{back}&
 \includegraphics{spine}&
 \includegraphics{front}
-\end{tabular} 
+\end{tabularx} 
 \end{document}
