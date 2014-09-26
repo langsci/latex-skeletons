@@ -1,2 +1,15 @@
-\chapter{Change title for chapter 1 in chapters/01.tex}
-Add content in chapters/01.tex
+\documentclass[output=paper]{LSP/langsci}
+\author{Change author in chapters/01.tex}
+\title{Change title in chapters/01.tex}
+\epigram{Change epigram in chapters/01.tex or remove it there }
+\abstract{Change the  abstract in chapters/01.tex \lipsum[1]}
+\maketitle
+
+\begin{document}
+
+\section{Introduction}
+ \lipsum
+
+\printbibliography[heading=subbibliography,notkeyword=this]
+
+\end{document}

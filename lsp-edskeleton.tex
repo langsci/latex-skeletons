@@ -12,18 +12,17 @@
 
 \documentclass[number=??                 %replace by your number in series
                 ,series=dummyseries,     % Choose series abbreviation as appropriate
-                ,isbn=978-3-xxxxxx-xx-x, %add your isbn here
+                ,isbn=978-3-000000-00-0, %add your isbn here
                 ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
 	        ,output=short             % long|short|inprep              
 	        %,blackandwhite
 	        %,smallfont
-	        ,draftmode  
-		  ]{LSP/langsci}    
-  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%          additional packages                 %%%
-%%%                                              %%%
+	        ,collection
+	        ,collectionchapter
+	        ,collectiontoclongg
+% 	        ,biblatexbackend=bibtex
+ 	        ,biblatex  
+		  ]{LSP/langsci}                               %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % put all additional commands you need in the 
@@ -61,10 +60,11 @@
 %%%             Chapters                         %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
 
-\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
-\include{chapters/02}
-\include{chapters/03}
+\includepaper{chapters/01} %add a percentage sign in front of the line to exclude this chapter from book
+\includepaper{chapters/02} 
+\includepaper{chapters/03} 
 % copy the lines above and adapt as necessary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,8 +72,28 @@
 %%%             Backmatter                       %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\backmatter
-\bibliography{localbibliography.bib} %change to the name of your bib file
+\backmatter 
+
+
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{chapter}{Indexes} 
+
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{section}{Name index}
+\ohead{Name index} 
+\printindex
+  
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{section}{Language index}
+\ohead{Language index} 
+\printindex[lan] 
+  
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{section}{Subject index}
+\ohead{Subject index} 
+\printindex[sbj]
+
+
 \end{document} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
