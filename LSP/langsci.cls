@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/09/16 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/09/21 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -19,7 +19,6 @@
 \newif\iflsCollection \lsCollectionfalse
 \newif\iflsCollectionChapter \lsCollectionChapterfalse
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
-
 
 
 % Option handling:
@@ -118,64 +117,53 @@
 
 \usepackage{xstring} 	% for manipulating strings
 \usepackage{ifxetex}
-\ifxetex
+\ifxetex\else\ClassError{LSP/langsci}{Please use XeLaTeX!}{}\fi
 	
-	\usepackage{amssymb} % has to be loaded before other stuff			
-	\usepackage{fontspec}
-	\newcommand{\fontpath}{./LSP/lsp-fonts/}
+\usepackage{amssymb} % has to be loaded before other stuff			
+\usepackage{fontspec}
+\newcommand{\fontpath}{./LSP/lsp-fonts/}
 
-	\setsansfont[
-		%Ligatures={TeX,Common},		% not supported by ttf
-		Scale=MatchLowercase,
-		Path=\fontpath,
-		BoldFont = Arimo-Bold_B.ttf ,
-		ItalicFont = Arimo-Italic_B.ttf ,				
-		BoldItalicFont = Arimo-BoldItalic_B.ttf 		
-		]{Arimo_B.ttf}
-			
-	\setmonofont[
-		Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-		BoldFont = FreeMonoBold_B.otf ,
-		SlantedFont = FreeMonoOblique_B.otf ,				
-		BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-		]{FreeMono_B.otf}
+\setsansfont[
+	%Ligatures={TeX,Common},		% not supported by ttf
+	Scale=MatchLowercase,
+	Path=\fontpath,
+	BoldFont = Arimo-Bold_B.ttf ,
+	ItalicFont = Arimo-Italic_B.ttf ,				
+	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
+	]{Arimo_B.ttf}
+		
+\setmonofont[
+	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+	BoldFont = FreeMonoBold_B.otf ,
+	SlantedFont = FreeMonoOblique_B.otf ,				
+	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+	]{FreeMono_B.otf}
 
 
-	\setmainfont[
-		Ligatures={TeX,Common},
-		Path=\fontpath,
-		PunctuationSpace=0,							
-		%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-		Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-		BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
-		ItalicFont = LinLibertine_RI_B.otf ,			
-		BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
-		]{LinLibertine_R_B.otf}			
+\setmainfont[
+	Ligatures={TeX,Common},
+	Path=\fontpath,
+	PunctuationSpace=0,							
+	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
+	ItalicFont = LinLibertine_RI_B.otf ,			
+	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
+	]{LinLibertine_R_B.otf}			
   
-  \usepackage[libertine]{newtxmath}
-  
-  \let\oldtabular\tabular	% number in tabulars
-  \let\endoldtabular\endtabular
-  \renewenvironment{tabular}{\normalfont\addfontfeatures{Numbers=Lining}\selectfont\oldtabular}{\endoldtabular}
+\usepackage[libertine]{newtxmath}
+
+\let\oldtabular\tabular	% number in tabulars
+\let\endoldtabular\endtabular
+\renewenvironment{tabular}{\normalfont\addfontfeatures{Numbers=Lining}\selectfont\oldtabular}{\endoldtabular}
  
   %\usepackage{polyglossia}		% TODO remove this?
   %\setdefaultlanguage{british}
-\else
-  \usepackage[T1]{fontenc}
-  \usepackage{ucs}  				% extended UTF8 support TODO remove this?
-  \usepackage[utf8x]{inputenc}
-  \usepackage{libertine}			% TODO 
-  
-  %\usepackage[british]{babel}   	% TODO remove this?
-\fi
 
 %\frenchspacing			
 \usepackage[final]{microtype}
 \usepackage{graphicx}
 
-
-
-\ifxetex
   \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
   \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
   \newcommand{\lsCoverAuthorFont}{\fontsize{25pt}{12.5mm}\selectfont}
@@ -187,28 +175,8 @@
   \newcommand{\lsBackBodyFont}{\lsInsideFont}
   \newcommand{\lsSpineAuthorFont}{\fontsize{12pt}{14pt}\selectfont}
   \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{16pt}{14pt}\selectfont}
-\else 	% PDFLaTeX:
-  \newcommand{\lsCoverTitleFont}[1]{\sffamily\fontfamily{fxlj}\fontsize{52pt}{16.75mm}\selectfont #1}
-  \newcommand{\lsCoverSubTitleFont}{\sffamily\fontfamily{fxlj}\fontsize{25pt}{10mm}\selectfont}
-  \newcommand{\lsCoverAuthorFont}{\fontencoding{T1}\fontfamily{fxlj}\fontsize{25pt}{12.5mm}\selectfont}
-  \newcommand{\lsCoverSeriesFont}{\fontencoding{T1}\fontfamily{phv}\fontseries{sc}\fontsize{14pt}{7.5mm}\selectfont}
-  \newcommand{\lsCoverSeriesHistoryFont}{\fontencoding{T1}\fontfamily{phv}\fontseries{b}\fontsize{10pt}{5mm}\selectfont}
-  \newcommand{\lsInsideFont}{\fontencoding{T1}\fontfamily{fxlj}\selectfont}
-  \newcommand{\lsDedicationFont}{\fontsize{15pt}{10mm}\selectfont}
-  \newcommand{\lsBackTitleFont}{\lsCoverAuthorFont}
-  \newcommand{\lsBackBodyFont}{\lsInsideFont}
-  \newcommand{\lsSpineAuthorFont}{\fontsize{12pt}{14pt}\selectfont}
-  \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{16pt}{14pt}\selectfont}
-  
-  \renewcommand{\bfseries}{\textsb}  	% bold -> semibold
-\fi
 
 \setkomafont{sectioning}{\normalcolor\bfseries}
-
-% qtm = tgtermes
-% ptm = times
-% phv = helvet
-% fxlj = libertine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -271,7 +239,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 
 % for papers of collections:
-\newcommand{\lsCollectionPaperAbstract}{Put abstract here.}
+\newcommand{\lsCollectionPaperAbstract}{Put abstract here with \string\abstract.}
 \newcommand{\abstract}[1]{\renewcommand{\lsCollectionPaperAbstract}{#1}}
 
 \def\epigram#1{\gdef\@epigram{#1}}			% needs to be defined this way to check emptiness
@@ -755,11 +723,12 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}}%
 	\hspace{0.8em}%
 	\parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText}}
-\newcommand{\lsCollectionPaperCitationText}{\fullcite{this}}
+\newcommand{\lsCollectionPaperCitationText}{\string\lsCollectionPaperCitationText.}
 \newcommand{\lsPaper}{
 	\renewcommand{\maketitle}{
 		\addtocounter{chapter}{1}
 		\addchap*{\lsCollectionPaperTitle}
+		\global\edef\lsCollectionPaperFirstPage{\thepage}	% for citation in footer
 		\onlyAuthor
 		\renewcommand{\newlineCover}{}
 		\renewcommand{\newlineTOC}{\\}
@@ -776,6 +745,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\small\lsCollectionPaperAbstract
 		\end{quote}
 	}	
+
 	\renewcommand*{\thesection}{\arabic{section}}
 	\setcounter{section}{0}
 	\setcounter{footnote}{0}
@@ -1075,12 +1045,20 @@ guarantee the accuracy of such information thereafter.
 
 \iflsCollection
 	\iflsBiblatex\else
-		\ClassError{LSP/langsci}{Collection option not compatible with plain BibTeX. Please use biblatex option}
+		\ClassError{LSP/langsci}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
 	\fi
 	
 \renewcommand{\lsEditorPrefix}{{\LARGE Edited by}\\}
+\AtBeginDocument{	% for the citation in the footer  
+	\edef\lsCollectionTitle{\@title}		% \edef immediately expands \@title
+	\edef\lsCollectionEditor{\@author}
+	\addbibresource{collection_tmp.bib}
+	\newwrite\tempfile						% open temporary bib file
+	\immediate\openout\tempfile=collection_tmp.bib
+}
+\AtEndDocument{\immediate\closeout\tempfile}% close temporary bib file
 
-% customize \tableofcontents
+%% customize \tableofcontents
 \renewcommand{\@dotsep}{2.5}		% space between dots
 \renewcommand{\@tocrmarg}{1.5em}	% right margin for leader 
 \renewcommand{\@pnumwidth}{1.5em}	% width of page numbers
@@ -1095,24 +1073,51 @@ guarantee the accuracy of such information thereafter.
 \counterwithout{figure}{chapter}
 \counterwithout{table}{chapter}
 
-% Modified code from:
-% http://pastcounts.wordpress.com/2010/12/20/how-to-construct-a-collection-of-articles-with-latex/
+%% Modified code from:
+%% http://pastcounts.wordpress.com/2010/12/20/how-to-construct-a-collection-of-articles-with-latex/
 \newenvironment{collectionpaper}{
-\renewcommand{\documentclass}[2][]{}%
-\renewcommand{\usepackage}[2][]{}%
-\renewenvironment{document}{\begingroup}{\endgroup}%
+	\renewcommand{\documentclass}[2][]{}%
+	\renewcommand{\usepackage}[2][]{}%
+	\renewenvironment{document}{\begingroup}{\endgroup}%
 
-\renewcommand{\title}[1]{\renewcommand{\@title}{##1}}
-\renewcommand{\author}[1]{\renewcommand{\@author}{##1}}
-%\renewcommand{\thanks}[1]{\symbolfootnote[1]{##1}}
-\lsPaper
-}
-{}
+	\renewcommand{\title}[1]{\renewcommand{\@title}{##1}}
+	\renewcommand{\author}[1]{\renewcommand{\@author}{##1}}
+	%\renewcommand{\thanks}[1]{\symbolfootnote[1]{##1}}
+	\lsPaper
+	}
+	{}
 
 \newcommand{\includepaper}[1]{
 	\begin{collectionpaper}
-	\begin{refsection} 
+	\begin{refsection}
+
+	\DeclareCiteCommand{\fullciteFooter}
+		{\defcounter{maxnames}{\blx@maxbibnames}%
+		  \usebibmacro{prenote}}
+		{\usedriver
+		   {\DeclareNameAlias{sortname}{default}}
+		   {\thefield{entrytype}}}
+		{\multicitedelim}
+		{\usebibmacro{postnote}}
+	\renewcommand{\lsCollectionPaperCitationText}{\fullciteFooter{#1}} 
+	
 	\include{#1}%
+	\edef\lsCollectionPaperLastPage{\thepage}	% \lsCollectionPaperFirstPage is defined in \lsPaper
+
+	%%% for citation in footer
+	%% preprocessing of author/editor names
+	\onlyAuthor		
+	\renewcommand{\newlineCover}{}
+	\renewcommand{\newlineSpine}{}
+	\renewcommand{\newlineTOC}{}
+	\StrSubstitute{\@author}{,}{ and }[\authorTemp]
+	\StrSubstitute{\authorTemp}{\&}{ and }[\authorTemp]
+	\StrSubstitute{\lsCollectionEditor}{,}{ and }[\editorTemp]
+	\StrSubstitute{\editorTemp}{\&}{ and }[\editorTemp]
+
+	%% write bib entry to file
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=2014,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
+
 	%\printbibliography[heading=subbibliography,notkeyword=this]  
 	\end{refsection}
 	\end{collectionpaper}}
