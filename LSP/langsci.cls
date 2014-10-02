@@ -1143,7 +1143,7 @@ guarantee the accuracy of such information thereafter.
 \usepackage{authorindex}
 
 
-\usepackage{./LSP/lsp-styles/lsp-eng-hyp}
+\usepackage{./LSP/lsp-styles/lsp-makros}
 
 
 % The following allows for a quick reference to following or preceeding examples (\mex{1}) or
