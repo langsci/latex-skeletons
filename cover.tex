@@ -5,40 +5,52 @@
 \usepackage{calc}
 
 \newlength{\seitenbreite}
-\setlength{\seitenbreite}{170mm}
+\setlength{\seitenbreite}{169.92mm}
 \newlength{\seitenhoehe}
 \setlength{\seitenhoehe}{240mm}
 
 \newlength{\beschnittoben}
-\setlength{\beschnittoben}{20mm}
+\setlength{\beschnittoben}{0mm}
+% \setlength{\beschnittoben}{2mm} % Für Amazon
 \newlength{\beschnittunten}
-\setlength{\beschnittunten}{20mm}
+\setlength{\beschnittunten}{2mm}
+% \setlength{\beschnittunten}{2mm} % Für Amazon
 \newlength{\beschnittrechts}
-\setlength{\beschnittrechts}{22mm}
+\setlength{\beschnittrechts}{0mm}
 \newlength{\beschnittlinks}
-\setlength{\beschnittlinks}{22mm} 
+\setlength{\beschnittlinks}{0mm} 
 
 \newlength{\spinewidth}
-\setlength{\spinewidth}{21mm}  
+\setlength{\spinewidth}{20.87mm}  
 % \setlength{\spinewidth}{2mm+.07*\pagecount}  
 
 \newlength{\totalwidth}
 \setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
-\setlength{\totalwidth}{398.4mm}
+% \setlength{\totalwidth}{360.68mm}
 
 \newlength{\totalheight}
 \setlength{\totalheight}{\beschnittoben+\beschnittunten+\seitenhoehe}
-\setlength{\totalheight}{280mm}
+% \setlength{\totalheight}{244mm}
 
-\usepackage[paperheight=280mm,paperwidth=398.4mm,left=\beschnittlinks,right=\beschnittrechts,top=\beschnittoben,bottom=\beschnittunten]{geometry}
+\usepackage[paperheight=\totalheight%
+	    ,paperwidth=\totalwidth%
+	    ,left=\beschnittlinks%
+	    ,right=\beschnittrechts%
+	    ,top=\beschnittoben%
+	    ,bottom=\beschnittunten]{geometry}
 
 \begin{document}
 \pagestyle{empty}
 \setlength{\tabcolsep}{0mm}
 \centering
-\begin{tabularx}{\totalwidth}{p{.5\seitenbreite+.5\spinewidth}p{.5\seitenbreite}r}
-\includegraphics{back}&
-\includegraphics{spine}&
+% we use a three-column table to position the cover graphics
+% I do not understand how to correctly position the spine in the center
+% there must be a better way for centering the spine graphics than this
+\begin{tabularx}{\totalwidth}{p{.5\seitenbreite+.8\spinewidth}p{.5\seitenbreite+.20\spinewidth}p{\seitenbreite}}
+\includegraphics{back}
+& 
+\includegraphics{spine} 
+&
 \includegraphics{front}
 \end{tabularx} 
 \end{document}
