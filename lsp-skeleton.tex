@@ -10,15 +10,17 @@
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
-\documentclass[number=??                 %replace by your number in series
-                ,series=dummyseries,     % Choose series abbreviation as appropriate
+\documentclass[number=2                 %replace by your number in series
+                ,series=lnls,     % Choose series abbreviation as appropriate
                 ,isbn=978-3-000000-00-0, %add your isbn here
                 ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
-	        ,output=long             % long|short|inprep              
+	        ,output=short             % long|short|inprep              
 	        %,blackandwhite
-	        %,smallfont
-% 	        ,draftmode  
+		,smallfont
+ 	        ,draftmode  
+		,biblatex
 		  ]{LSP/langsci}    
+\bibliography{localbibliography}
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -75,7 +77,7 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
-\bibliography{localbibliography.bib} %change to the name of your bib file
+\printbibliography %change to the name of your bib file
 \clearpage
    
 \addcontentsline{toc}{chapter}{Index} 
@@ -83,7 +85,7 @@
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Name index}
 \ohead{Name index} 
-\printindex[aut]
+\printindex 
   
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Language index}
@@ -93,7 +95,7 @@
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Subject index}
 \ohead{Subject index} 
-\printindex
+\printindex[sbj]
 
 \end{document} 
 
