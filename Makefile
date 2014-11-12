@@ -10,6 +10,7 @@ LSP/langsci.cls
 	xelatex -no-pdf lsp-skeleton 
 	bibtex -min-crossrefs=200 lsp-skeleton
 	xelatex  -no-pdf lsp-skeleton
+	sed -i s/.*\\emph.*// lsp-skeleton.adx
 	makeindex -o lsp-skeleton.and lsp-skeleton.adx
 	makeindex -o lsp-skeleton.lnd lsp-skeleton.ldx
 	makeindex -o lsp-skeleton.snd lsp-skeleton.sdx
