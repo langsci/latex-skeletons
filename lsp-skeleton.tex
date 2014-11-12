@@ -10,17 +10,16 @@
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
-\documentclass[number=2                 %replace by your number in series
+\documentclass[number=??                 %replace by your number in series
                 ,series=dummyseries,     % Choose series abbreviation as appropriate
                 ,isbn=978-3-000000-00-0, %add your isbn here
                 ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
-	        ,output=short             % long|short|inprep              
+	        ,output=long             % long|short|inprep              
 	        %,blackandwhite
-		,smallfont
- 	        ,draftmode  
+% 		,smallfont
+%  	        ,draftmode  
 		,biblatex
 		  ]{LSP/langsci}    
-\bibliography{localbibliography}
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -36,7 +35,8 @@
 \usepackage{localpackages}
 \usepackage{localhyphenation}
 \usepackage{localcommands}
-
+\usepackage{authorindex}
+\bibliography{localbibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             BEGIN DOCUMENT                   %%%
@@ -70,6 +70,7 @@
 \include{chapters/02}
 \include{chapters/03}
 % copy the lines above and adapt as necessary
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -77,6 +78,8 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{chapter}{List of references}
 \printbibliography %change to the name of your bib file
 \clearpage
    

@@ -10,16 +10,10 @@ LSP/langsci.cls
 	xelatex -no-pdf lsp-skeleton 
 	bibtex -min-crossrefs=200 lsp-skeleton
 	xelatex  -no-pdf lsp-skeleton
-	makeindex -o lsp-skeleton.ind lsp-skeleton.idx
+	sed -i s/.*\\emph.*// lsp-skeleton.adx
+	makeindex -o lsp-skeleton.and lsp-skeleton.adx
 	makeindex -o lsp-skeleton.lnd lsp-skeleton.ldx
-#	makeindex -o lsp-skeleton.wnd lsp-skeleton.wdx
-#	LSP/bin/reverse-index <lsp-skeleton.wdx >lsp-skeleton.rdx
-#	makeindex -o lsp-skeleton.rnd lsp-skeleton.rdx 
-	authorindex -i -p lsp-skeleton.aux > lsp-skeleton.bib.adx
-	sed 's/|hyperpage//' lsp-skeleton.adx > lsp-skeleton.txt.adx 
-	cat lsp-skeleton.bib.adx lsp-skeleton.txt.adx > lsp-skeleton.combined.adx
-#	sed -e 's/}{/|hyperpage}{/g' lsp-skeleton.adx > lsp-skeleton.adx.hyp
-	makeindex -o lsp-skeleton.and lsp-skeleton.combined.adx
+	makeindex -o lsp-skeleton.snd lsp-skeleton.sdx
 	xelatex -no-pdf lsp-skeleton 
 	xelatex lsp-skeleton 
 
