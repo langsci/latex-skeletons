@@ -16,8 +16,9 @@
                 ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
 	        ,output=long             % long|short|inprep              
 	        %,blackandwhite
-	        %,smallfont
-% 	        ,draftmode  
+% 		,smallfont
+%  	        ,draftmode  
+		,biblatex
 		  ]{LSP/langsci}    
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -34,7 +35,8 @@
 \usepackage{localpackages}
 \usepackage{localhyphenation}
 \usepackage{localcommands}
-
+\usepackage{authorindex}
+\bibliography{localbibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             BEGIN DOCUMENT                   %%%
@@ -49,10 +51,12 @@
 \maketitle                
 \frontmatter
 % %% uncomment if you have preface and/or acknowledgements
-% \chapter*{Preface} 
+% \addchap{Preface} 
 % \include{chapters/preface}
-% \section*{Acknowledgements} 
+% \addchap{Acknowledgements} 
 % \include{chapters/acknowledgements}
+% \addchap{List of abbreviations} 
+% \include{chapters/abbreviations}
 \tableofcontents      
 \mainmatter         
 
@@ -65,8 +69,8 @@
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 \include{chapters/02}
 \include{chapters/03}
-
-%copy the lines above and adapt as necessary
+% copy the lines above and adapt as necessary
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -74,7 +78,9 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter
-\bibliography{localbibliography.bib} %change to the name of your bib file
+\phantomsection%this allows hyperlink in ToC to work
+\addcontentsline{toc}{chapter}{List of references}
+\printbibliography %change to the name of your bib file
 \clearpage
    
 \addcontentsline{toc}{chapter}{Index} 
@@ -82,7 +88,7 @@
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Name index}
 \ohead{Name index} 
-\printindex[aut]
+\printindex 
   
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Language index}
@@ -92,7 +98,7 @@
 \phantomsection%this allows hyperlink in ToC to work
 \addcontentsline{toc}{section}{Subject index}
 \ohead{Subject index} 
-\printindex
+\printindex[sbj]
 
 \end{document} 
 
