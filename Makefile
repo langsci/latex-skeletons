@@ -1,34 +1,60 @@
 # specify your main target here:
-all: lsp-edskeleton.pdf
+all: book pod cover
 
-# specify teh main file and all the files that you are including
-SOURCE= chapters/01.tex chapters/02.tex chapters/03.tex\
+# specify thh main file and all the files that you are including
+SOURCE= lsp-edskeleton.tex chapters/01.tex chapters/02.tex chapters/03.tex\
 localbibliography.bib\
 LSP/langsci.cls
 	 
 %.pdf: %.tex $(SOURCE)
-	xelatex -no-pdf $* 
-	bibtex -min-crossrefs=200 $*
-	xelatex  -no-pdf $*
-	makeindex -o $*.ind $*.idx
-	makeindex -o $*.lnd $*.ldx
-#	makeindex -o $*.wnd $*.wdx
-#	LSP/bin/reverse-index <$*.wdx >$*.rdx
-#	makeindex -o $*.rnd $*.rdx
-	\rm $*.adx
-	authorindex -i -p $*.aux > $*.adx
-#	sed -e 's/}{/|hyperpage}{/g' $*.adx > $*.adx.hyp
-	makeindex -o $*.and $*.adx.hyp
-	xelatex -no-pdf $* 
-	xelatex $* 
+	xelatex -no-pdf lsp-edskeleton 
+	./bibtexvolume
+	xelatex  -no-pdf lsp-edskeleton
+	sed -i s/.*\\emph.*// lsp-edskeleton.adx #remove titles which biblatex puts into the name index
+	makeindex -o lsp-edskeleton.and lsp-edskeleton.adx
+	makeindex -o lsp-edskeleton.lnd lsp-edskeleton.ldx
+	makeindex -o lsp-edskeleton.snd lsp-edskeleton.sdx
+	xelatex -no-pdf lsp-edskeleton 
+	xelatex lsp-edskeleton 
 
+#create only the book
+book: lsp-edskeleton.pdf 
 
-cover: lsp-collection.pdf
-	convert $*.pdf\[0\] -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
+#create a png of the cover
+cover: lsp-edskeleton.pdf
+	convert lsp-edskeleton.pdf\[0\] -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
+	display cover.png
 
+#extract the front cover, back cover and spine from the pdf	
+triptychon: lsp-edskeleton.pdf#output=long has to be used for this to work
+	pdftk A=lsp-edskeleton.pdf cat  A1  output front.pdf 
+	pdftk A=lsp-edskeleton.pdf cat A2 output back.pdf 
+	pdftk A=lsp-edskeleton.pdf cat A3 output spine.pdf
+
+#prepare for print on demand services	
+pod: bod createspace
+
+#prepare for submission to BOD
+bod: triptychon #output=long has to be used for this to work
+	pdftk A=lsp-edskeleton.pdf B=blank.pdf cat B A4-end output tmp.pdf 
+	./filluppages tmp.pdf bod/bodcontent.pdf
+	\rm tmp.pdf
+	xelatex bodcover.tex
+	mv bodcover.pdf bod/
+
+# prepare for submission to createspace
+createspace: triptychon #output=long has to be used for this to work
+	xelatex createspacecover.tex
+	mv createspacecover.pdf createspace
+	pdftk A=lsp-edskeleton.pdf B=blank.pdf cat B A4-end output createspace/createspacecontent.pdf
+
+#housekeeping	
 clean:
-	rm -f *.bak *~ *.log *.blg *.aux *.toc *.cut *.out *.tmp *.tpm *.adx *.adx.hyp *.idx *.ilg \
-	*.and *.glg *.glo *.gls *.wdx *.wnd *.wrd *.wdv *.ldx *.lnd *.rdx *.rnd *.xdv 
+	rm -f *.bak *~ *.backup *.tmp \
+	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
+	*.log *.blg *.ilg \
+	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv 
 
 realclean: clean
-	rm -f *.dvi *.ps *.pdf *.bbl
+	rm -f *.dvi *.ps *.pdf 
