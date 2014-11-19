@@ -1,10 +1,11 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/10/17 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/11/03 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
 \newcommand{\lsp}{Language Science Press\xspace}
 \newcommand{\lsSeriesNumber}{??}
+\newcommand{\lsISSN}{??}
 \newcommand{\lsISBN}{000-0-000000-00-0}
 \newcommand{\lsURL}{http://langsci-press.org/catalog}
 \newcommand{\lsSeries}{eotms}
@@ -30,6 +31,9 @@
 \DeclareStringOption{number}[??]
 	\define@key{langsci}{number}{%
 		\renewcommand{\lsSeriesNumber}{#1}}
+\DeclareStringOption{issn}[??]
+	\define@key{langsci}{issn}{%
+		\renewcommand{\lsISSN}{#1}}
 \DeclareStringOption{isbn}[000-0-000000-00-0]
 	\define@key{langsci}{isbn}{%
 		\renewcommand{\lsISBN}{#1}}
@@ -278,12 +282,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\sidl}{sidl}
 \newcommand{\algad}{algad}
 \newcommand{\tmnlp}{tmnlp}
-\newcommand{\nc}{nc}			%Niger Congo
-\newcommand{\lnls}{lnls}		%Lecture Notes in Language Sciences
-\newcommand{\labphon}{labphon}%Studies in Laboratory Phonology
-\newcommand{\tdgi}{tdgi}		%Topics at the Discourse Grammar Interface
-\newcommand{\cmle}{cmle}		%Computational Models of Language Evolution
-\newcommand{\cfls}{cfls}		%Conceptual Foundation of the Language Sciences
+\newcommand{\nc}{nc}		%Niger Congo
+\newcommand{\lnls}{lnls}	%Lecture Notes in Language Sciences
+\newcommand{\silp}{silp}	%Studies in Laboratory Phonology
+\newcommand{\tdgi}{tdgi}	%Topics at the Discourse Grammar Interface
+\newcommand{\cmle}{cmle}	%Computational Models of Language Evolution
+\newcommand{\cfls}{cfls}	%Conceptual Foundation of the Language Sciences
+\newcommand{\lv}{lv}		%Language Variation
 \newcommand{\dummyseries}{dummyseries}
 \newcommand{\guidelines}{guidelines}
 \newcommand{\lsSeriesFontColor}{white}
@@ -300,12 +305,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \ifx\lsSeries\sidl
 	\newcommand{\lsSeriesTitle}{Studies in Diversity Linguistics~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRichGreen}
+	\renewcommand{\lsISSN}{2363-5568}
 \fi
 \ifx\lsSeries\algad
 	\newcommand{\lsSeriesTitle}{African Language Grammars\\ and Dictionaries~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsLightOrange}
 \fi
-\ifx\lsSeries\algad
+\ifx\lsSeries\scl
 	\newcommand{\lsSeriesTitle}{Studies in Caribbean Languages~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkOrange}
 \fi
@@ -321,9 +327,10 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\newcommand{\lsSeriesTitle}{Monographs on Comparative Niger-Congo~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRed}
 \fi	
-\ifx\lsSeries\labphon
+\ifx\lsSeries\silp
 	\newcommand{\lsSeriesTitle}{Studies in Laboratory Phonology~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsLightWine}
+	\renewcommand{\lsISSN}{2363-5576}
 \fi	
 \ifx\lsSeries\tdgi
 	\newcommand{\lsSeriesTitle}{Topics at the Discourse Grammar Interface~\lsSeriesNumber}
@@ -337,7 +344,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\newcommand{\lsSeriesTitle}{Conceptual Foundations of Language Science~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsNightGreen}
 \fi	
-\ifx\lsSeries\cfls
+\ifx\lsSeries\lv
 	\newcommand{\lsSeriesTitle}{Language Variation~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkWine}
 \fi	
@@ -348,12 +355,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \ifx\lsSeries\guidelines
 	\newcommand{\lsSeriesTitle}{Language Science Press Guidelines}
 	\newcommand{\lsSeriesColor}{lsLightGray}
+	\renewcommand{\lsCoverFontColor}{black}
 \fi
 }	
 
-\@ifundefined{blackandwhite}
-	{}
-	{\renewcommand{\lsSeriesColor}{black}}
+% \@ifundefined{blackandwhite}
+% 	{}
+% 	{\renewcommand{\lsSeriesColor}{black}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -401,7 +409,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		isbn=false,
 		doi=false,
 		eprint=false,
-		backend=\lsBiblatexBackend
+		backend=\lsBiblatexBackend,
+		indexing=cite
 		]{biblatex}
 	\renewcommand{\postnotedelim}{: }%
 	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
@@ -489,8 +498,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \makeindex
 \newindex{lan}{ldx}{lnd}{Language index}
-\newindex{aut}{adx}{and}{Name index}
-\renewindex{default}{idx}{ind}{Subject index}
+% \newindex{aut}{adx}{and}{Name index}
+\newindex{sbj}{sdx}{snd}{Subject index}
+\renewindex{default}{adx}{and}{Name index}
 \newindex{wrd}{wdx}{wnd}{Expression index}
 \newindex{rwrd}{rdx}{rnd}{Reverse expression index}
 
@@ -502,17 +512,17 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \fi
 
 \newcommand{\ia}[1]{\if@noftnote%
-\index[aut]{#1}%
+\index{#1}%
 \else%
-\index[aut]{#1|fn{\thefootnote}}%
+\index{#1|fn{\thefootnote}}%
 \fi%
 }
 
 \newcommand{\is}[1]{\if@noftnote%
-\index{#1}%
+\index[sbj]{#1}%
 \else%
 % irgendwie muss man ihn dazu bringen den Wert für footnote auch einzusetzen
-\index{#1|fn{*}}%
+\index[sbj]{#1|fn{*}}%
 %\indexftn{#1}{\value{footnotemark}}%
 \fi%
 }
@@ -652,8 +662,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \newcommand{\lsCoverSeries}{
 	\begin{textblock}{95}(7.4,209)
-	\color{\lsCoverFontColor}
+	\color{white}
 	\raggedright\rule{3.6mm}{3.5mm}
+	\color{\lsCoverFontColor}
 	\hspace{3mm}\parbox[t]{85mm}{\raggedright\lsCoverSeriesFont   
 		\lsSeriesTitle\\}
 	\end{textblock}}
@@ -936,7 +947,12 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \IfFileExists{./LSP/lsp-seriesinfo/\lsSeries-info.tex}{\input{./LSP/lsp-seriesinfo/\lsSeries-info}}{
   Series information: ./LSP/lsp-seriesinfo/\lsSeries-info.tex not found!} 
 
+\IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
+	{}
+	{\vfill\hfill ISSN: \lsISSN}
+
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -977,7 +993,10 @@ Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC B
 http://creativecommons.org/licenses/by-nd/4.0/ 
 \fi
  
-ISBN: \lsISBN 
+ISBN: \lsISBN \\
+\IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
+	{}
+	{ISSN: \lsISSN}
 
 \bigskip
  
