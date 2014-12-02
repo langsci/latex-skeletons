@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/11/03 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/11/27 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -126,7 +126,8 @@
 \usepackage{ifxetex}
 \ifxetex\else\ClassError{LSP/langsci}{Please use XeLaTeX!}{}\fi
 	
-\usepackage{amssymb} % has to be loaded before other stuff			
+\usepackage{amssymb} % has to be loaded before other stuff
+\usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol			
 \usepackage{fontspec}
 \newcommand{\fontpath}{./LSP/lsp-fonts/}
 
@@ -215,6 +216,8 @@
 \definecolor{lsDarkGreen2}{cmyk}{0.85,0.05,1,0.5}
 \definecolor{lsNightGreen}{cmyk}{0.88,0.15,1,0.66}
 \definecolor{lsLightGray}{cmyk}{0,0,0,0.17}
+\definecolor{lsGuidelinesGray}{cmyk}{0,0.04,0,0.45}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -295,7 +298,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \AtBeginDocument{
 \ifx\lsSeries\eotms
-	\newcommand{\lsSeriesTitle}{Empirically Oriented Theoretical \\ Morphology and Syntax~\lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Empirically Oriented Theoretical \newlineCover Morphology and Syntax~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidBlue}
 \fi
 \ifx\lsSeries\eotmsig
@@ -308,7 +311,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\renewcommand{\lsISSN}{2363-5568}
 \fi
 \ifx\lsSeries\algad
-	\newcommand{\lsSeriesTitle}{African Language Grammars\\ and Dictionaries~\lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{African Language Grammars \newlineCover and Dictionaries~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsLightOrange}
 \fi
 \ifx\lsSeries\scl
@@ -316,7 +319,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\newcommand{\lsSeriesColor}{lsDarkOrange}
 \fi
 \ifx\lsSeries\tmnlp
-	\newcommand{\lsSeriesTitle}{Translation and Multilingual Natural\\ Language Processing~\lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Translation and Multilingual Natural \newlineCover Language Processing~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkBlue}
 \fi
 \ifx\lsSeries\lnls
@@ -341,7 +344,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\newcommand{\lsSeriesColor}{lsNightBlue}
 \fi	
 \ifx\lsSeries\cfls
-	\newcommand{\lsSeriesTitle}{Conceptual Foundations of Language Science~\lsSeriesNumber}
+	\newcommand{\lsSeriesTitle}{Conceptual Foundations of \newlineCover Language Science~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsNightGreen}
 \fi	
 \ifx\lsSeries\lv
@@ -354,7 +357,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \fi
 \ifx\lsSeries\guidelines
 	\newcommand{\lsSeriesTitle}{Language Science Press Guidelines}
-	\newcommand{\lsSeriesColor}{lsLightGray}
+	\newcommand{\lsSeriesColor}{lsGuidelinesGray}
 	\renewcommand{\lsCoverFontColor}{black}
 \fi
 }	
@@ -439,6 +442,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%\let\citew=\citealt
 \fi
 
+% penalties against widows and orphans in bibliography
+% http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
+\usepackage{etoolbox}
+\AtBeginEnvironment{thebibliography}{%
+    \clubpenalty10000
+    \@clubpenalty \clubpenalty
+    \widowpenalty10000}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -500,7 +511,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newindex{lan}{ldx}{lnd}{Language index}
 % \newindex{aut}{adx}{and}{Name index}
 \newindex{sbj}{sdx}{snd}{Subject index}
-\renewindex{default}{adx}{and}{Name index}
+\renewindex{default}{adx}{and}{Name index} %biblatex can only deal with the default index
 \newindex{wrd}{wdx}{wnd}{Expression index}
 \newindex{rwrd}{rdx}{rnd}{Reverse expression index}
 
@@ -571,9 +582,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 }
 
 
-\iflsDraft
-  \usepackage{showidx}
-\fi
+% \iflsDraft
+%   \usepackage{showidx} 	% Doesn't work with multiple indexes?
+% \fi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -616,12 +627,18 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsCoverFontColor}{white}
 \newcommand{\lsCoverBlockColor}{\lsSeriesColor}
 \newcommand{\lsEditorPrefix}{}
-\newcommand{\lsEditorPostfixSpine}{}
+\newcommand{\lsEditorSuffix}{}   
 
-% \edef\authorTMP{\@author}
-% \IfSubStr{\authorTMP}{}{}{}
-%\IfSubStr{\author}{,}{\renewcommand{\lsEditorPostfixSpine}{(eds.)}}{}    
-%\IfSubStr{\@author}{\&}{\renewcommand{\lsEditorPostfixSpine}{(eds.)}}{\renewcommand{\lsEditorPostfixSpine}{(ed.)}}      
+\iflsCollection  	% for collections: set \lsEditorSuffix depending on \@author
+\AtBeginDocument{	
+	\IfSubStr{\@author}{\&}	 	% if \@author contains \&
+		{\renewcommand{\lsEditorSuffix}{(eds.)}}
+		{\IfSubStr{\@author}{,}	% if \@author contains ,
+			{\renewcommand{\lsEditorSuffix}{(eds.)}}
+			{\renewcommand{\lsEditorSuffix}{(ed.)}}}
+}
+\else
+\fi
 
 \newcommand{\lsCoverBlock}{
 	\begin{textblock}{155}(7.6,7.5)
@@ -724,7 +741,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			\rotatebox[origin=c]{180}{\pbox[c]{150mm}{\lsSpineTitle}}}
 		\hspace{13mm}
 		{\lsSpineAuthorFont 
-			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor}}}
+			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi}}}
 	\end{minipage}} 
 	\end{textblock}}
 
@@ -923,9 +940,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 % for those who like the example in numbered example sentences to be typeset in italics
 % this is possible for a complete series only.
 \ifx\lsSeries\sidl
-	%\ifx\lsSeries\lnls
 	\AtBeginDocument{
-	\def\exfont{\normalsize\itshape}
+	%\def\exfont{\normalsize\itshape}
+	\renewcommand{\eachwordone}{\itshape} 
 	}
 \fi
 
@@ -960,24 +977,22 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newcommand{\lsImpressumCitationText}{
+	\renewcommand{\newlineCover}{}
+	\renewcommand{\newlineSpine}{}
+	{\@author}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
+	{\the\year}. %
+	\textit{\@title}\if\@subtitle\empty\else: \textit{\@subtitle}\fi\ %
+	(\lsSeriesTitle). %
+	Berlin: Language Science Press.
+}
+
 \newcommand{\lsImpressum}{
-\renewcommand{\newlineCover}{}
 \raggedright
-\null\vfill
-Language Science Press\\
-Berlin\\
 
-\bigskip
+\lsImpressumCitationText
 
-Language Science Press\\
-Habelschwerdter Allee 45\\
-14195 Berlin, Germany
-
-\bigskip
-
-\href{http://langsci-press.org}{langsci-press.org}
-
-\bigskip
+\vfill
 
 This title can be downloaded at:\\
 \url{\lsURL}
@@ -1014,12 +1029,21 @@ Typesetting:
 Proofreading:
 \@proofreader \\
 \fi
+Fonts: Linux Libertine, Arimo \\
+Typesetting software: \XeLaTeX
 
-\vspace{3ex}
+\bigskip
+
+Language Science Press\\
+Habelschwerdter Allee 45\\
+14195 Berlin, Germany\\
+\href{http://langsci-press.org}{langsci-press.org}
+
+\vfill
 
 Storage and cataloguing done by FU Berlin \\[3ex]  	
 
-\IfFileExists{\logopath/FULogo_sw_CMYK.pdf}{\includegraphics[width=5cm]{\logopath/FULogo_sw_CMYK.pdf}}{FU-Logo} \\
+\IfFileExists{\logopath/FULogo_sw_CMYK.pdf}{\includegraphics[width=5cm]{\logopath/FULogo_sw_CMYK.pdf}}{FU-Logo} \\[3ex]
 
 \vfill
 
