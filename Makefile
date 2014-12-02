@@ -2,11 +2,11 @@
 all: book 
 
 # specify thh main file and all the files that you are including
-SOURCE= lsp-skeletonnofonts.tex chapters/01.tex chapters/02.tex chapters/03.tex\
-localbibliography.bib\
+SOURCE= lsp-skeletonnofonts.tex chapters/01.tex chapters/02.tex chapters/03.tex \
+localbibliography.bib \
 LSP/langsci.cls
 	 
-%.pdf: %.tex $(SOURCE)
+lsp-skeletonnofonts.pdf: lsp-skeletonnofonts.tex $(SOURCE)
 	xelatex -no-pdf lsp-skeletonnofonts 
 	bibtex -min-crossrefs=200 lsp-skeletonnofonts
 	xelatex  -no-pdf lsp-skeletonnofonts
@@ -25,8 +25,9 @@ clean:
 	rm -f *.bak *~ *.backup *.tmp \
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
-	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv 
+	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv \
+	*.run.xml
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf 

@@ -129,39 +129,39 @@
 \usepackage{amssymb} % has to be loaded before other stuff
 \usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol			
 \usepackage{fontspec}
-\newcommand{\fontpath}{./LSP/lsp-fonts/}
-
-\setsansfont[
-	%Ligatures={TeX,Common},		% not supported by ttf
-	Scale=MatchLowercase,
-	Path=\fontpath,
-	BoldFont = Arimo-Bold_B.ttf ,
-	ItalicFont = Arimo-Italic_B.ttf ,				
-	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
-	]{Arimo_B.ttf}
-		
-\setmonofont[
-	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-	BoldFont = FreeMonoBold_B.otf ,
-	SlantedFont = FreeMonoOblique_B.otf ,				
-	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-	]{FreeMono_B.otf}
-
-
-\setmainfont[
-	Ligatures={TeX,Common},
-	Path=\fontpath,
-	PunctuationSpace=0,							
-	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
-	ItalicFont = LinLibertine_RI_B.otf ,			
-	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
-	]{LinLibertine_R_B.otf}			
-
-\iflsNewtxmath							% some users have problems when installing newtxmath
-	\usepackage[libertine]{newtxmath}
-\fi 	
+% \newcommand{\fontpath}{./LSP/lsp-fonts/}
+% 
+% \setsansfont[
+% 	%Ligatures={TeX,Common},		% not supported by ttf
+% 	Scale=MatchLowercase,
+% 	Path=\fontpath,
+% 	BoldFont = Arimo-Bold_B.ttf ,
+% 	ItalicFont = Arimo-Italic_B.ttf ,				
+% 	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
+% 	]{Arimo_B.ttf}
+% 		
+% \setmonofont[
+% 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+% 	BoldFont = FreeMonoBold_B.otf ,
+% 	SlantedFont = FreeMonoOblique_B.otf ,				
+% 	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+% 	]{FreeMono_B.otf}
+% 
+% 
+% \setmainfont[
+% 	Ligatures={TeX,Common},
+% 	Path=\fontpath,
+% 	PunctuationSpace=0,							
+% 	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+% 	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+% 	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
+% 	ItalicFont = LinLibertine_RI_B.otf ,			
+% 	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
+% 	]{LinLibertine_R_B.otf}			
+% 
+% \iflsNewtxmath							% some users have problems when installing newtxmath
+% 	\usepackage[libertine]{newtxmath}
+% \fi 	
 
 \let\oldtabular\tabular	% number in tabulars
 \let\endoldtabular\endtabular
