@@ -6,7 +6,7 @@ SOURCE= lsp-edskeleton.tex chapters/01.tex chapters/02.tex chapters/03.tex\
 localbibliography.bib\
 LSP/langsci.cls
 	 
-%.pdf: %.tex $(SOURCE)
+lsp-edskeleton.pdf: lsp-edskeleton.tex $(SOURCE)
 	xelatex -no-pdf lsp-edskeleton 
 	./bibtexvolume
 	xelatex  -no-pdf lsp-edskeleton
@@ -53,8 +53,9 @@ clean:
 	rm -f *.bak *~ *.backup *.tmp \
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
-	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv 
+	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv \
+	*.run.xml 
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf 
