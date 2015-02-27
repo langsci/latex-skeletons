@@ -22,7 +22,7 @@ book: lsp-edskeleton.pdf
 
 #create a png of the cover
 cover: lsp-edskeleton.pdf
-	convert lsp-edskeleton.pdf\[0\] -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
+	convert lsp-edskeleton.pdf\[0\] -quality 100 -resize 486x -background white -alpha remove -bordercolor black -border 2  cover.png
 	display cover.png
 
 #extract the front cover, back cover and spine from the pdf	
