@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/11/27 Language Science Press]
+\ProvidesClass{LSP/langsci}[2014/12/20 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -21,6 +21,8 @@
 \newif\iflsCollectionChapter \lsCollectionChapterfalse
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
 \newif\iflsNewtxmath \lsNewtxmathfalse
+\newif\iflsBlackandwhite \lsBlackandwhitefalse
+
 
 
 % Option handling:
@@ -53,7 +55,7 @@
 	\define@key{langsci}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
 \DeclareVoidOption{blackandwhite}{
-	\newcommand{\blackandwhite}{}}
+	\lsBlackandwhitetrue}
 \DeclareVoidOption{long}{
 	\renewcommand{\lsOutput}{long}}
 \DeclareVoidOption{smallfont}{  			
@@ -81,7 +83,7 @@
 	fontsize=\lsFontsize, % default is 11pt
 	footnotes=multiple,
 	numbers=noenddot,		% no point after last number of chapters/sections
-	toc=bibliographynumbered,
+	toc=bibliography,
 	index=totoc,
 	%chapterprefix=true,
 	%draft=yes,
@@ -346,6 +348,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \ifx\lsSeries\cfls
 	\newcommand{\lsSeriesTitle}{Conceptual Foundations of \newlineCover Language Science~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsNightGreen}
+	\renewcommand{\lsISSN}{2363-877X}
 \fi	
 \ifx\lsSeries\lv
 	\newcommand{\lsSeriesTitle}{Language Variation~\lsSeriesNumber}
@@ -360,11 +363,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\newcommand{\lsSeriesColor}{lsGuidelinesGray}
 	\renewcommand{\lsCoverFontColor}{black}
 \fi
+
+\iflsBlackandwhite
+	\renewcommand{\lsSeriesColor}{black}
+\fi
 }	
 
-% \@ifundefined{blackandwhite}
-% 	{}
-% 	{\renewcommand{\lsSeriesColor}{black}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -413,10 +418,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		doi=false,
 		eprint=false,
 		backend=\lsBiblatexBackend,
-		indexing=cite
+		indexing=cite,
+		\iflsCollection\else
+			toc=bib 		% make bibliography appear in toc
+		\fi
 		]{biblatex}
 	\renewcommand{\postnotedelim}{: }%
-	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
+	\renewcommand{\multicitedelim}{\addsemicolon\space}%
+	\renewcommand{\compcitedelim}{\multicitedelim}  
 	\DeclareFieldFormat{postnote}{#1}%
 	%\renewcommand{\nameyeardelim}{ }%		
 \else	%BibTeX
@@ -433,7 +442,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%% }
 
 	% check what the unified people have to say on this.
-	\bibpunct[: ]{(}{)}{;}{a}{}{,}
+	\bibpunct[: ]{(}{)}{;}{a}{}{;}
 	% They do not say anything about citations in the running text.
 	% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
 	% This is what De Gruyter does:
@@ -441,6 +450,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	% This is what Stefan did:
 	%\let\citew=\citealt
 \fi
+
+\let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
 % penalties against widows and orphans in bibliography
 % http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
@@ -942,7 +953,11 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \ifx\lsSeries\sidl
 	\AtBeginDocument{
 	%\def\exfont{\normalsize\itshape}
-	\renewcommand{\eachwordone}{\itshape} 
+	\renewcommand{\eachwordone}{\itshape}	% only \gll
+	
+	\let\oldtable\table 	% footnotes in tables without horizontal line
+	\let\endoldtable\endtable
+	\renewenvironment{table}{\setfootnoterule{0pt}\oldtable}{\endoldtable} 
 	}
 \fi
 
