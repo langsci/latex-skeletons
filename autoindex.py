@@ -3,8 +3,8 @@
 import glob
 import re
 
-lgs=open("locallanguages.txt").read().split('\n')
-terms=open("localsubjectterms.txt").read().split('\n')[::-1]#reverse to avoid double indexing
+lgs=[l.strip() for l in open("locallanguages.txt").read().split('\n') if l.strip()!='']
+terms=[t.strip() for t in open("localsubjectterms.txt").read().split('\n') if t.strip()!=''][::-1]#reverse to avoid double indexing 
 print("found %i language names for autoindexing" % len(lgs))
 print("found %i subject terms for autoindexing" % len(terms))
 
