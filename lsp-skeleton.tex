@@ -4,18 +4,12 @@
 %%%         follow the instructions below        %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% please fill in some information in the following lines as soon
-% as you have it
+ 
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
-\documentclass[number=1       %replace by your number in series
-                ,series=sidl,     % Choose series abbreviation as appropriate
-                ,isbn=978-3-000000-00-0, %add your isbn here
-                ,url=http://langsci-press.org/catalog/book/0,  %change to the running number of your book
-	        ,output=long             % long|short|inprep              
-	        %,blackandwhite
+\documentclass[output=long             % long|short|inprep              
+% 	        ,blackandwhite
 % 		,smallfont
 %  	        ,draftmode  
 		,biblatex
@@ -31,23 +25,18 @@
 % following files. If you do not know what this might 
 % mean, you can safely ignore this section
 
-\usepackage{localmetadata}
-\usepackage{localpackages}
-\usepackage{localhyphenation}
-\usepackage{localcommands}
-\usepackage{authorindex}
-\bibliography{localbibliography}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%             BEGIN DOCUMENT                   %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      
-\begin{document}       
+\input{localmetadata.tex}
+\input{localpackages.tex}
+\input{localhyphenation.tex}
+\input{localcommands.tex} 
+\bibliography{localbibliography} 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             Frontmatter                      %%%
 %%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}              
 \maketitle                
 \frontmatter
 % %% uncomment if you have preface and/or acknowledgements
@@ -56,6 +45,7 @@
 % \include{chapters/abbreviations}
 \tableofcontents      
 \mainmatter         
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -74,39 +64,14 @@
 %%%             Backmatter                       %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\backmatter
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{chapter}{List of references}
-\printbibliography %change to the name of your bib file
-\clearpage
-   
-\addcontentsline{toc}{chapter}{Index} 
 
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Name index}
-\ohead{Name index} 
-\printindex 
-  
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Language index}
-\ohead{Language index} 
-\printindex[lan] 
-  
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Subject index}
-\ohead{Subject index} 
-\printindex[sbj]
-
+% There is normally no need to change the backmatter section
+\input{backmatter.tex}
 \end{document} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%                  END                         %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% you should be able to create a pdf from this file 
-% with the following command 
+% you can create your book by running
 % xelatex lsp-skeleton.tex
-% If this does not work, please get in contact with 
-% Language Science Press
+%
+% you can also try a simple 
+% make
+% on the commandline

@@ -1,0 +1,39 @@
+\documentclass{./LSP/langscicover}
+\usepackage{tabularx}
+\newlength{\seitenbreite}
+\newlength{\seitenhoehe}
+\newlength{\beschnittoben}
+\newlength{\beschnittunten}
+\newlength{\beschnittrechts}
+\newlength{\beschnittlinks}
+\newlength{\spinewidth}
+\newlength{\totalwidth}
+\newlength{\totalheight}
+
+\setlength{\seitenbreite}{169.92mm}
+\setlength{\seitenhoehe}{240mm}
+\setlength{\beschnittoben}{2mm}
+\setlength{\beschnittunten}{2mm}
+\setlength{\beschnittrechts}{0mm}
+\setlength{\beschnittlinks}{0mm} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% adjust this to the right size for your book
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \setlength{\spinewidth}{2mm+.07*\pagecount}  
+\setlength{\spinewidth}{20.87mm}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
+\setlength{\totalheight}{\beschnittoben+\beschnittunten+\seitenhoehe}
+\usepackage{localmetadata}
+\usepackage[paperheight=\totalheight%
+	    ,paperwidth=\totalwidth%
+	    ,left=\beschnittlinks%
+	    ,right=\beschnittrechts%
+	    ,top=\beschnittoben%
+	    ,bottom=\beschnittunten]{geometry}
+
+\begin{document}
+\lsCreateSpace
+\end{document}
