@@ -8,7 +8,7 @@
 \newcommand{\lsISSN}{??}
 \newcommand{\lsISBN}{000-0-000000-00-0}
 \newcommand{\lsURL}{http://langsci-press.org/catalog}
-\newcommand{\lsSeries}{eotms}
+\newcommand{\lsSeries}{dummyseries}
 \newcommand{\lsSpineBreadth}{20mm}
 \newcommand{\lsOutput}{long}
 \newcommand{\lsFontsize}{11pt}
