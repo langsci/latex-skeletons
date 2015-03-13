@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\newlength{\seitenbreite}
+\newlength{\seitenhoehe}
+\newlength{\beschnittoben}
+\newlength{\beschnittunten}
+\newlength{\beschnittrechts}
+\newlength{\beschnittlinks}
+\newlength{\spinewidth}
+\newlength{\totalwidth}
+\newlength{\totalheight}
+
+\setlength{\seitenbreite}{170mm}
+\setlength{\seitenhoehe}{240mm}
+\setlength{\beschnittoben}{0mm}
+\setlength{\beschnittunten}{0mm}
+\setlength{\beschnittrechts}{0mm}
+\setlength{\beschnittlinks}{0mm} 
+
+\setlength{\spinewidth}{40.87mm}  
+
+
+\setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
+\setlength{\totalheight}{\beschnittoben+\beschnittunten+\seitenhoehe}
+\usepackage[paperheight=\totalheight, paperwidth=\totalwidth]{geometry}
+
+\input{./LSP/lsp-seriesinfo/colorinfo.tex} 
+\input{./LSP/lsp-seriesinfo/seriesinfo.tex} 
+\input{./localmetadata.tex}
+
+% FONT MATTERS
+
+\usepackage{fontspec}
+\newcommand{\fontpath}{./LSP/lsp-fonts/}
+
+\setsansfont[
+	%Ligatures={TeX,Common},		% not supported by ttf
+	Scale=MatchLowercase,
+	Path=\fontpath,
+	BoldFont = Arimo-Bold_B.ttf ,
+	ItalicFont = Arimo-Italic_B.ttf ,				
+	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
+	]{Arimo_B.ttf}
+		
+\setmonofont[
+	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+	BoldFont = FreeMonoBold_B.otf ,
+	SlantedFont = FreeMonoOblique_B.otf ,				
+	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+	]{FreeMono_B.otf}
+
+
+\setmainfont[
+	Ligatures={TeX,Common},
+	Path=\fontpath,
+	PunctuationSpace=0,							
+	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
+	ItalicFont = LinLibertine_RI_B.otf ,			
+	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
+	]{LinLibertine_R_B.otf}			
+
+  \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
+  \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
+  \newcommand{\lsCoverAuthorFont}{\fontsize{25pt}{12.5mm}\selectfont}
+  \newcommand{\lsCoverSeriesFont}{\sffamily\fontsize{17pt}{7.5mm}\selectfont}			% fontsize?
+  \newcommand{\lsCoverSeriesHistoryFont}{\sffamily\fontsize{10pt}{5mm}\selectfont}
+  \newcommand{\lsInsideFont}{}	% obsolete, see \setmainfont
+  \newcommand{\lsDedicationFont}{\fontsize{15pt}{10mm}\selectfont}
+  \newcommand{\lsBackTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
+  \newcommand{\lsBackBodyFont}{\lsInsideFont}
+  \newcommand{\lsSpineAuthorFont}{\fontsize{16pt}{14pt}\selectfont}
+  \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{18pt}{14pt}\selectfont}
+
+
+% END FONT MATTERS
+
+
+
+\begin{document}
+\pagestyle{empty}
+\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
+\pgfsetlayers{lspcls_bg,main}
+
+	\begin{tikzpicture}[remember picture, overlay,
+											bg/.style={outer sep=0}
+										 ]
+
+		\begin{pgfonlayer}{lspcls_bg} % background layer
+			\node [bg, left = 7.75mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
+			\node [bg, right = 7.75mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
+			\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed, draw] (lspcls_bgspline) {};
+		\end{pgfonlayer}
+		
+		
+		% Text and Graphics Layer
+		
+			% Spine
+			\node [above = 7.75mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{C:/Users/fkopecky/Documents/GitHub/latex/LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+			\node [above = 150mm of lspcls_splinelogo.north, rotate=270] (lspcls_splineauthor) {\color{\lsSeriesColor} \lsSpineAuthorFont{\author}};
+			\node [below= 0mm of lspcls_splineauthor.south, rotate=270] () {\color{\lsSeriesColor} \lsSpineTitleFont{\title}}; 
+			
+			% Book Cover
+			\node [above left = 8.5mm and 8.5mm of lspcls_bg1.south east] {\color{white}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+			\node [below right = 15pt and 17.5pt of lspcls_bg1.north west, text width=13.5cm] (lspcls_covertitle) {\color{white}\lsCoverTitleFont{\title}};
+			\node [below = 19.2mm of lspcls_covertitle.south, text width=13.5cm] {\color{white}\lsCoverAuthorFont{\author}};	% We need to include the possibilty to insert subtitles here
+			\node [above right= 16mm and -1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {};
+			\node [right = 7mm of lspcls_square.center] {\color{white}\lsCoverSeriesFont{\lsSeriesTitle}};
+			
+			% Book Back Cover
+			\node [below right = 15pt and 17.5pt of lspcls_bg2.north west, text width=13.5cm] (lspcls_backtitle) {\color{white}\lsBackTitleFont{\BackTitle}};
+			\node [below=19.2mm of lspcls_backtitle, text width=13.5cm, align=justify] {\color{white}\lsBackBodyFont{\BackBody}};
+			\node [above left = 15mm and 7mm of lspcls_bg2.south east] {\color{white}ISBN \lsBackBodyFont{\lsISBN}};
+
+			
+			
+			
+			
+	\end{tikzpicture}
+\end{document}
