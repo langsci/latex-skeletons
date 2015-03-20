@@ -16,6 +16,8 @@
 \newlength{\totalwidth}
 \newlength{\totalheight}
 
+\newcommand{\lsNumPages}{282}
+
 \setlength{\seitenbreite}{170mm}
 \setlength{\seitenhoehe}{240mm}
 \setlength{\beschnittoben}{0mm}
@@ -23,8 +25,7 @@
 \setlength{\beschnittrechts}{0mm}
 \setlength{\beschnittlinks}{0mm} 
 
-\setlength{\spinewidth}{40.87mm}  
-
+\setlength{\spinewidth}{2pt + 198pt}   %fix me!
 
 \setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
 \setlength{\totalheight}{\beschnittoben+\beschnittunten+\seitenhoehe}
@@ -80,6 +81,7 @@
   \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{18pt}{14pt}\selectfont}
 
 
+	\newcommand{\lsCoverFontColour}{white} % Insert the Colour for Text and Logos on Cover here.
 % END FONT MATTERS
 
 
@@ -108,20 +110,16 @@
 			\node [below= 0mm of lspcls_splineauthor.south, rotate=270] () {\color{\lsSeriesColor} \lsSpineTitleFont{\title}}; 
 			
 			% Book Cover
-			\node [above left = 8.5mm and 8.5mm of lspcls_bg1.south east] {\color{white}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
-			\node [below right = 15pt and 17.5pt of lspcls_bg1.north west, text width=13.5cm] (lspcls_covertitle) {\color{white}\lsCoverTitleFont{\title}};
-			\node [below = 19.2mm of lspcls_covertitle.south, text width=13.5cm] {\color{white}\lsCoverAuthorFont{\author}};	% We need to include the possibilty to insert subtitles here
+			\node [above left = 8.5mm and 8.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+			\node [below right = 15pt and 17.5pt of lspcls_bg1.north west, text width=13.5cm] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\title}};
+			\node [below = 19.2mm of lspcls_covertitle.south, text width=13.5cm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\author}};	% We need to include the possibilty to insert subtitles here
 			\node [above right= 16mm and -1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {};
-			\node [right = 7mm of lspcls_square.center] {\color{white}\lsCoverSeriesFont{\lsSeriesTitle}};
+			\node [right = 7mm of lspcls_square.center] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle}};
 			
 			% Book Back Cover
-			\node [below right = 15pt and 17.5pt of lspcls_bg2.north west, text width=13.5cm] (lspcls_backtitle) {\color{white}\lsBackTitleFont{\BackTitle}};
-			\node [below=19.2mm of lspcls_backtitle, text width=13.5cm, align=justify] {\color{white}\lsBackBodyFont{\BackBody}};
-			\node [above left = 15mm and 7mm of lspcls_bg2.south east] {\color{white}ISBN \lsBackBodyFont{\lsISBN}};
-
-			
-			
-			
+			\node [below right = 15pt and 17.5pt of lspcls_bg2.north west, text width=13.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\BackTitle}};
+			\node [below=19.2mm of lspcls_backtitle, text width=13.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\BackBody}};
+			\node [above left = 15mm and 7mm of lspcls_bg2.south east] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 			
 	\end{tikzpicture}
 \end{document}
