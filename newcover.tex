@@ -1,12 +1,18 @@
 \documentclass[12pt]{article}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usepackage{calc}
 \usetikzlibrary{positioning}
+\usepackage{calc}
+\usepackage{xstring}
+
+
 %\usetikzlibrary{calc}
 \input{./LSP/lsp-seriesinfo/colorinfo.tex} 
 \input{./LSP/lsp-seriesinfo/seriesinfo.tex} 
 \input{./localmetadata.tex}
+
+\StrLen{\subtitle}[\subtitleStrLen]
+
 
 \newlength{\seitenbreite}
 \newlength{\seitenhoehe}
@@ -94,10 +100,10 @@
 			\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 			\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.5cm] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\title}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 			
-			\ifx\@subtitle\empty  % Is there a subtitle?
+			\ifnum\subtitleStrLen=0  % Is there a subtitle?
 				\node [below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\author}}; % If not, print the author
 				\else
-				\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsSeriesColor} \lsCoverSubTitleFont -\subtitle-}; 
+				\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \subtitle}; 
 				\node [below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\author}};
 			\fi
 			
