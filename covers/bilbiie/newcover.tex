@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{calc}
+\usepackage{xstring}
+\usepackage{pst-barcode}
+
+\hyphenpenalty=10000
+
+% CAUTION!
+
+
+%\usetikzlibrary{calc}
+\input{../../LSP/lsp-seriesinfo/colorinfo.tex} 
+\input{../../LSP/lsp-seriesinfo/seriesinfo.tex} 
+\input{./localmetadata.tex}
+
+%\StrLen{\subtitle}[\subtitleStrLen] % see below for comment on \'e and \c in StrLen
+
+
+\newlength{\seitenbreite}
+\newlength{\seitenhoehe}
+\newlength{\spinewidth}
+\newlength{\totalwidth}
+%\newlength{\totalheight}
+\setlength{\seitenbreite}{169.9mm}
+\setlength{\seitenhoehe}{244.1mm}
+
+\setlength{\spinewidth}{\csspine}			% Create Space Version. Value is in ./localmetadata.tex
+%\setlength{\spinewidth}{\bodspine}   % BoD Version. Value is in ./localmetadata.tex
+
+\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
+%\setlength{\totalheight}{\seitenhoehe}
+\usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+
+	%
+	% FONT MATTERS
+	%
+	
+\usepackage{fontspec}
+\newcommand{\fontpath}{../../LSP/lsp-fonts/}
+\setsansfont[
+	%Ligatures={TeX,Common},		% not supported by ttf
+	Scale=MatchLowercase,
+	Path=\fontpath,
+	BoldFont = Arimo-Bold_B.ttf ,
+	ItalicFont = Arimo-Italic_B.ttf ,				
+	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
+	]{Arimo_B.ttf}
+\setmonofont[
+	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+	BoldFont = FreeMonoBold_B.otf ,
+	SlantedFont = FreeMonoOblique_B.otf ,				
+	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+	]{FreeMono_B.otf}
+\setmainfont[
+	Ligatures={TeX,Common},
+	Path=\fontpath,
+	PunctuationSpace=0,							
+	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
+	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
+	ItalicFont = LinLibertine_RI_B.otf ,			
+	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
+	]{LinLibertine_R_B.otf}			
+
+  \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
+  \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
+  \newcommand{\lsCoverAuthorFont}{\fontsize{25pt}{12.5mm}\selectfont}
+  \newcommand{\lsCoverSeriesFont}{\sffamily\fontsize{17pt}{7.5mm}\selectfont}			% fontsize?
+  \newcommand{\lsCoverSeriesHistoryFont}{\sffamily\fontsize{10pt}{5mm}\selectfont}
+  \newcommand{\lsInsideFont}{}	% obsolete, see \setmainfont
+  \newcommand{\lsDedicationFont}{\fontsize{15pt}{10mm}\selectfont}
+  \newcommand{\lsBackTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
+  \newcommand{\lsBackBodyFont}{\fontsize{11pt}{5mm}\selectfont}
+  \newcommand{\lsSpineAuthorFont}{\fontsize{16pt}{14pt}\selectfont}
+  \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{18pt}{14pt}\selectfont}
+	\newcommand{\lsCoverFontColour}{white} % Insert the Colour for Text and Logos on Cover here.
+	
+	%
+	% END FONT MATTERS
+	%
+	
+\begin{document}
+\pagestyle{empty}
+\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
+\pgfsetlayers{lspcls_bg,main}
+
+	\begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
+		\begin{pgfonlayer}{lspcls_bg} % background layer
+			\node [bg, left = 7.5mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
+			\node [bg, right = 7.5mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
+			\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
+		\end{pgfonlayer}
+		
+		% Text and Graphics Layer
+		
+			% Spine
+			\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{../../LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+			\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\author} \hspace{13mm} \lsSpineTitleFont{\title}}; 
+			
+			% Book Cover
+			\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=130mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+			
+			%\ifnum\subtitleStrLen=0  % Is there a subtitle?    % StrLen seems to be incompatible with strings that contain \'e or \c 
+				%\node [below = 11.2mm of lspcls_covertitle.south, text width=130mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\author}}; % If not, just print the author
+				%\else
+				\node [below = 8mm of lspcls_covertitle.south, text width=130mm, align=left] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \subtitle\par}; 
+				\node [below = 11.2mm of lspcls_coversubtitle.south, text width=130mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\author}};
+			%\fi
+			
+			\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{../../LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+			\node [below right = 201.5mm and -.1mm of lspcls_bg1.north west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+			\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle}};
+			
+			% Book Back Cover
+			\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\BackTitle\par}};
+			\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\BackBody}};
+			%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
+			\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
+				\colorbox{white}{
+					\begin{pspicture}(0,0)(4.1,1in)
+					\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+			
+			
+	\end{tikzpicture}
+\end{document}
