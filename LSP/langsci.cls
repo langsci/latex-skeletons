@@ -194,7 +194,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{lsp-seriesinfo/colorinfo.tex}
+% \input{lsp-seriesinfo/colorinfo.tex}
 
 
 
@@ -258,7 +258,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{lsp-seriesinfo/seriesinfo.tex}
+% \input{lsp-seriesinfo/seriesinfo.tex}
 
 % \@ifundefined{blackandwhite}
 % 	{}
