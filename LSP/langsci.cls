@@ -89,21 +89,68 @@
 
 
 \usepackage{etex}
+\usepackage{xstring} % Needed on Lines 114ff and again on 167
+\usepackage{graphicx} % Needed twice
 	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%      Output types (moved from below)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\lsOutputLong}{long}
+\newcommand{\lsOutputShort}{short}
+\newcommand{\lsOutputInprep}{inprep}
+\newcommand{\lsOutputPaper}{paper}
+\newcommand{\lsOutputGuidelines}{guidelines}
+\newcommand{\lsOutputCover}{cover}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Page size and text area:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
  
-\usepackage[ 
-	papersize={170mm,240mm}
-	,top=27.4mm % TODO nachgemessen, nach Vermassung eigentlich 30mm-16pt = 25.8mm
-	,inner=20.5mm, 
-	,outer=24.5mm
-	%,showframe,pass
-	,marginparwidth=50pt
-	]{geometry}
+ \ifx\lsOutput\lsOutputCover % if output = cover
+ 
+	\input{./lengths.tex}
+ 
+ 	\newlength{\seitenbreite}
+ 	\newlength{\seitenhoehe}
+ 	\newlength{\spinewidth}
+ 	\newlength{\totalwidth}
+ 	%\newlength{\totalheight}
+ 	\setlength{\seitenbreite}{169.9mm}
+ 	\setlength{\seitenhoehe}{244.1mm}
+ 	
+ 	\setlength{\spinewidth}{\csspine}			% Create Space Version. Value is in ./localmetadata.tex
+ 	%\setlength{\spinewidth}{\bodspine}         % BoD Version. Value is in ./localmetadata.tex
+ 	
+ 	
+ 	\usepackage{calc}
+
+
+ 	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
+ 	%\setlength{\totalheight}{\seitenhoehe}
+ 	\usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+ 	\usepackage{tikz}
+
+ 	\usetikzlibrary{positioning}
+ 	\hyphenpenalty=10000
+ 	    
+ \else
+ 	\usepackage[ 					% if output != cover
+ 	papersize={170mm,240mm}
+ 	,top=27.4mm % TODO nachgemessen, nach Vermassung eigentlich 30mm-16pt = 25.8mm
+ 	,inner=20.5mm, 
+ 	,outer=24.5mm
+ 	%,showframe,pass
+ 	,marginparwidth=50pt
+ 	]{geometry}
+ \fi
+ 
+
 			
 
 \usepackage[
@@ -122,7 +169,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{xstring} 	% for manipulating strings
+%\usepackage{xstring} 	% for manipulating strings
 \usepackage{ifxetex}
 \ifxetex\else\ClassError{LSP/langsci}{Please use XeLaTeX!}{}\fi
 	
@@ -172,7 +219,7 @@
 
 %\frenchspacing			
 \usepackage[final]{microtype}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 
   \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
   \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
@@ -194,7 +241,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \input{lsp-seriesinfo/colorinfo.tex}
+\input{LSP/lsp-seriesinfo/colorinfo.tex}
 
 
 
@@ -258,7 +305,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \input{lsp-seriesinfo/seriesinfo.tex}
+\input{LSP/lsp-seriesinfo/seriesinfo.tex}
 
 % \@ifundefined{blackandwhite}
 % 	{}
@@ -721,11 +768,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\lsOutputLong}{long}
-\newcommand{\lsOutputShort}{short}
-\newcommand{\lsOutputInprep}{inprep}
-\newcommand{\lsOutputPaper}{paper}
-\newcommand{\lsOutputGuidelines}{guidelines}
+% \newcommands moved to beginning of document so they can be used width geometry.
 
 
 \AtBeginDocument{
@@ -802,7 +845,56 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	{\setcounter{page}{-1}
 	% First titlepage:
 	{\lsFrontPage}}
-\fi	
+\fi
+
+\ifx\lsOutput\lsOutputCover					% only if output=cover
+	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
+	\pagestyle{empty}
+	\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
+	\pgfsetlayers{lspcls_bg,main}
+	
+	\begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
+	\begin{pgfonlayer}{lspcls_bg} % background layer
+	\node [bg, left = 7.5mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
+	\node [bg, right = 7.5mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
+	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
+	\end{pgfonlayer}
+	
+	% Text and Graphics Layer
+	
+	% Spine
+	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\@author} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	
+	% Book Cover
+	
+	\newcommand{\lsCoverFontColour}{white}
+	
+	\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	
+	\ifnum\subtitleStrLen=0  % Is there a subtitle?
+	\node [below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}}; % If not, just print the author
+	\else
+	\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \@subtitle}; 
+	\node [below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}};
+	\fi
+	
+	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+	\node [below right = 201.5mm and -.1mm of lspcls_bg1.north west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+	\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle}};
+	
+	% Book Back Cover
+	\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle}};
+	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
+	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
+	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
+		\colorbox{white}{
+			\begin{pspicture}(0,0)(4.1,1in)
+			\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+	\end{tikzpicture} 
+	\end{titlepage}
+	\end{document}     % the cover and nothing else.
+\fi		
 
 \end{titlepage}
 
