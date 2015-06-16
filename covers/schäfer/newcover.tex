@@ -5,8 +5,9 @@
 \usepackage{calc}
 \usepackage{xstring}
 \usepackage{pst-barcode}
+\usepackage{hyphenat}
 
-\hyphenpenalty=10000
+\hyphenpenalty 750
 
 % CAUTION!
 
@@ -72,7 +73,7 @@
   \newcommand{\lsCoverSeriesHistoryFont}{\sffamily\fontsize{10pt}{5mm}\selectfont}
   \newcommand{\lsInsideFont}{}	% obsolete, see \setmainfont
   \newcommand{\lsDedicationFont}{\fontsize{15pt}{10mm}\selectfont}
-  \newcommand{\lsBackTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
+  \newcommand{\lsBackTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{24pt}{10mm}\selectfont}
   \newcommand{\lsBackBodyFont}{\fontsize{11pt}{5mm}\selectfont}
   \newcommand{\lsSpineAuthorFont}{\fontsize{16pt}{14pt}\selectfont}
   \newcommand{\lsSpineTitleFont}{\sffamily\fontsize{18pt}{14pt}\selectfont}
@@ -115,7 +116,7 @@
 			\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle}};
 			
 			% Book Back Cover
-			\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\BackTitle\par}};
+			\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\nohyphens{\BackTitle}\par}};
 			\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\BackBody}};
 			%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 			\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
