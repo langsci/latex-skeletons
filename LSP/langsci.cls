@@ -91,6 +91,7 @@
 \usepackage{etex}
 \usepackage{xstring} % Needed on Lines 114ff and again on 167
 \usepackage{graphicx} % Needed twice
+\usepackage{hyphenat} % Needed twice
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -104,6 +105,7 @@
 \newcommand{\lsOutputPaper}{paper}
 \newcommand{\lsOutputGuidelines}{guidelines}
 \newcommand{\lsOutputCover}{cover}
+\newcommand{\lsOutputCoverBOD}{coverbod}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,7 +114,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
  
- \ifx\lsOutput\lsOutputCover % if output = cover
+ \ifx\lsOutput\lsOutputCover % if output = cover; This is the CreateSpace Version
  
 	\input{./lengths.tex}
  
@@ -125,7 +127,6 @@
  	\setlength{\seitenhoehe}{244.1mm}
  	
  	\setlength{\spinewidth}{\csspine}			% Create Space Version. Value is in ./localmetadata.tex
- 	%\setlength{\spinewidth}{\bodspine}         % BoD Version. Value is in ./localmetadata.tex
  	
  	
  	\usepackage{calc}
@@ -137,9 +138,41 @@
  	\usepackage{tikz}
 
  	\usetikzlibrary{positioning}
- 	\hyphenpenalty=10000
+ 	\usetikzlibrary{calc}
+ 	\hyphenpenalty 750
  	    
  \else
+ 
+ % Nested ifx. Here follows the BoD Version
+ 
+  \ifx\lsOutput\lsOutputCoverBOD
+     \usepackage{calc}
+
+  \input{./lengths.tex}
+  
+  \newlength{\seitenbreite}
+  \newlength{\seitenhoehe}
+  \newlength{\spinewidth}
+  \newlength{\totalwidth}
+  \newlength{\bodfold}
+  \newlength{\totalspine}
+  %\newlength{\totalheight}
+  \setlength{\bodfold}{8mm}
+  \setlength{\seitenbreite}{192mm}
+  \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Gerader Rücken, Kaschiert, papier 80g/m², weiß
+  \setlength{\spinewidth}{\bodspine}         % BoD Version. Value is in ./localmetadata.tex
+  \setlength{\totalspine}{\spinewidth+\bodfold+\bodfold} 
+  \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
+  %\setlength{\totalheight}{\seitenhoehe}
+  \usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+  \usepackage{tikz}
+  
+  \usetikzlibrary{positioning}
+  \usetikzlibrary{calc}
+  \hyphenpenalty 0
+  
+ \else 
+ 
  	\usepackage[ 					% if output != cover
  	papersize={170mm,240mm}
  	,top=27.4mm % TODO nachgemessen, nach Vermassung eigentlich 30mm-16pt = 25.8mm
@@ -875,13 +908,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
 	\node [below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}}; % If not, just print the author
 	\else
-	\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \@subtitle}; 
+	\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle\par}}; 
 	\node [below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}};
 	\fi
 	
 	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 	\node [below right = 201.5mm and -.1mm of lspcls_bg1.north west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-	\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle}};
+	\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
 	\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle}};
@@ -891,6 +924,65 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\colorbox{white}{
 			\begin{pspicture}(0,0)(4.1,1in)
 			\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+	\end{tikzpicture} 
+	\end{titlepage}
+	\end{document}     % the cover and nothing else.
+\fi		
+
+\ifx\lsOutput\lsOutputCoverBOD				 % only if output=cover
+	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
+	\pagestyle{empty}
+	\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
+	\pgfsetlayers{lspcls_bg,main}
+	
+	\begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
+	\begin{pgfonlayer}{lspcls_bg} % background layer
+	\node [bg, left = 24.5mm of current page.east, fill=\lsSeriesColor, minimum height=23.1cm, minimum width=15.2cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
+	\node [bg, right = 24.5mm of current page.west, fill=\lsSeriesColor, minimum height=23.1cm, minimum width=15.2cm] (lspcls_bg2) {};
+	\node at (current page.center) [bg, minimum height=24.6cm, minimum width=\totalspine,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
+	\end{pgfonlayer}
+	
+	% Text and Graphics Layer
+	
+	% Spine
+	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\@author} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	
+	% Book Cover
+	
+	\newcommand{\lsCoverFontColour}{white}
+	
+	\renewcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{47pt}{16.75mm}\selectfont #1} 
+	\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	
+	\ifnum\subtitleStrLen=0  % Is there a subtitle?
+	\node [below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}}; % If not, just print the author
+	\else
+	\node [below = 8mm of lspcls_covertitle.south, text width=137mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
+	\node [below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}};
+	\fi
+	
+	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+	\node [above right = 15mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+	\path let \p1 = (lspcls_square.base), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+	
+	% Book Back Cover
+	\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle}};
+	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
+	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
+	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
+		\colorbox{white}{
+			\begin{pspicture}(0,0)(4.1,1in)
+			\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+	
+	% Guiding Lines
+%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
+
+%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
+%	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
+%	\draw [dashed, orange, thick] (GL1) -| (GL2) -| (GL1);
+%	
+	
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
