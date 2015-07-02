@@ -170,7 +170,7 @@
   
   \usetikzlibrary{positioning}
   \usetikzlibrary{calc}
-  \hyphenpenalty 0
+  \hyphenpenalty 750
   
  \else 
  
@@ -638,7 +638,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \newcommand{\lsCoverTitleAuthor}{
 	\renewcommand{\newlineCover}{\\}
-	\renewcommand{\newlineSpine}{}
+	\renewcommand{\newline}{}
 	\lsCoverBlock
 
 	\begin{textblock}{140}(15,17.5)
@@ -901,29 +901,27 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	% Spine
 	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
-	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\@author} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
 	
 	% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
-% % the font definition should me moved to an option outside of the titlepage
-% 	\renewcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{47pt}{16.75mm}\selectfont #1} 
-	\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
-	\node [below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}}; % If not, just print the author
+	\node [right, below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
 	\else
 	\node [below = 8mm of lspcls_covertitle.south, text width=137mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
-	\node [below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}};
+	\node [right, below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\@author\par}}};
 	\fi
 	
 	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 	\node [above right = 15mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-	\path let \p1 = (lspcls_square.base), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
-	\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle}};
+	\node [right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
@@ -962,27 +960,27 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	% Spine
 	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
-	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\@author} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
 	
 	% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
-	\node [below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
-	\node [below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}}; % If not, just print the author
+	\node [right, below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
 	\else
-	\node [below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle\par}}; 
-	\node [below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\@author}};
+	\node [right, below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle\par}}; 
+	\node [right, below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}};
 	\fi
 	
 	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 	\node [below right = 201.5mm and -.1mm of lspcls_bg1.north west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-	\node [right = 3mm of lspcls_square.east, text width=95mm] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
-	\node [below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle}};
+	\node [right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
