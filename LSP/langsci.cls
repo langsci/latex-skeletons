@@ -18,12 +18,17 @@
 \newcommand{\lsCopyright}{CC-BY}
 \newcommand{\lsBiblatexBackend}{bibtex}
 \newif\iflsDraft \lsDraftfalse
+\newif\iflsOpenReview \lsOpenReviewfalse
+\newif\iflsShowIndex \lsShowIndexfalse
+
 \newif\iflsIndex \lsIndextrue
 \newif\iflsBiblatex \lsBiblatexfalse
 \newif\iflsCollection \lsCollectionfalse
 \newif\iflsCollectionChapter \lsCollectionChapterfalse
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
 \newif\iflsNewtxmath \lsNewtxmathfalse
+\newif\iflsBlackandwhite \lsBlackandwhitefalse
+
 
 
 % Option handling:
@@ -56,7 +61,7 @@
 	\define@key{langsci}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
 \DeclareVoidOption{blackandwhite}{
-	\newcommand{\blackandwhite}{}}
+	\lsBlackandwhitetrue} 
 \DeclareVoidOption{long}{
 	\renewcommand{\lsOutput}{long}}
 \DeclareVoidOption{smallfont}{  			
@@ -64,8 +69,13 @@
 \DeclareVoidOption{draftmode}{	% 'draftmode' instead of 'draft' due to undesirable side efects	
 	 \lsDrafttrue
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
+\DeclareVoidOption{openreview}{
+	\lsOpenReviewtrue
+	\AtBeginDocument{\renewcommand{\lsISBN}{000-0-000000-00-0}}}
 \DeclareVoidOption{noindex}{  			
 	\lsIndexfalse }
+\DeclareVoidOption{showindex}{  			
+	\lsShowIndextrue }
 \DeclareVoidOption{biblatex}{  			
 	\lsBiblatextrue}
 \DeclareVoidOption{newtxmath}{  			
@@ -84,7 +94,7 @@
 	fontsize=\lsFontsize, % default is 11pt
 	footnotes=multiple,
 	numbers=noenddot,		% no point after last number of chapters/sections
-	toc=bibliographynumbered,
+	toc=bibliography,
 	index=totoc,
 	%chapterprefix=true,
 	%draft=yes,
@@ -92,6 +102,7 @@
 
 
 \usepackage{etex}
+\reserveinserts{18}
 \usepackage{xstring} % Needed on Lines 114ff and again on 167
 \usepackage{graphicx} % Needed twice
 \usepackage{hyphenat} % Needed twice
@@ -214,7 +225,8 @@
 \ifxetex\else\ClassError{LSP/langsci}{Please use XeLaTeX!}{}\fi
 	
 \usepackage{amssymb} % has to be loaded before other stuff
-\usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol			
+% \usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol	
+\usepackage{metalogo}\newcommand{\xelatex}{\XeLaTeX\xspace}	
 \usepackage{fontspec}
 \newcommand{\fontpath}{./LSP/lsp-fonts/}
 
@@ -259,7 +271,7 @@
 
 %\frenchspacing			
 \usepackage[final]{microtype}
-%\usepackage{graphicx}
+% \usepackage{graphicx}
 
   \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
   \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
@@ -281,7 +293,9 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{LSP/lsp-seriesinfo/colorinfo.tex}
+\usepackage{xcolor}
+\input{LSP/lsp-seriesinfo/series.def} % \lsSeriesColor, \lsSeriesTitle and \lsISSN are defined here
+
 
 
 
@@ -345,7 +359,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{LSP/lsp-seriesinfo/seriesinfo.tex}
+% \input{LSP/lsp-seriesinfo/seriesinfo.tex}
 
 % \@ifundefined{blackandwhite}
 % 	{}
@@ -366,6 +380,10 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \iflsDraft
   \ifoot{Draft of \today, \currenttime}
 \fi
+\iflsOpenReview
+  \ifoot{{\color{lsRed}Open review version}. Final version at \url{\lsURL}.}
+\fi
+
 %% \ihead{\upshape{\headmark}}
 %% \ohead{\pagemark}
 %% \cfoot{}
@@ -398,10 +416,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		doi=false,
 		eprint=false,
 		backend=\lsBiblatexBackend,
-		indexing=cite
+		indexing=cite,
+		\iflsCollection\else
+			toc=bib 		% make bibliography appear in toc
+		\fi
 		]{biblatex}
 	\renewcommand{\postnotedelim}{: }%
 	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
+	\renewcommand{\compcitedelim}{\multicitedelim}
 	\DeclareFieldFormat{postnote}{#1}%
 	%\renewcommand{\nameyeardelim}{ }%		
 \else	%BibTeX
@@ -426,6 +448,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	% This is what Stefan did:
 	%\let\citew=\citealt
 \fi
+
+
 
 % penalties against widows and orphans in bibliography
 % http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
@@ -639,11 +663,28 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			of \today, \currenttime
 			\end{tabular}}
 	   \end{textblock}
+	\fi
+	\iflsOpenReview
+		\iflsDraft
+			\ClassError{LSP/langsci}{Open review mode not compatible with draft mode. Please disable one of them}{}	
+		\fi
+		\begin{textblock}{170}(-20,75)
+			\rotatebox{30}{
+			\colorbox{red}{
+			\parbox[c][15ex][c]{220mm}{\centering\lsCoverTitleFont\color{white}Open Review\\[-0.1ex]}
+			% \begin{tabular}{c}
+			% 	~\\
+			% 	\scalebox{6}{\color{red}Open Review}\\[-0.5ex]
+			% 	~%version of \today, \currenttime
+			% \end{tabular}
+			}
+			}
+	   \end{textblock}
 	\fi}
 
 \newcommand{\lsCoverTitleAuthor}{
 	\renewcommand{\newlineCover}{\\}
-	\renewcommand{\newline}{}
+	\renewcommand{\newlineSpine}{}
 	\lsCoverBlock
 
 	\begin{textblock}{140}(15,17.5)
@@ -766,7 +807,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
 	\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}}%
 	\hspace{0.8em}%
-	\parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText}}
+	\parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText.}}
 \newcommand{\lsCollectionPaperCitationText}{\string\lsCollectionPaperCitationText.}
 \newcommand{\lsPaper}{
 	\renewcommand{\maketitle}{
@@ -1033,7 +1074,12 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \ifx\lsSeries\sidl
 	\AtBeginDocument{
 	%\def\exfont{\normalsize\itshape}
-	\renewcommand{\eachwordone}{\itshape} 
+	\renewcommand{\eachwordone}{\itshape} % only \gll
+	
+	\let\oldtable\table 	% footnotes in tables without horizontal line
+	\let\endoldtable\endtable
+	\renewenvironment{table}{\setfootnoterule{0pt}\oldtable}{\endoldtable} 
+
 	}
 \fi
 
@@ -1183,7 +1229,10 @@ guarantee the accuracy of such information thereafter.
 \fi
 
 \raggedbottom
-\deffootnote[1.5em]{1.5em}{0mm}{\textsuperscript{\thefootnotemark}\ }
+\deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}\ }
+\newlength{\normalparindent}
+\AtBeginDocument{\setlength{\normalparindent}{\parindent}}
+
 
 \KOMAoptions{footnotes=multiple}
 
@@ -1402,5 +1451,41 @@ guarantee the accuracy of such information thereafter.
 \setlength{\afterepigraphskip}{0\baselineskip}
 
 \usepackage{./LSP/lsp-styles/lsp-makros}
+
+
+% floats
+% http://mintaka.sdsu.edu/GF/bibliog/latex/floats.html
+% Alter some LaTeX defaults for better treatment of figures:
+
+    % See p.105 of "TeX Unbound" for suggested values.
+    % See pp. 199-200 of Lamport's "LaTeX" book for details.
+    %   General parameters, for ALL pages:
+    \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
+    \renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
+    %   Parameters for TEXT pages (not float pages):
+    \setcounter{topnumber}{2}
+    \setcounter{bottomnumber}{2}
+    \setcounter{totalnumber}{4}     % 2 may work better
+    \setcounter{dbltopnumber}{2}    % for 2-column pages
+    \renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
+    \renewcommand{\textfraction}{0.07}	% allow minimal text w. figs
+    %   Parameters for FLOAT pages (not text pages):
+    \renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
+	% N.B.: floatpagefraction MUST be less than topfraction !!
+    \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
+
+	% remember to use [htp] or [htpb] for placement
+
+\iflsShowIndex	% shows index commands in text
+	\usepackage{soul}
+	\usepackage[textwidth=2cm
+		]{todonotes}
+	\usepackage[noadjust]{marginnote}
+	\renewcommand{\marginpar}{\marginnote}
+	\let\isold\is 
+	\renewcommand{\isi}[1]{\sethlcolor{green}\hl{#1}\isold{#1}}
+	\renewcommand{\is}[1]{\todo[color=green,size=\scriptsize]{\tiny#1}\isold{#1}}
+\fi
+
 
 \endinput
