@@ -7,6 +7,9 @@
 \newcommand{\lsSeriesNumber}{??}
 \newcommand{\lsISSN}{??}
 \newcommand{\lsISBN}{000-0-000000-00-0}
+\newcommand{\lsISBNdigital}{000-0-000000-00-0}
+\newcommand{\lsISBNhardcover}{000-0-000000-00-0}
+\newcommand{\lsISBNsoftcover}{000-0-000000-00-0}
 \newcommand{\lsURL}{http://langsci-press.org/catalog}
 \newcommand{\lsSeries}{eotms}
 \newcommand{\lsSpineBreadth}{20mm}
@@ -92,6 +95,8 @@
 \usepackage{xstring} % Needed on Lines 114ff and again on 167
 \usepackage{graphicx} % Needed twice
 \usepackage{hyphenat} % Needed twice
+
+\renewcommand{\lsISBN}{\lsISBNdigital} % for compatibility
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -882,7 +887,6 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	{\lsFrontPage}}
 \fi
 
-
 \ifx\lsOutput\lsOutputCoverBOD				 % only if output=cover 
 	\renewcommand{\maketitle}{}  %no need for this
 	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
@@ -907,7 +911,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
-\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
 	\node [right, below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
@@ -917,7 +921,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\fi
 	
 	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
-	\node [above right = 15mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
 	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
@@ -927,10 +931,10 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
 		\colorbox{white}{
 			\begin{pspicture}(0,0)(4.1,1in)
-			\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+			\psbarcode[transx=.4,transy=.3]{\lsISBNhardcover}{includetext height=.7}{isbn}\end{pspicture}}};
 	
 	% Guiding Lines
-%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
+	%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
 
 %	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
 %	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
@@ -976,7 +980,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\fi
 	
 	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
-	\node [below right = 201.5mm and -.1mm of lspcls_bg1.north west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
 	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
@@ -986,7 +990,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
 		\colorbox{white}{
 			\begin{pspicture}(0,0)(4.1,1in)
-			\psbarcode[transx=.4,transy=.3]{\lsISBN}{includetext height=.7}{isbn}\end{pspicture}}};
+			\psbarcode[transx=.4,transy=.3]{\lsISBNsoftcover}{includetext height=.7}{isbn}\end{pspicture}}};
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
@@ -1095,7 +1099,12 @@ Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC B
 http://creativecommons.org/licenses/by-nd/4.0/ 
 \fi
  
-ISBN: \lsISBN \\
+\begin{tabular}{@{}l@{~}l}
+ISBN: & \lsISBN~(Digital) \\
+      &	\lsISBNhardcover~(Hardcover)\\
+      & \lsISBNsoftcover~(Softcover)\\
+\end{tabular}
+
 \IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
 	{}
 	{ISSN: \lsISSN}
