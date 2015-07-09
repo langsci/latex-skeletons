@@ -1145,10 +1145,10 @@ Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC B
 http://creativecommons.org/licenses/by-nd/4.0/ 
 \fi
  
-\begin{tabular}{@{}l@{~}l}
-ISBN: & \lsISBN~(Digital) \\
-      &	\lsISBNhardcover~(Hardcover)\\
-      & \lsISBNsoftcover~(Softcover)\\
+\begin{tabular}{@{}l@{~}l@{~}l}
+ISBN: & \lsISBN&(Digital) \\
+      &	\lsISBNhardcover&(Hardcover)\\
+      & \lsISBNsoftcover&(Softcover)\\
 \end{tabular}
 
 \IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
@@ -1437,7 +1437,7 @@ guarantee the accuracy of such information thereafter.
 
 
 % useful commands for glossings:
-\usepackage{./LSP/lsp-styles/lsp-lgr}
+%\usepackage{./LSP/lsp-styles/lsp-lgr}
 
 \newlength{\LSPTmp}
 % a) hspace over width of something without showing it
