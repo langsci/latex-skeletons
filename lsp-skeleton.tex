@@ -8,7 +8,7 @@
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
-\documentclass[output=cover             % long|short|inprep              
+\documentclass[output=short% long|short|inprep              
 % 	        ,blackandwhite
 % 		,smallfont
 %  	        ,draftmode  
@@ -31,6 +31,8 @@
 \input{localcommands.tex} 
 \bibliography{localbibliography} 
 
+% \usepackage{etoolbox}
+% \newtoggle{bbx:related}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             Frontmatter                      %%%
@@ -40,10 +42,13 @@
 \maketitle                
 \frontmatter
 % %% uncomment if you have preface and/or acknowledgements
+
+\currentpdfbookmark{Contents}{name} % adds a PDF bookmark
+\tableofcontents
 % \include{chapters/preface}
 % \include{chapters/acknowledgments}
-% \include{chapters/abbreviations}
-\tableofcontents      
+% \include{chapters/abbreviations} 
+
 \mainmatter         
  
 

@@ -1,43 +1,82 @@
-\documentclass[10pt,landscape]{article}
-\usepackage{graphicx}
-\usepackage{tabularx}
-\usepackage{array}
-\usepackage{calc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%     Language Science Press Master File       %%%
+%%%         follow the instructions below        %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+% Everything following a % is ignored
+% Some lines start with %. Remove the % to include them
 
-\newlength{\seitenbreite}
-\newlength{\seitenhoehe}
-\newlength{\beschnittoben}
-\newlength{\beschnittunten}
-\newlength{\beschnittrechts}
-\newlength{\beschnittlinks}
-\newlength{\spinewidth}
-\newlength{\totalwidth}
-\newlength{\totalheight}
+\documentclass[output=covercreatespace% long|short|inprep              
+% 	        ,blackandwhite
+% 		,smallfont
+%  	        ,draftmode  
+		,biblatex
+		  ]{LSP/langsci}    
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%          additional packages                 %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setlength{\seitenbreite}{169.92mm}
-\setlength{\seitenhoehe}{240mm}
-\setlength{\beschnittoben}{2mm}
-\setlength{\beschnittunten}{2mm}
-\setlength{\beschnittrechts}{0mm}
-\setlength{\beschnittlinks}{0mm} 
+% put all additional commands you need in the 
+% following files. If you do not know what this might 
+% mean, you can safely ignore this section
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% adjust this to the right size for your book
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \setlength{\spinewidth}{2mm+.07*\pagecount}  
-\setlength{\spinewidth}{20.87mm}  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{localmetadata.tex}
+\input{localpackages.tex}
+\input{localhyphenation.tex}
+\input{localcommands.tex} 
+\bibliography{localbibliography} 
 
-\setlength{\totalwidth}{\beschnittlinks+\beschnittrechts+\spinewidth+\seitenbreite+\seitenbreite}
-\setlength{\totalheight}{\beschnittoben+\beschnittunten+\seitenhoehe}
+% \usepackage{etoolbox}
+% \newtoggle{bbx:related}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Frontmatter                      %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}              
+\maketitle                
+\frontmatter
+% %% uncomment if you have preface and/or acknowledgements
 
-\usepackage[paperheight=\totalheight%
-	    ,paperwidth=\totalwidth%
-	    ,left=\beschnittlinks%
-	    ,right=\beschnittrechts%
-	    ,top=\beschnittoben%
-	    ,bottom=\beschnittunten]{geometry}
+\currentpdfbookmark{Contents}{name} % adds a PDF bookmark
+\tableofcontents
+% \include{chapters/preface}
+% \include{chapters/acknowledgments}
+% \include{chapters/abbreviations} 
 
-\begin{document}
-\input{cover.tex}
-\end{document}
+\mainmatter         
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Chapters                         %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
+\include{chapters/02}
+\include{chapters/03}
+% copy the lines above and adapt as necessary
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                                              %%%
+%%%             Backmatter                       %%%
+%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% There is normally no need to change the backmatter section
+\input{backmatter.tex}
+\end{document} 
+
+% you can create your book by running
+% xelatex lsp-skeleton.tex
+%
+% you can also try a simple 
+% make
+% on the commandline
