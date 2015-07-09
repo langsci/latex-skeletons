@@ -1437,7 +1437,7 @@ guarantee the accuracy of such information thereafter.
 
 
 % useful commands for glossings:
-%\usepackage{./LSP/lsp-styles/lsp-lgr}
+\usepackage{./LSP/lsp-styles/lsp-lgr}
 
 \newlength{\LSPTmp}
 % a) hspace over width of something without showing it
