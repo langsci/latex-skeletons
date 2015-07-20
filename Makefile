@@ -24,6 +24,7 @@ book: main.pdf
 cover: main.pdf
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor black -border 2  cover.png
 	display cover.png
+	convert -geometry 50x50% cover.png covertwitter.png
  
 #prepare for print on demand services	
 pod: bod createspace
