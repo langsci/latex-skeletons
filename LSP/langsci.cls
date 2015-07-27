@@ -139,7 +139,8 @@
  	\newlength{\seitenhoehe}
  	\newlength{\spinewidth}
  	\newlength{\totalwidth}
- 	%\newlength{\totalheight}
+ 	\newlength{\totalheight}
+ 	\newlength{\bleed}{3.175mm}
  	\setlength{\seitenbreite}{169.9mm}
  	\setlength{\seitenhoehe}{244.1mm}
  	
@@ -149,9 +150,9 @@
  	\usepackage{calc}
 
 
- 	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
- 	%\setlength{\totalheight}{\seitenhoehe}
- 	\usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+ 	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
+ 	\setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
+ 	\usepackage[paperheight=\totalheight, paperwidth=\totalwidth]{geometry}
  	\usepackage{tikz}
 
  	\usetikzlibrary{positioning}
@@ -987,8 +988,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\end{document}     % the cover and nothing else.
 \fi	
 
-\ifx\lsOutput\lsOutputCoverCS	 % only if output=covercs 	
-\renewcommand{\maketitle}{}  %no need for this 			
+\ifx\lsOutput\lsOutputCoverCS	 			 % only if output=covercs 	
+\renewcommand{\maketitle}{}  				 % no need for this 			
 	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
 	\pagestyle{empty}
 	\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
@@ -996,15 +997,15 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	\begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
 	\begin{pgfonlayer}{lspcls_bg} % background layer
-	\node [bg, left = 7.5mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
-	\node [bg, right = 7.5mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
-	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
+	\node [bg, left = 10.675mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen % 7.5mm -> 10.675mm for bleed
+	\node [bg, right = 10.675mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
+	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add [draw] option for preview mode 
 	\end{pgfonlayer}
 	
 	% Text and Graphics Layer
 	
 	% Spine
-	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+	\node [above = 10.675mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
 	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
 	
 	% Book Cover
