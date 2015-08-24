@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/11/27 Language Science Press]
+\ProvidesClass{LSP/langsci}[2015/07/09 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -246,6 +246,13 @@
 	SlantedFont = FreeMonoOblique_B.otf ,				
 	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
 	]{FreeMono_B.otf}
+% \setmonofont[
+% 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+% 	BoldFont = DejaVuSansMono-Bold.ttf ,
+% 	SlantedFont = DejaVuSansMono-Oblique.ttf ,				
+% 	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
+% 	]{DejaVuSansMono.ttf}
+
 
 
 \setmainfont[
@@ -450,7 +457,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%\let\citew=\citealt
 \fi
 
-
+\let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
 % penalties against widows and orphans in bibliography
 % http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
@@ -517,13 +524,20 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\fi
 	}
 
+\newcommand{\lsLanguageIndexTitle}{Language index}	% This can be changed according to the language.
+\newcommand{\lsSubjectIndexTitle}{Subject index}
+\newcommand{\lsNameIndexTitle}{Name index}
+
+\AtBeginDocument{
 \makeindex
-\newindex{lan}{ldx}{lnd}{Language index}
+\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
 % \newindex{aut}{adx}{and}{Name index}
-\newindex{sbj}{sdx}{snd}{Subject index}
-\renewindex{default}{adx}{and}{Name index} %biblatex can only deal with the default index
+\newindex{sbj}{sdx}{snd}{\lsSubjectIndexTitle}
+\renewindex{default}{adx}{and}{\lsNameIndexTitle} %biblatex can only deal with the default index
 \newindex{wrd}{wdx}{wnd}{Expression index}
 \newindex{rwrd}{rdx}{rnd}{Reverse expression index}
+}
+
 
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
@@ -977,19 +991,19 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	% Guiding Lines
 	%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
-
-%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
-%	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
-%	\draw [dashed, orange, thick] (GL1) -| (GL2) -| (GL1);
-%	
+	
+	%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
+	%	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
+	%	\draw [dashed, orange, thick] (GL1) -| (GL2) -| (GL1);
+	%	
 	
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
-\fi	
-
-\ifx\lsOutput\lsOutputCoverCS	 			 % only if output=covercs 	
-\renewcommand{\maketitle}{}  				 % no need for this 			
+	\fi	
+	
+	\ifx\lsOutput\lsOutputCoverCS	 			 % only if output=covercs 	
+	\renewcommand{\maketitle}{}  				 % no need for this 			
 	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
 	\pagestyle{empty}
 	\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
@@ -1036,7 +1050,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
-\fi		
+	\fi		
 	
 
 \end{titlepage}
