@@ -15,12 +15,12 @@ for f in files:
   for lg in lgs:
     lg = lg.strip()
     if lg == '':
-	continue
+      continue
     c = re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, c)
   for term in terms:
     term = term.strip()
     if term == '':
-	continue
+       continue
     c = re.sub('(?<!isi{)%s(?![\w}])'%term, '\isi{%s}'%term, c)
   nlg = len(re.findall('\\ili{',c))
   nt = len(re.findall('\\isi{',c))
