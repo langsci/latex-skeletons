@@ -11,10 +11,7 @@
 \documentclass[output=short% long|short|inprep              
 % 	        ,blackandwhite
 % 		,smallfont
-%  	        ,draftmode 
-		,collection
-		,collectionchapter
-		,collectiontoclong
+%  	        ,draftmode  
 		,biblatex
 		  ]{LSP/langsci}    
   
@@ -28,6 +25,7 @@
 % following files. If you do not know what this might 
 % mean, you can safely ignore this section
 
+\usepackage{newfile}
 \input{localmetadata.tex}
 \input{localpackages.tex}
 \input{localhyphenation.tex}
@@ -60,11 +58,17 @@
 %%%             Chapters                         %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\let\oldchapter\chapter
+\renewcommand\chapter[2][]{\oldchapter[#1]{#2}\addtostream{pages}{\thepage}}
+\newoutputstream{pages}
+\openoutputfile{\jobname.pgs}{pages}
+ 
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 \include{chapters/02}
 \include{chapters/03}
-% copy the lines above and adapt as necessary
+
+\closeoutputstream{pages}
+% % copy the lines above and adapt as necessary
  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
