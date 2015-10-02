@@ -1,3 +1,4 @@
+import sys
 import re
 import pprint
 
@@ -6,7 +7,7 @@ class Record():
   def __init__(self,s):  
     #print(s)
     m = re.match(self.TYPKEYFIELDS,s)
-    self.typ = m.group(1)
+    self.typ = m.group(1).lower()
     self.key = m.group(2)
     try: 
       self.fields = dict((tp[0].strip()\
@@ -35,6 +36,7 @@ class Record():
     self.conformsubtitles()
     self.conforminitials()
     self.checkand()
+    self.checknumberseries()
       
   def upperme(self,match):
     return match.group(1) + ' {' +match.group(2).upper()+'}'
@@ -58,6 +60,16 @@ class Record():
         commas = self.fields[t].count(',')
         if commas > ands +1:
           print(self.key, self.fields[t])
+          
+  def checknumberseries(self):
+    if self.typ == 'book':
+      if self.fields.get('series') != None: 
+        number = self.fields.get('number')
+        volume = self.fields.get('volume')
+        if volume != None:
+          if number == None:
+            self.fields['number'] = volume
+            del self.fields['volume'] 
 		
     
     
@@ -73,7 +85,7 @@ class Record():
 
 
 if __name__ == "__main__":    
-  inbib = open('localbibliography.bib')
+  inbib = open(sys.argv[1])
   outbib = open('sorted.bib','w')
 
   a = inbib.read().split('\n@') 
