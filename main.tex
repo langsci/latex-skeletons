@@ -58,16 +58,16 @@
 %%%             Chapters                         %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\let\oldchapter\chapter
-\renewcommand\chapter[2][]{\oldchapter[#1]{#2}\addtostream{pages}{\thepage}}
-\newoutputstream{pages}
-\openoutputfile{\jobname.pgs}{pages}
+% \let\oldchapter\chapter
+% \renewcommand\chapter[2][]{\oldchapter[#1]{#2}\addtostream{pages}{\thepage}}
+% \newoutputstream{pages}
+% \openoutputfile{\jobname.pgs}{pages}
  
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 \include{chapters/02}
 \include{chapters/03}
 
-\closeoutputstream{pages}
+% \closeoutputstream{pages}
 % % copy the lines above and adapt as necessary
  
 

@@ -21,25 +21,30 @@ main.pdf: $(SOURCE)
 book: main.pdf 
 
 #create a png of the cover
-cover: main.pdf
+cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor black -border 2  cover.png
-	display cover.png
+	cp cover.png googlebooks_frontcover.png
 	convert -geometry 50x50% cover.png covertwitter.png
+	display cover.png
  
+googlebooks: FORCE
+	cp main.pdf googlebooks_interior.pdf
+	pdftk main.pdf cat 1 output googlebooks_frontcover.pdf
+	
 #prepare for print on demand services	
-pod: bod createspace
+pod: bod createspace googlebooks
  
 
 #prepare for submission to BOD
-bod: main.pdf  
+bod: FORCE
 	sed "s/output=short/output=coverbod/" main.tex >bodcover.tex 
 	xelatex bodcover.tex 
-	xelatex bodcover.tex
+	xelatex bodcover.tex 
 	mv bodcover.pdf bod
 	./filluppages 4 main.pdf bod/bodcontent.pdf 
 
 # prepare for submission to createspace
-createspace:  main.pdf
+createspace:  FORCE
 	sed "s/output=short/output=covercreatespace/" main.tex >createspacecover.tex 
 	xelatex createspacecover.tex
 	xelatex createspacecover.tex
@@ -57,3 +62,5 @@ clean:
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf 
+
+FORCE:

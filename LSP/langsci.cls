@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2015/07/09 Language Science Press]
+\ProvidesClass{LSP/langsci}[2015/09/15 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -22,7 +22,7 @@
 \newif\iflsShowIndex \lsShowIndexfalse
 
 \newif\iflsIndex \lsIndextrue
-\newif\iflsBiblatex \lsBiblatexfalse
+\newif\iflsBiblatex \lsBiblatextrue
 \newif\iflsCollection \lsCollectionfalse
 \newif\iflsCollectionChapter \lsCollectionChapterfalse
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
@@ -70,23 +70,25 @@
 	 \lsDrafttrue
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
 \DeclareVoidOption{openreview}{
-	\lsOpenReviewtrue
+	\lsOpenReviewtrue%
 	\AtBeginDocument{\renewcommand{\lsISBN}{000-0-000000-00-0}}}
 \DeclareVoidOption{noindex}{  			
-	\lsIndexfalse }
+	\lsIndexfalse}
 \DeclareVoidOption{showindex}{  			
-	\lsShowIndextrue }
+	\lsShowIndextrue}
 \DeclareVoidOption{biblatex}{  			
 	\lsBiblatextrue}
+\DeclareVoidOption{bibtex}{  			
+	\lsBiblatexfalse}
 \DeclareVoidOption{newtxmath}{  			
 	\lsNewtxmathtrue}
 \DeclareVoidOption{collection}{  			
 	\lsCollectiontrue}
 \DeclareVoidOption{collectionchapter}{  			
-	\lsCollectiontrue
+	\lsCollectiontrue%
 	\lsCollectionChaptertrue}
 \DeclareVoidOption{collectiontoclong}{  			
-	\lsCollectiontrue
+	\lsCollectiontrue%
 	\lsCollectionTOCLongtrue}
 \ProcessKeyvalOptions{langsci}
 
@@ -131,16 +133,23 @@
 %    Page size and text area:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
- 
+\newlength{\csspine} 
+\newlength{\bodspine}
+        \newlength{\seitenbreite}
+        \newlength{\seitenhoehe}
+        \newlength{\spinewidth}
+        \newlength{\totalwidth}
+        \newlength{\totalheight}
+
+
+
+
+
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version 
 	\input{./lengths.tex}
  
- 	\newlength{\seitenbreite}
- 	\newlength{\seitenhoehe}
- 	\newlength{\spinewidth}
- 	\newlength{\totalwidth}
- 	\newlength{\totalheight}
- 	\newlength{\bleed}{3.175mm}
+ 	\newlength{\bleed}
+	\setlength{\bleed}{3.175mm}
  	\setlength{\seitenbreite}{169.9mm}
  	\setlength{\seitenhoehe}{244.1mm}
  	
@@ -168,13 +177,8 @@
 
   \input{./lengths.tex}
   
-  \newlength{\seitenbreite}
-  \newlength{\seitenhoehe}
-  \newlength{\spinewidth}
-  \newlength{\totalwidth}
   \newlength{\bodfold}
   \newlength{\totalspine}
-  %\newlength{\totalheight}
   \setlength{\bodfold}{8mm}
   \setlength{\seitenbreite}{192mm}
   \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Gerader Rücken, Kaschiert, papier 80g/m², weiß
@@ -240,18 +244,18 @@
 	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
 	]{Arimo_B.ttf}
 		
-\setmonofont[
-	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-	BoldFont = FreeMonoBold_B.otf ,
-	SlantedFont = FreeMonoOblique_B.otf ,				
-	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-	]{FreeMono_B.otf}
 % \setmonofont[
 % 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-% 	BoldFont = DejaVuSansMono-Bold.ttf ,
-% 	SlantedFont = DejaVuSansMono-Oblique.ttf ,				
-% 	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
-% 	]{DejaVuSansMono.ttf}
+% 	BoldFont = FreeMonoBold_B.otf ,
+% 	SlantedFont = FreeMonoOblique_B.otf ,				
+% 	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+% 	]{FreeMono_B.otf}
+\setmonofont[
+	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+	BoldFont = DejaVuSansMono-Bold.ttf ,
+	SlantedFont = DejaVuSansMono-Oblique.ttf ,				
+	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
+	]{DejaVuSansMono.ttf}
 
 
 
@@ -466,7 +470,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
     \clubpenalty10000
     \@clubpenalty \clubpenalty
     \widowpenalty10000}
-
+ 
+% change the default heading from "Bibliography" "List of references"
+\defbibheading{references}{\chapter{References}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -794,7 +800,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\AuthorAffiliation}{
 	\renewcommand{\and}{\newline\newline} 
 	\renewcommand{\lastand}{\newline\newline} 
-	\renewcommand{\affiliation}[1]{\\[0.5ex]{\large ##1}}}
+	\renewcommand{\affiliation}[1]{\\[0.5ex]{\normalsize ##1}}}
 \newcommand{\lsCollectionPaperHeaderAuthor}{{%
 	\renewcommand{\newlineCover}{}%
 	\renewcommand{\newlineTOC}{}%
@@ -812,13 +818,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsCollectionPaperTitle}{{%
 	\renewcommand{\newlineTOC}{}
 	\renewcommand{\newlineCover}{\\}
-	\iflsCollectionChapter 
+	\iflsCollectionChapter
+		\vspace*{-2\baselineskip} 
 		{\LARGE Chapter \thechapter}\newline\newline\fi
 	\@title}}
 \newcommand{\lsCollectionPaperAuthor}{{%
 	\renewcommand{\newlineTOC}{}
 	\renewcommand{\newlineCover}{\\[0.5ex]}
-	\AuthorAffiliation\LARGE\@author}}
+	\AuthorAffiliation\Large\@author}}
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
 	\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}}%
 	\hspace{0.8em}%
@@ -1186,7 +1193,7 @@ Typesetting:
 Proofreading:
 \@proofreader \\
 \fi
-Fonts: Linux Libertine, Arimo \\
+Fonts: Linux Libertine, Arimo, DejaVu Sans Mono\\
 Typesetting software: \XeLaTeX
 
 \bigskip
@@ -1363,7 +1370,7 @@ guarantee the accuracy of such information thereafter.
 	\StrSubstitute{\editorTemp}{\&}{ and }[\editorTemp]
 
 	%% write bib entry to file
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=2014,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
 
 	%\printbibliography[heading=subbibliography,notkeyword=this]  
 	\end{refsection}
