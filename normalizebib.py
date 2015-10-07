@@ -34,7 +34,10 @@ class Record():
     
   def conform(self):
     if self.fields.get('editor') != None and self.fields.get('booktitle') == None:
-      self.fields['booktitle'] = self.fields['title'] 
+      try:      
+        self.fields['booktitle'] = self.fields['title'] 
+      except KeyError:
+        self.errors.append("neither title nor booktitle")
     pages = self.fields.get('pages')
     if pages != None: 
       self.fields['pages'] = re.sub(r'([0-9])-([0-9])',r'\1--\2',pages)
@@ -42,8 +45,8 @@ class Record():
     self.conformsubtitles()
     self.conforminitials()
     self.checkand()
-    self.checkbook()
     self.checkarticle()
+    self.checkbook()
     self.checkincollection()
   
   def report(self):
@@ -99,6 +102,7 @@ class Record():
     if self.typ != 'article':
       return 
     mandatory = ('author', 'year', 'title', 'journal', 'volume', 'pages')
+    #print(self.typ, self.key,self.fields.keys())
     for m in mandatory:
       self.handleerror(m)
       
