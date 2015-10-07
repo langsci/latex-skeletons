@@ -2,6 +2,7 @@ import sys
 import re
 import pprint
 
+keys = {}
 class Record(): 
   TYPKEYFIELDS = r"^([^\{]+)\{([^,]+),[\s\n\t]*((?:.|\n)*)\}"
   def __init__(self,s):  
@@ -24,7 +25,12 @@ class Record():
             )
     except IndexError:
       print(s)
+    self.errors = []
+    if self.key in keys:
+      self.errors.append("duplicate key %s"% self.key)
+    keys[self.key] = True
     self.conform()
+    self.report()
     
   def conform(self):
     if self.fields.get('editor') != None and self.fields.get('booktitle') == None:
@@ -36,7 +42,14 @@ class Record():
     self.conformsubtitles()
     self.conforminitials()
     self.checkand()
-    self.checknumberseries()
+    self.checkbook()
+    self.checkarticle()
+    self.checkincollection()
+  
+  def report(self):
+    if len(self.errors)>0: 
+      print(self.key,'\n  '.join(['  ']+self.errors))
+ 
       
   def upperme(self,match):
     return match.group(1) + ' {' +match.group(2).upper()+'}'
@@ -61,15 +74,52 @@ class Record():
         if commas > ands +1:
           print(self.key, self.fields[t])
           
-  def checknumberseries(self):
-    if self.typ == 'book':
-      if self.fields.get('series') != None: 
-        number = self.fields.get('number')
-        volume = self.fields.get('volume')
-        if volume != None:
-          if number == None:
-            self.fields['number'] = volume
-            del self.fields['volume'] 
+  def checkbook(self):
+    if self.typ != 'book':
+      return 
+    mandatory = ('year', 'title', 'address', 'publisher')
+    for m in mandatory:
+      self.handleerror(m)
+    if self.fields.get('series') != None: 
+      number = self.fields.get('number')
+      volume = self.fields.get('volume')
+      if volume != None:
+        if number == None:
+          self.fields['number'] = volume
+          del self.fields['volume'] 
+    if self.fields.get('author') ==  None:
+      if  self.fields.get('editor') ==  None:
+        print("neither author nor editor")        
+    if self.fields.get('author') !=  None:
+      if  self.fields.get('editor') !=  None:
+        print("both author and editor")
+        
+      
+  def checkarticle(self):
+    if self.typ != 'article':
+      return 
+    mandatory = ('author', 'year', 'title', 'journal', 'volume', 'pages')
+    for m in mandatory:
+      self.handleerror(m)
+      
+  def checkincollection(self):
+    if self.typ != 'incollection':
+      return 
+    mandatory = ('author', 'year', 'title', 'pages')
+    for m in mandatory:
+      self.handleerror(m)
+    if self.fields.get('crossref'):
+      return
+    mandatory2 = ('booktitle', 'editor', 'publisher', 'address')
+    for m2 in mandatory2:
+      self.handleerror(m2)
+        
+      
+  def handleerror(self,m):
+      if self.fields.get(m) == None:
+        self.fields[m] = r"\biberror{no %s}" % m
+        self.errors.append("missing %s"%m) 
+      
 		
     
     
