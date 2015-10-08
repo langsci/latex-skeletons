@@ -1,11 +1,12 @@
 import sys
 import re
 import pprint
+import glob
 
 keys = {}
 class Record(): 
   TYPKEYFIELDS = r"^([^\{]+)\{([^,]+),[\s\n\t]*((?:.|\n)*)\}"
-  def __init__(self,s):  
+  def __init__(self,s,inkeys=[],restrict=False):  
     #print(s)
     m = re.match(self.TYPKEYFIELDS,s)
     self.typ = m.group(1).lower()
@@ -25,6 +26,8 @@ class Record():
             )
     except IndexError:
       print(s)
+    self.inkeysd = dict(zip(inkeys,[True for t in range(len(inkeys))]))
+    self.restrict = restrict
     self.errors = []
     if self.key in keys:
       self.errors.append("duplicate key %s"% self.key)
@@ -45,13 +48,15 @@ class Record():
     self.conformsubtitles()
     self.conforminitials()
     self.checkand()
+    self.checkquestionmarks()
     self.checkarticle()
     self.checkbook()
     self.checkincollection()
   
   def report(self):
-    if len(self.errors)>0: 
-      print(self.key,'\n  '.join(['  ']+self.errors))
+    if len(self.errors)>0:
+      if self.inkeysd.get(self.key):
+        print(self.key,'\n  '.join(['  ']+self.errors))
  
       
   def upperme(self,match):
@@ -75,7 +80,7 @@ class Record():
         ands = self.fields[t].count(' and ')
         commas = self.fields[t].count(',')
         if commas > ands +1:
-          print(self.key, self.fields[t])
+          self.errors.append("problem with commas in %s: %s"% (t,self.fields[t]))
           
   def checkbook(self):
     if self.typ != 'book':
@@ -92,10 +97,10 @@ class Record():
           del self.fields['volume'] 
     if self.fields.get('author') ==  None:
       if  self.fields.get('editor') ==  None:
-        print("neither author nor editor")        
+        self.errors.append("neither author nor editor")        
     if self.fields.get('author') !=  None:
       if  self.fields.get('editor') !=  None:
-        print("both author and editor")
+        self.errors.append("both author and editor")
         
       
   def checkarticle(self):
@@ -117,6 +122,11 @@ class Record():
     mandatory2 = ('booktitle', 'editor', 'publisher', 'address')
     for m2 in mandatory2:
       self.handleerror(m2)
+      
+  def checkquestionmarks(self):
+    for field in self.fields:
+      if '??' in self.fields[field]:
+        self.errors.append("?? in %s" % field)
         
       
   def handleerror(self,m):
@@ -128,12 +138,16 @@ class Record():
     
     
   def bibtex(self): 
+    
     s = """@%s{%s,\n\t%s\n}"""%(self.typ,
-																self.key,",\n\t".join(
-																									["%s = %s" %(f,self.fields[f]) 
-																									for f in sorted(self.fields.keys())]
-																									)
-															)
+				self.key,
+				",\n\t".join(
+                                              ["%s = %s" %(f,self.fields[f]) 
+                                              for f in sorted(self.fields.keys()) 
+                                              if restrict == False or self.inkeysd.get(f)
+                                              ]
+                                            )
+                                )
     return s
     
 
@@ -141,12 +155,18 @@ class Record():
 if __name__ == "__main__":    
   inbib = open(sys.argv[1])
   outbib = open('sorted.bib','w')
-
+  texs = glob.glob('chapters/*tex')
+  CITE = re.compile(r'\cite[altp]\{(.*?)\}')
+  citations = []
+  for tex in texs:
+    citations += CITE.findall(open(tex).read())
+  citations = list(set(citations))
   a = inbib.read().split('\n@') 
   p = a[0]
   r = a[1:] 
   r.sort() #in order to get the order of edited volumes and incollection right
-  new = ',\n\n'.join([Record(q).bibtex() for q in r[::-1]]) 
+  restrict = False
+  new = ',\n\n'.join([Record(q,inkeys=citations, restrict=restrict).bibtex() for q in r[::-1]]) 
   #print(new)
   inbib.close()
   outbib.write(p)
