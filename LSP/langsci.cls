@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2014/11/27 Language Science Press]
+\ProvidesClass{LSP/langsci}[2015/09/15 Language Science Press]
 
 % Default values:
 \usepackage{xspace}
@@ -22,7 +22,7 @@
 \newif\iflsShowIndex \lsShowIndexfalse
 
 \newif\iflsIndex \lsIndextrue
-\newif\iflsBiblatex \lsBiblatexfalse
+\newif\iflsBiblatex \lsBiblatextrue
 \newif\iflsCollection \lsCollectionfalse
 \newif\iflsCollectionChapter \lsCollectionChapterfalse
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
@@ -70,23 +70,25 @@
 	 \lsDrafttrue
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
 \DeclareVoidOption{openreview}{
-	\lsOpenReviewtrue
+	\lsOpenReviewtrue%
 	\AtBeginDocument{\renewcommand{\lsISBN}{000-0-000000-00-0}}}
 \DeclareVoidOption{noindex}{  			
-	\lsIndexfalse }
+	\lsIndexfalse}
 \DeclareVoidOption{showindex}{  			
-	\lsShowIndextrue }
+	\lsShowIndextrue}
 \DeclareVoidOption{biblatex}{  			
 	\lsBiblatextrue}
+\DeclareVoidOption{bibtex}{  			
+	\lsBiblatexfalse}
 \DeclareVoidOption{newtxmath}{  			
 	\lsNewtxmathtrue}
 \DeclareVoidOption{collection}{  			
 	\lsCollectiontrue}
 \DeclareVoidOption{collectionchapter}{  			
-	\lsCollectiontrue
+	\lsCollectiontrue%
 	\lsCollectionChaptertrue}
 \DeclareVoidOption{collectiontoclong}{  			
-	\lsCollectiontrue
+	\lsCollectiontrue%
 	\lsCollectionTOCLongtrue}
 \ProcessKeyvalOptions{langsci}
 
@@ -131,15 +133,23 @@
 %    Page size and text area:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
- 
+\newlength{\csspine} 
+\newlength{\bodspine}
+        \newlength{\seitenbreite}
+        \newlength{\seitenhoehe}
+        \newlength{\spinewidth}
+        \newlength{\totalwidth}
+        \newlength{\totalheight}
+
+
+
+
+
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version 
 	\input{./lengths.tex}
  
- 	\newlength{\seitenbreite}
- 	\newlength{\seitenhoehe}
- 	\newlength{\spinewidth}
- 	\newlength{\totalwidth}
- 	%\newlength{\totalheight}
+ 	\newlength{\bleed}
+	\setlength{\bleed}{3.175mm}
  	\setlength{\seitenbreite}{169.9mm}
  	\setlength{\seitenhoehe}{244.1mm}
  	
@@ -149,9 +159,9 @@
  	\usepackage{calc}
 
 
- 	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
- 	%\setlength{\totalheight}{\seitenhoehe}
- 	\usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+ 	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
+ 	\setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
+ 	\usepackage[paperheight=\totalheight, paperwidth=\totalwidth]{geometry}
  	\usepackage{tikz}
 
  	\usetikzlibrary{positioning}
@@ -167,13 +177,8 @@
 
   \input{./lengths.tex}
   
-  \newlength{\seitenbreite}
-  \newlength{\seitenhoehe}
-  \newlength{\spinewidth}
-  \newlength{\totalwidth}
   \newlength{\bodfold}
   \newlength{\totalspine}
-  %\newlength{\totalheight}
   \setlength{\bodfold}{8mm}
   \setlength{\seitenbreite}{192mm}
   \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Gerader Rücken, Kaschiert, papier 80g/m², weiß
@@ -239,12 +244,19 @@
 	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
 	]{Arimo_B.ttf}
 		
+% \setmonofont[
+% 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
+% 	BoldFont = FreeMonoBold_B.otf ,
+% 	SlantedFont = FreeMonoOblique_B.otf ,				
+% 	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
+% 	]{FreeMono_B.otf}
 \setmonofont[
 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-	BoldFont = FreeMonoBold_B.otf ,
-	SlantedFont = FreeMonoOblique_B.otf ,				
-	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-	]{FreeMono_B.otf}
+	BoldFont = DejaVuSansMono-Bold.ttf ,
+	SlantedFont = DejaVuSansMono-Oblique.ttf ,				
+	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
+	]{DejaVuSansMono.ttf}
+
 
 
 \setmainfont[
@@ -333,7 +345,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \proofreader{}
 %\def\@author{\@latex@warning@no@line{No \noexpand\author given}}
 
-
+\newcommand{\keywords}[1]{}%This command is only for bookkeeping purposes and will not be printed out
 \newcommand{\ISBN}[1]{\renewcommand{\lsISBN}{#1}}
 \newcommand{\URL}[1]{\renewcommand{\lsURL}{#1}}
 \newcommand{\Series}[1]{\renewcommand{\lsSeries}{#1}}
@@ -449,7 +461,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%\let\citew=\citealt
 \fi
 
-
+\let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
 % penalties against widows and orphans in bibliography
 % http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
@@ -458,7 +470,9 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
     \clubpenalty10000
     \@clubpenalty \clubpenalty
     \widowpenalty10000}
-
+ 
+% change the default heading from "Bibliography" "List of references"
+\defbibheading{references}{\chapter{References}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -516,13 +530,20 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\fi
 	}
 
+\newcommand{\lsLanguageIndexTitle}{Language index}	% This can be changed according to the language.
+\newcommand{\lsSubjectIndexTitle}{Subject index}
+\newcommand{\lsNameIndexTitle}{Name index}
+
+\AtBeginDocument{
 \makeindex
-\newindex{lan}{ldx}{lnd}{Language index}
+\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
 % \newindex{aut}{adx}{and}{Name index}
-\newindex{sbj}{sdx}{snd}{Subject index}
-\renewindex{default}{adx}{and}{Name index} %biblatex can only deal with the default index
+\newindex{sbj}{sdx}{snd}{\lsSubjectIndexTitle}
+\renewindex{default}{adx}{and}{\lsNameIndexTitle} %biblatex can only deal with the default index
 \newindex{wrd}{wdx}{wnd}{Expression index}
 \newindex{rwrd}{rdx}{rnd}{Reverse expression index}
+}
+
 
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
@@ -779,7 +800,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\AuthorAffiliation}{
 	\renewcommand{\and}{\newline\newline} 
 	\renewcommand{\lastand}{\newline\newline} 
-	\renewcommand{\affiliation}[1]{\\[0.5ex]{\large ##1}}}
+	\renewcommand{\affiliation}[1]{\\[0.5ex]{\normalsize ##1}}}
 \newcommand{\lsCollectionPaperHeaderAuthor}{{%
 	\renewcommand{\newlineCover}{}%
 	\renewcommand{\newlineTOC}{}%
@@ -797,13 +818,14 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsCollectionPaperTitle}{{%
 	\renewcommand{\newlineTOC}{}
 	\renewcommand{\newlineCover}{\\}
-	\iflsCollectionChapter 
+	\iflsCollectionChapter
+		\vspace*{-2\baselineskip} 
 		{\LARGE Chapter \thechapter}\newline\newline\fi
 	\@title}}
 \newcommand{\lsCollectionPaperAuthor}{{%
 	\renewcommand{\newlineTOC}{}
 	\renewcommand{\newlineCover}{\\[0.5ex]}
-	\AuthorAffiliation\LARGE\@author}}
+	\AuthorAffiliation\Large\@author}}
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
 	\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}}%
 	\hspace{0.8em}%
@@ -946,27 +968,27 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	% Spine
 	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
-	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
 	
 	% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
-	\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	\node [execute at begin node={}, font=\fontsize{52pt}{16.75mm}\selectfont, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=13.7cm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
-	\node [right, below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
+	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_covertitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
 	\else
-	\node [below = 8mm of lspcls_covertitle.south, text width=137mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
-	\node [right, below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\@author\par}}};
+	\node [font=\fontsize{25pt}{10mm}\selectfont,below = 8mm of lspcls_covertitle.south, text width=137mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
+	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\@author\par}}};
 	\fi
 	
 	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
-	\node [right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
+	\node [font=\fontsize{25pt}{10mm}\selectfont, right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
@@ -976,19 +998,19 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	% Guiding Lines
 	%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
-
-%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
-%	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
-%	\draw [dashed, orange, thick] (GL1) -| (GL2) -| (GL1);
-%	
+	
+	%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
+	%	\node [above left=17mm and 17mm of current page.south east] (GL2) {};
+	%	\draw [dashed, orange, thick] (GL1) -| (GL2) -| (GL1);
+	%	
 	
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
-\fi	
-
-\ifx\lsOutput\lsOutputCoverCS	 % only if output=covercs 	
-\renewcommand{\maketitle}{}  %no need for this 			
+	\fi	
+	
+	\ifx\lsOutput\lsOutputCoverCS	 			 % only if output=covercs 	
+	\renewcommand{\maketitle}{}  				 % no need for this 			
 	\StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
 	\pagestyle{empty}
 	\pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
@@ -996,36 +1018,36 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	
 	\begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
 	\begin{pgfonlayer}{lspcls_bg} % background layer
-	\node [bg, left = 7.5mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen
-	\node [bg, right = 7.5mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
-	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
+	\node [bg, left = 10.675mm of current page.east, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen % 7.5mm -> 10.675mm for bleed
+	\node [bg, right = 10.675mm of current page.west, fill=\lsSeriesColor, minimum height=22.5cm, minimum width=15.5cm] (lspcls_bg2) {};
+	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add [draw] option for preview mode 
 	\end{pgfonlayer}
 	
 	% Text and Graphics Layer
 	
 	% Spine
-	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
-	\node [above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	\node [above = 10.675mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
 	
 	% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
-	\node [execute at begin node={\spaceskip 2ex}, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+	\node [execute at begin node={}, font=\fontsize{52pt}{16.75mm}\selectfont, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
 	\ifnum\subtitleStrLen=0  % Is there a subtitle?
-	\node [right, below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
+	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_covertitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}}; % If not, just print the author
 	\else
-	\node [right, below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle\par}}; 
-	\node [right, below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}};
+	\node [font=\fontsize{25pt}{10mm}\selectfont, right, below = 8mm of lspcls_covertitle.south, text width=140mm] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle\par}}; 
+	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}};
 	\fi
 	
 	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
 	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
 	% Book Back Cover
-	\node [right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
+	\node [font=\fontsize{25pt}{10mm}\selectfont, right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
@@ -1035,7 +1057,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
-\fi		
+	\fi		
 	
 
 \end{titlepage}
@@ -1145,10 +1167,10 @@ Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC B
 http://creativecommons.org/licenses/by-nd/4.0/ 
 \fi
  
-\begin{tabular}{@{}l@{~}l@{~}l}
-ISBN: & \lsISBN&(Digital) \\
-      &	\lsISBNhardcover&(Hardcover)\\
-      & \lsISBNsoftcover&(Softcover)\\
+\begin{tabular}{@{}l@{~}l}
+ISBN: & \lsISBN~(Digital) \\
+      &	\lsISBNhardcover~(Hardcover)\\
+      & \lsISBNsoftcover~(Softcover)\\
 \end{tabular}
 
 \IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
@@ -1171,7 +1193,7 @@ Typesetting:
 Proofreading:
 \@proofreader \\
 \fi
-Fonts: Linux Libertine, Arimo \\
+Fonts: Linux Libertine, Arimo, DejaVu Sans Mono\\
 Typesetting software: \XeLaTeX
 
 \bigskip
@@ -1348,7 +1370,7 @@ guarantee the accuracy of such information thereafter.
 	\StrSubstitute{\editorTemp}{\&}{ and }[\editorTemp]
 
 	%% write bib entry to file
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=2014,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
 
 	%\printbibliography[heading=subbibliography,notkeyword=this]  
 	\end{refsection}
