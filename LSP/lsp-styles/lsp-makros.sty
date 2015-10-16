@@ -57,9 +57,9 @@
 
 
 \newcommand{\ispackage}[1]{\if@noftnote%
-\index{package!{\sc #1}}%
+\is{package!{\scshape #1}}%
 \else%
-\index{package!{\sc #1}|fn{*}}%
+\is{package!{\scshape #1}|fn{*}}%
 \fi%
 }
 
@@ -68,23 +68,23 @@
 
 
 \newcommand{\ispackageb}[1]{
-\index{package!\texttt{#1}|(}
+\is{package!\texttt{#1}|(}
 }
 \newcommand{\ispackagee}[1]{
-\index{package!\texttt{#1}|)}
+\is{package!\texttt{#1}|)}
 }
 
 \newcommand{\isoption}[1]{\if@noftnote%
-\index{option!\texttt{#1}}%
+\is{option!\texttt{#1}}%
 \else%
-\index{option!\texttt{#1}|fn{*}}%
+\is{option!\texttt{#1}|fn{*}}%
 \fi%
 }
 
 \newcommand{\iscommand}[1]{\if@noftnote%
 \index{#1@{\ttfamily $\backslash$#1}}%
 \else%
-\index{{#1@\ttfamily $\backslash$#1}|fn{*}}%
+\is{{#1@\ttfamily $\backslash$#1}|fn{*}}%
 \fi%
 }
 
@@ -103,7 +103,9 @@
 % \arabic{lsptempcnt}}%
 
 
-\newcommand{\sectref}[1]{{\S}~\ref{#1}}
+\newcommand{\sectref}[1]{{\S}\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+\newcommand{\partref}[1]{Part~\ref{#1}}
 \newcommand{\tabref}[1]{Table~\ref{#1}}
 \newcommand{\figref}[1]{Figure~\ref{#1}}
 
@@ -116,8 +118,81 @@
 \newcommand{\iai}[1]{\ia{#1}#1}
 \newcommand{\ili}[1]{\il{#1}#1}
 
-\newcommand{\ob}{{\rm [}} %opening bracket
-\newcommand{\cb}{{\rm ]}} %closing bracket
-\newcommand{\op}{{\rm (}} %opening paren
-\newcommand{\cp}{{\rm (}} %closing paren
-\newcommand{\rmfnm}{{\rm\footnotemark}} %romanfootnotemark
+\newcommand{\ob}{{\upshape [}} %opening bracket
+\newcommand{\cb}{{\upshape ]}} %closing bracket
+\newcommand{\op}{{\upshape (}} %opening paren
+\newcommand{\cp}{{\upshape )}} %closing paren
+\newcommand{\rmfnm}{{\upshape\footnotemark}} %romanfootnotemark
+
+\newcommand{\citegen}[2][]{\citeauthor{#2}'s (\citeyear[#1]{#2})}
+
+ 
+\definecolor{langscicol1}{cmyk}{0.6,0.05,0.05,0}
+\definecolor{langscicol2}{cmyk}{0.75,0.15,0,0}
+\definecolor{langscicol3}{cmyk}{0.9,0.4,0.05,0}
+\definecolor{langscicol4}{cmyk}{0.9,0.5,0.15,0.3}
+\definecolor{langscicol5}{cmyk}{1,0.47,0.22,0.68}
+\definecolor{langscicol6}{cmyk}{0,0.25,1,0}
+\definecolor{langscicol7}{cmyk}{0,0.50,1,0}
+\definecolor{langscicol8}{cmyk}{0,0.64,1,0}
+\definecolor{langscicol9}{cmyk}{0,0.78,1,0}
+\definecolor{langscicol10}{cmyk}{0.05,1,0.8,0}
+\definecolor{langscicol11}{cmyk}{0.3,1,0.6,0}
+\definecolor{langscicol12}{cmyk}{0.54,1,0.65,0.1}
+\definecolor{langscicol13}{cmyk}{0.58,1,0.70,0.35}
+\definecolor{langscicol14}{cmyk}{0.32,0.02,0.72,0}
+\definecolor{langscicol15}{cmyk}{0.4,0,1,0}
+\definecolor{langscicol16}{cmyk}{0.55,0,0.9,0.1}
+\definecolor{langscicol17}{cmyk}{0.6,0,0.9,0.35}
+\definecolor{langscicol18}{cmyk}{0.85,0.02,0.95,0.38}
+\definecolor{langscicol19}{cmyk}{0.85,0.05,1,0.5}
+\definecolor{langscicol20}{cmyk}{0.88,0.15,1,0.66}
+
+
+\newcommand{\lsptable}[2]{
+\resizebox{#1}{!}{
+\begin{tabularx}{\textwidth}{XXXXXXXXXXXXXXXXXXXX}
+ \cellcolor{langscicol1}&\cellcolor{langscicol2}&\cellcolor{langscicol3}&\cellcolor{langscicol4}&\cellcolor{langscicol5}&\cellcolor{langscicol6}&\cellcolor{langscicol7}&\cellcolor{langscicol8}&\cellcolor{langscicol9}&\cellcolor{langscicol10}&\cellcolor{langscicol11}&\cellcolor{langscicol12}&\cellcolor{langscicol13}&\cellcolor{langscicol14}&\cellcolor{langscicol15}&\cellcolor{langscicol16}&\cellcolor{langscicol17}&\cellcolor{langscicol18}&\cellcolor{langscicol19}&\cellcolor{langscicol20}
+ \rule{0pt}{#2}
+\end{tabularx}
+}
+}
+
+\newcommand{\fitpagewidth}[1]{
+  \resizebox{\textwidth}{!}{#1}
+}
+
+\newcommand{\protectedex}[1]{
+\parbox{\textwidth}{#1}
+}
+
+\newcommand{\largerpage}[1][1]{
+\enlargethispage{#1\baselineskip}
+}
+
+%add intonation bars over morphemes or words
+\newcommand{\intline}[2]{\settowidth{\LSPTmp}{#2}\raisebox{#1pt}{\parbox{.1mm}{\rule{\LSPTmp}{.5pt}}}#2}
+
+%add rising or falling intonation
+\newcommand{\dline}[3]{%
+  \parbox{.1mm}{\begin{picture}(0,0)%
+			  \put(0,#1){\line(#2,-1){#3}}%
+			  \end{picture}%
+  }%
+}
+
+%% rotated table headers
+% create lengths
+\newlength{\rotheight}
+\newlength{\rotwidth}
+
+\newcommand{\rothead}[2][1cm]{
+%width is the width of the parbox
+%height is the buffer space used to vertically stretch the headere
+\setlength{\rotwidth}{#1}
+\setlength{\rotheight}{.85\rotwidth}
+  \begin{rotate}{33}~ %nbsp shifts the content away from the line underneath
+   \parbox{\rotwidth}{\raggedright #2}   
+  \end{rotate}%
+  \rule{0pt}{\rotheight} %add zero width rule to get the right table height
+}
