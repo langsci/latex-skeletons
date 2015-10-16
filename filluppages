@@ -7,9 +7,6 @@ endpage=$(($p - 1))
 effectivepages=$(($p - 1))  
 # compute how many blank pages to add
 n=$(($modulo -  $effectivepages % modulo)) 
-if(n eq modulo)
-n=0
-fi
 # start with no blank pages
 b=''
 #accumulate Bs until we reach a multiple

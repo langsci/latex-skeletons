@@ -9,10 +9,7 @@
 % Some lines start with %. Remove the % to include them
 
 \documentclass[output=covercreatespace% long|short|inprep              
-% 	        ,blackandwhite
-% 		,smallfont
 %  	        ,draftmode  
-		,biblatex
 		  ]{LSP/langsci}    
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,15 +22,12 @@
 % following files. If you do not know what this might 
 % mean, you can safely ignore this section
 
-\usepackage{newfile}
 \input{localmetadata.tex}
 \input{localpackages.tex}
 \input{localhyphenation.tex}
 \input{localcommands.tex} 
 \bibliography{localbibliography} 
 
-% \usepackage{etoolbox}
-% \newtoggle{bbx:related}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             Frontmatter                      %%%
@@ -49,7 +43,6 @@
 % \include{chapters/preface}
 % \include{chapters/acknowledgments}
 % \include{chapters/abbreviations} 
-
 \mainmatter         
  
 
@@ -58,18 +51,12 @@
 %%%             Chapters                         %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \let\oldchapter\chapter
-% \renewcommand\chapter[2][]{\oldchapter[#1]{#2}\addtostream{pages}{\thepage}}
-% \newoutputstream{pages}
-% \openoutputfile{\jobname.pgs}{pages}
  
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 \include{chapters/02}
 \include{chapters/03}
 
-% \closeoutputstream{pages}
 % % copy the lines above and adapt as necessary
- 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
@@ -82,7 +69,7 @@
 \end{document} 
 
 % you can create your book by running
-% xelatex lsp-skeleton.tex
+% xelatex main.tex
 %
 % you can also try a simple 
 % make
