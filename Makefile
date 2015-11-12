@@ -2,23 +2,24 @@
 all: book 
 
 # specify thh main file and all the files that you are including
-SOURCE= lsp-skeletonnofonts.tex chapters/01.tex chapters/02.tex chapters/03.tex \
-localbibliography.bib \
+SOURCE= $(wildcard *.tex) $(wildcard chapters/*.tex)\
+localbibliography.bib\
 LSP/langsci.cls
 	 
-lsp-skeletonnofonts.pdf: lsp-skeletonnofonts.tex $(SOURCE)
-	xelatex -no-pdf lsp-skeletonnofonts 
-	bibtex -min-crossrefs=200 lsp-skeletonnofonts
-	xelatex  -no-pdf lsp-skeletonnofonts
-	sed -i s/.*\\emph.*// lsp-skeletonnofonts.adx #remove titles which biblatex puts into the name index
-	makeindex -o lsp-skeletonnofonts.and lsp-skeletonnofonts.adx
-	makeindex -o lsp-skeletonnofonts.lnd lsp-skeletonnofonts.ldx
-	makeindex -o lsp-skeletonnofonts.snd lsp-skeletonnofonts.sdx
-	xelatex -no-pdf lsp-skeletonnofonts 
-	xelatex lsp-skeletonnofonts 
+main.pdf: $(SOURCE)
+	xelatex -no-pdf main 
+	bibtex -min-crossrefs=200 main
+	xelatex  -no-pdf main
+	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
+	makeindex -o main.and main.adx
+	makeindex -o main.lnd main.ldx
+	makeindex -o main.snd main.sdx
+	xelatex -no-pdf main 
+	xelatex main 
 
 #create only the book
-book: lsp-skeletonnofonts.pdf 
+book: main.pdf 
+
 
 #housekeeping	
 clean:
@@ -31,3 +32,5 @@ clean:
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf 
+
+FORCE:
