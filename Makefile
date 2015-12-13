@@ -11,6 +11,9 @@ main.pdf: $(SOURCE)
 	bibtex -min-crossrefs=200 main
 	xelatex  -no-pdf main
 	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
+	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
+	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
+	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx
