@@ -9,6 +9,8 @@ print("found %i language names for autoindexing" % len(lgs))
 print("found %i subject terms for autoindexing" % len(terms))
 
 files = glob.glob('chapters/*tex')
+
+SUBJECTP = re.compile
 for f in files:
   print("indexing %s" % f)
   c = open(f).read()  
@@ -18,10 +20,10 @@ for f in files:
       continue
     c = re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, c)
   for term in terms:
-    term = term.strip()
+    term = term.strip() 
     if term == '':
        continue
-    c = re.sub('(?<!isi{)%s(?![\w}])'%term, '\isi{%s}'%term, c)
+    c = re.sub('(?<!isi{)%s(?![-_\w}])'%term, '\isi{%s}'%term, c)
   nlg = len(re.findall('\\ili{',c))
   nt = len(re.findall('\\isi{',c))
   outfile = open(f.replace('chapters','indexed'), 'w')
