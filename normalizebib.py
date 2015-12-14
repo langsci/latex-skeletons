@@ -71,6 +71,7 @@ class Record():
     self.conforminitials()
     self.checkand()
     self.checkurl()
+    self.checkurldate()
     self.checkquestionmarks()
     self.checkarticle()
     self.checkbook()
@@ -132,6 +133,17 @@ class Record():
     
     if self.fields.get('url','').count(' ')>0:
       self.errors.append("space in url")
+      #ebrary degruyter doi myilibrary academia ebscohost
+                
+  def checkurldate(self): 
+    """
+    make sure the urldate field is only present when an url is actually given
+    """
+    
+    if self.fields.get('urldate') != None:
+      if self.fields.get('url') == None:
+        self.errors.append("urldate without url")
+      
           
   def checkbook(self):
     """
