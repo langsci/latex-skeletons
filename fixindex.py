@@ -17,13 +17,15 @@ p = re.compile(r"\\indexentry \{(.*)\|hyperpage")
 
     
 def process(s): 
+  if s.strip()=='':
+    return s
   m = p.match(s) 
   o = m.groups(1)[0]
   t = o.translate(transtable)
   if t == o:
     return s
   else:
-    return s.replace(o,"%s@%s"%(o,t))
+    return s.replace(o,"%s@%s"%(t,o))
   
   
 
@@ -32,5 +34,7 @@ if __name__ == '__main__':
   lines = open(fn).readlines()
   print(len(lines))
   lines2 = list(map(process, lines))
-  print(lines2)
+  out = open('mainmod.adx','w')
+  out.write(''.join(lines2))
+  out.close()
   

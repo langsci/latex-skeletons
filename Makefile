@@ -14,6 +14,8 @@ main.pdf: $(SOURCE)
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
+	python3 fixindex.py
+	mv mainmod.adx main.adx
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx
