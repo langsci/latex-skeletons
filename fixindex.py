@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 import re
-from initd import INITD
+from initd import INITD, REPLACEMENTS
 
   
 orig = ''
@@ -12,15 +13,8 @@ for k in INITD:
     trans+=k
      
 transtable = str.maketrans(orig, trans)
-replacements=[
-  ('¼','oe'), 
-  ('½','oe'),
-  ('ß','ss'),
-  ('Ð','Th'),
-  ('ð','th'),
-  ('Þ','Th'),
-  ('þ','th') 
-  ]
+
+  
 p = re.compile(r"\\indexentry \{(.*)\|hyperpage")
 
     
@@ -29,6 +23,8 @@ def process(s):
   o = m.groups(1)[0]
   t = o.translate(transtable)
   
+  for r in REPLACEMENTS:
+    t = t.replace(r[0],r[1])
   if t == o:
     return s
   else:
