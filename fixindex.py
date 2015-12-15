@@ -1,9 +1,6 @@
 import re
+from initd import INITD
 
-INITD = {
-  'C':'ĆĈ',
-  'd':'đ'
-  }
   
 orig = ''
 trans = ''
@@ -19,10 +16,8 @@ transtable = str.maketrans(orig, trans)
 p = re.compile(r"\\indexentry \{(.*)\|hyperpage")
 
     
-def process(s):
-  print(s)
-  m = p.match(s)
-  print(m)
+def process(s): 
+  m = p.match(s) 
   o = m.groups(1)[0]
   t = o.translate(transtable)
   if t == o:

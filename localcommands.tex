@@ -2,3 +2,7 @@
 
 \newcommand{\smiley}{:)}
 
+\renewbibmacro*{index:name}[5]{%
+  \usebibmacro{index:entry}{#1}
+    {\iffieldundef{usera}{}{\thefield{usera}\actualoperator}\mkbibindexname{#2}{#3}{#4}{#5}}}
+
