@@ -2,9 +2,22 @@ import sys
 import re
 import pprint
 import glob
-
+from initd import INITD, REPLACEMENTS
+import string
+ 
 keys = {} #store for all bibtex keys
 excludefields = ['language'] #fields not to output
+
+#prepare translation table for removing non-ASCII
+orig = ''
+trans = ''
+for k in INITD:
+  s = INITD[k]
+  for c in s:
+    orig+=c
+    trans+=k
+transtable = str.maketrans(orig, trans)
+    
 
 class Record(): 
   """
@@ -43,7 +56,7 @@ class Record():
         ]
             )
     except IndexError:
-      print(s)
+      print(s) 
     #store keys 
     self.inkeysd = inkeysd
     self.restrict = restrict
@@ -51,7 +64,7 @@ class Record():
     if self.key in keys:
       self.errors.append("duplicate key %s"% self.key)
     keys[self.key] = True
-    self.conform()
+    self.conform() 
     self.report()
     
   def conform(self):
@@ -167,13 +180,37 @@ class Record():
           self.fields['number'] = volume
           del self.fields['volume'] 
     #books should have either author or editor, but not both or none
-    if self.fields.get('author') ==  None:
-      if  self.fields.get('editor') ==  None:
-        self.errors.append("neither author nor editor")        
-    if self.fields.get('author') !=  None:
-      if  self.fields.get('editor') !=  None:
+    auth = self.fields.get('author')
+    ed = self.fields.get('editor')     
+    if auth:
+      if ed:
         self.errors.append("both author and editor")
-        
+      else:
+        self.addsortname(auth)
+    elif ed:
+      self.addsortname(ed)
+    else:
+      self.errors.append("neither author nor editor")        
+      
+  def addsortname(self,name):
+    #print(name)
+    residue = name.translate({ord(i):None for i in string.ascii_letters+'- ,{}'})
+    if residue == '':
+      pass
+    else:
+      #print(residue)
+      sortname = name
+      #remove legacy diacritics
+      replacements="""'"`~vk=^"""
+      for r in replacements:
+        s = '\\%s'%r 
+        sortname = sortname.replace(s,'')
+      #replace higher Unicode with nearest low ASCII equivalent
+      sortname = sortname.translate(transtable) 
+      #update fields 
+      self.fields['sortname'] = sortname
+      
+
       
   def checkarticle(self):
     """
@@ -184,6 +221,9 @@ class Record():
     mandatory = ('author', 'year', 'title', 'journal', 'volume', 'pages') 
     for m in mandatory:
       self.handleerror(m)
+    auth = self.fields.get('author')
+    if auth:
+      self.addsortname(auth)
       
   def checkincollection(self):
     """
@@ -200,6 +240,9 @@ class Record():
     mandatory2 = ('booktitle', 'editor', 'publisher', 'address')
     for m2 in mandatory2:
       self.handleerror(m2)
+    auth = self.fields.get('author')
+    if auth:
+      self.addsortname(auth)
       
   def checkquestionmarks(self):
     """
@@ -273,7 +316,7 @@ if __name__ == "__main__":
   #sort and reverse in order to get the order of edited volumes and incollection right 
   r.sort() 
   r = r[::-1] 
-  restrict = True #should only cited works be written to sorted.bib?
+  restrict = False #should only cited works be written to sorted.bib?
   #create the new bibtex records
   bibtexs = [Record(q,
                     inkeysd=citationsd, 
