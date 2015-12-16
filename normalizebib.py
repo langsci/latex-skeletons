@@ -143,10 +143,13 @@ class Record():
     """
     make sure the url field contains the url and only the url
     """
-    
+    url = self.fields.get('url','')
     if self.fields.get('url','').count(' ')>0:
       self.errors.append("space in url")
-      #ebrary degruyter doi myilibrary academia ebscohost
+    nonsites = ('ebrary','degruyter','doi','myilibrary','academia','ebscohost')
+    for n in nonsites:
+      if n in url:
+        self.errors.append("%s: urls should only be given for true repositories or for material not available elsewhere"%url)
                 
   def checkurldate(self): 
     """
