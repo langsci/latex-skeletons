@@ -83,6 +83,7 @@ class Record():
     self.conformsubtitles() 
     self.conforminitials()
     self.checkand()
+    self.checkedition()
     self.checkurl()
     self.checkurldate()
     self.checkquestionmarks()
@@ -138,6 +139,19 @@ class Record():
         commas = self.fields[t].count(',')
         if commas > ands +1:
           self.errors.append("problem with commas in %s: %s"% (t,self.fields[t]))
+          
+  def checkedition(self):
+    """
+    check for the correct formatting of the edition field
+    """
+    
+    edn =  self.fields.get('edition')
+    if edn:
+      edn = edn.replace('{','').replace('}','').replace('"','').strip()
+      try:
+        int(edn)
+      except ValueError:
+          self.errors.append("incorrect format for edition: %s"% (edn))
           
   def checkurl(self): 
     """
