@@ -73,6 +73,19 @@ googlebooks_interior.pdf: complete
 	cp main.pdf googlebooks_interior.pdf
 	pdftk main.pdf cat 1 output googlebooks_frontcover.pdf 
 
+openreview: openreview.pdf
+	
+
+openreview.pdf: main.pdf
+	pdftk main.pdf multistamp orstamp.pdf output openreview.pdf 
+
+proofreading: proofreading.pdf
+	
+
+proofreading.pdf: main.pdf
+	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
+
+
 #housekeeping	
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
