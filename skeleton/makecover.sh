@@ -1,5 +1,6 @@
-#!/usr/bin/bash
+#!/bin/bash
 #create png graphics of the title page based on metadata parameters
+# usage: makecover.sh silp 41 "Ben Derek" "What about Nouns?" "An investigation"
 
 series=$1
 number=$2
