@@ -9,7 +9,7 @@ subtitle=$5
 
 cp localmetadata.tex localmetadata.tex~
 
-echo "\author{$3}">> localmetadata.tex
+echo "\author{$3}"> localmetadata.tex
 echo "\title{$4}">> localmetadata.tex
 echo "\subtitle{$5}">> localmetadata.tex
 echo "\renewcommand{\lsSeries}{$1}">> localmetadata.tex 
