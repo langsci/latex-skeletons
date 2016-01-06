@@ -85,7 +85,21 @@ proofreading: proofreading.pdf
 proofreading.pdf: main.pdf
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
+blurb: blurb.html blurb.tex biosketch.tex biosketch.html
 
+
+blurb.tex:
+	pandoc -f markdown -t latex blurb.md>blurb.tex
+	
+blurb.html:
+	pandoc -f markdown -t html blurb.md>blurb.html
+	
+biosketch.tex:
+	pandoc -f markdown -t latex biosketch.md>biosketch.tex
+	
+biosketch.html:
+	pandoc -f markdown -t html biosketch.md>biosketch.html
+	
 #housekeeping	
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
