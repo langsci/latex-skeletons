@@ -88,16 +88,16 @@ proofreading.pdf: main.pdf
 blurb: blurb.html blurb.tex biosketch.tex biosketch.html
 
 
-blurb.tex:
+blurb.tex: blurb.md
 	pandoc -f markdown -t latex blurb.md>blurb.tex
 	
-blurb.html:
+blurb.html: blurb.md
 	pandoc -f markdown -t html blurb.md>blurb.html
 	
-biosketch.tex:
+biosketch.tex: blurb.md
 	pandoc -f markdown -t latex biosketch.md>biosketch.tex
 	
-biosketch.html:
+biosketch.html: blurb.md
 	pandoc -f markdown -t html biosketch.md>biosketch.html
 	
 #housekeeping	
