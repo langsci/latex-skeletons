@@ -1,15 +1,27 @@
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{LSP/langsci}[2015/09/15 Language Science Press]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%      File: langscibook.cls
+%%    Author: Language Science Press (http://langsci-press.org)
+%%      Date: 2016-01-26 20:54:30 UTC
+%%   Purpose: This file defines the basic document class 
+%%            for books published with Language Science Press.
+%%  Language: LaTeX
+%%   Licence: 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Default values:
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{langsci/langscibook}[2016/01/26 Language Science Press]
+
+%% Default values:
 \usepackage{xspace}
 \newcommand{\lsp}{Language Science Press\xspace}
 \newcommand{\lsSeriesNumber}{??}
 \newcommand{\lsISSN}{??}
-\newcommand{\lsISBN}{000-0-000000-00-0}
 \newcommand{\lsISBNdigital}{000-0-000000-00-0}
 \newcommand{\lsISBNhardcover}{000-0-000000-00-0}
 \newcommand{\lsISBNsoftcover}{000-0-000000-00-0}
+\newcommand{\lsISBNsoftcoverus}{000-0-000000-00-0}
+\newcommand{\lsBookDOI}{??}
+\newcommand{\lsChapterDOI}{??}
 \newcommand{\lsURL}{http://langsci-press.org/catalog}
 \newcommand{\lsSeries}{eotms}
 \newcommand{\lsSpineBreadth}{20mm}
@@ -28,37 +40,42 @@
 \newif\iflsCollectionTOCLong \lsCollectionTOCLongfalse
 \newif\iflsNewtxmath \lsNewtxmathfalse
 \newif\iflsBlackandwhite \lsBlackandwhitefalse
+\newif\iflsUscover \lsUscoverfalse
 
-
-
-% Option handling:
+%% Option handling:
 \RequirePackage{kvoptions}		% for key-value options
 \SetupKeyvalOptions{
-	family=langsci,
-	prefix=langsci@ }
+	family=langscibook,
+	prefix=langscibook@ }
 \DeclareStringOption{number}[??]
-	\define@key{langsci}{number}{%
+	\define@key{langscibook}{number}{%
 		\renewcommand{\lsSeriesNumber}{#1}}
 \DeclareStringOption{issn}[??]
-	\define@key{langsci}{issn}{%
+	\define@key{langscibook}{issn}{%
 		\renewcommand{\lsISSN}{#1}}
-\DeclareStringOption{isbn}[000-0-000000-00-0]
-	\define@key{langsci}{isbn}{%
-		\renewcommand{\lsISBN}{#1}}
+\DeclareStringOption{isbndigital}[000-0-000000-00-0]
+	\define@key{langscibook}{isbndigital}{%
+		\renewcommand{\lsISBNdigital}{#1}}
+\DeclareStringOption{isbnsoftcover}[000-0-000000-00-0]
+	\define@key{langscibook}{isbnsoftcover}{%
+		\renewcommand{\lsISBNsoftcover}{#1}}
+\DeclareStringOption{isbnhardcover}[000-0-000000-00-0]
+	\define@key{langscibook}{isbnhardcover}{%
+		\renewcommand{\lsISBNhardcover}{#1}}
 \DeclareStringOption{url}[http://langsci-press.org/catalog]
-	\define@key{langsci}{url}{%
+	\define@key{langscibook}{url}{%
 		\renewcommand{\lsURL}{#1}}
 \DeclareStringOption{series}[eotms]
-	\define@key{langsci}{series}{%
+	\define@key{langscibook}{series}{%
 		\renewcommand{\lsSeries}{#1}}
 \DeclareStringOption{output}[long]
-	\define@key{langsci}{output}{%
+	\define@key{langscibook}{output}{%
 		\renewcommand{\lsOutput}{#1}}
 \DeclareStringOption{copyright}[CC-BY]
-	\define@key{langsci}{copyright}{%
+	\define@key{langscibook}{copyright}{%
 		\renewcommand{\lsCopyright}{#1}}
 \DeclareStringOption{biblatexbackend}[bibtex]
-	\define@key{langsci}{biblatexbackend}{%
+	\define@key{langscibook}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
 \DeclareVoidOption{blackandwhite}{
 	\lsBlackandwhitetrue} 
@@ -71,7 +88,7 @@
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
 \DeclareVoidOption{openreview}{
 	\lsOpenReviewtrue%
-	\AtBeginDocument{\renewcommand{\lsISBN}{000-0-000000-00-0}}}
+	\AtBeginDocument{\renewcommand{\lsISBNdigital}{000-0-000000-00-0}}}
 \DeclareVoidOption{noindex}{  			
 	\lsIndexfalse}
 \DeclareVoidOption{showindex}{  			
@@ -90,26 +107,28 @@
 \DeclareVoidOption{collectiontoclong}{  			
 	\lsCollectiontrue%
 	\lsCollectionTOCLongtrue}
-\ProcessKeyvalOptions{langsci}
+\DeclareVoidOption{uscover}{  			
+	\lsUscovertrue}
+\ProcessKeyvalOptions{langscibook}
 
 \LoadClass[
-	fontsize=\lsFontsize, % default is 11pt
+	fontsize=\lsFontsize,	% default is 11pt
 	footnotes=multiple,
 	numbers=noenddot,		% no point after last number of chapters/sections
 	toc=bibliography,
 	index=totoc,
 	%chapterprefix=true,
 	%draft=yes,
+	%appendixprefix
 	]{scrbook}
 
 
 \usepackage{etex}
 \reserveinserts{18}
-\usepackage{xstring} % Needed on Lines 114ff and again on 167
-\usepackage{graphicx} % Needed twice
-\usepackage{hyphenat} % Needed twice
+\usepackage{xstring}	% Needed on Lines 114ff and again on 167
+\usepackage{graphicx}	% Needed twice
+\usepackage{hyphenat}	% Needed twice
 
-\renewcommand{\lsISBN}{\lsISBNdigital} % for compatibility
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -133,6 +152,7 @@
 %    Page size and text area:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 \newlength{\csspine} 
 \newlength{\bodspine}
         \newlength{\seitenbreite}
@@ -141,23 +161,17 @@
         \newlength{\totalwidth}
         \newlength{\totalheight}
 
-
-
-
-
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version 
 	\input{./lengths.tex}
  
  	\newlength{\bleed}
-	\setlength{\bleed}{3.175mm}
+ 	\setlength{\bleed}{3.175mm}
  	\setlength{\seitenbreite}{169.9mm}
  	\setlength{\seitenhoehe}{244.1mm}
  	
  	\setlength{\spinewidth}{\csspine}			% Create Space Version. Value is in ./localmetadata.tex
  	
- 	
  	\usepackage{calc}
-
 
  	\setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
  	\setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
@@ -170,7 +184,7 @@
  	    
  \else
  
- % Nested ifx. Here follows the BoD Version
+ %% Nested ifx. Here follows the BoD Version
  
   \ifx\lsOutput\lsOutputCoverBOD 
      \usepackage{calc}
@@ -204,10 +218,7 @@
  	,marginparwidth=50pt
  	]{geometry}
  \fi
-\fi
- 
-
-			
+\fi			
 
 \usepackage[
 	absolute 		% for absolute positioning in titlepage
@@ -219,21 +230,21 @@
 
 \usepackage{pbox}   % boxes with maximum width
 	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Fonts, language and graphics:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\usepackage{xstring} 	% for manipulating strings
 \usepackage{ifxetex}
-\ifxetex\else\ClassError{LSP/langsci}{Please use XeLaTeX!}{}\fi
+\ifxetex\else\ClassError{langsci/langscibook}{Please use XeLaTeX!}{}\fi
 	
 \usepackage{amssymb} % has to be loaded before other stuff
 % \usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol	
 \usepackage{metalogo}\newcommand{\xelatex}{\XeLaTeX\xspace}	
 \usepackage{fontspec}
-\newcommand{\fontpath}{./LSP/lsp-fonts/}
+\newcommand{\fontpath}{./langsci/fonts/}
 
 \setsansfont[
 	%Ligatures={TeX,Common},		% not supported by ttf
@@ -244,12 +255,6 @@
 	BoldItalicFont = Arimo-BoldItalic_B.ttf 		
 	]{Arimo_B.ttf}
 		
-% \setmonofont[
-% 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
-% 	BoldFont = FreeMonoBold_B.otf ,
-% 	SlantedFont = FreeMonoOblique_B.otf ,				
-% 	BoldSlantedFont = FreeMonoBoldOblique_B.otf 		
-% 	]{FreeMono_B.otf}
 \setmonofont[
 	Ligatures={TeX},Scale=MatchLowercase,Path=\fontpath,
 	BoldFont = DejaVuSansMono-Bold.ttf ,
@@ -257,18 +262,20 @@
 	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
 	]{DejaVuSansMono.ttf}
 
-
-
 \setmainfont[
-	Ligatures={TeX,Common},
-	Path=\fontpath,
-	PunctuationSpace=0,							
-	%Numbers={OldStyle,Proportional},				% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-	Numbers={Proportional},	% normal numbers			% for tables use \addfontfeatures{Numbers={Monospaced,Lining}}
-	BoldFont = LinLibertine_RZ_B.otf ,				% semi-bold
-	ItalicFont = LinLibertine_RI_B.otf ,			
-	BoldItalicFont = LinLibertine_RZI_B.otf 		% semi-bold
-	]{LinLibertine_R_B.otf}			
+        Ligatures={TeX,Common},
+        Path=\fontpath,
+        PunctuationSpace=0,
+        Numbers={Proportional},
+        BoldFont = LinLibertine_RZ_B.otf ,
+        ItalicFont = LinLibertine_RI_B.otf ,
+        BoldItalicFont = LinLibertine_RZI_B.otf,
+        BoldSlantedFont = LinLibertine_RZ_B.otf,
+        SlantedFont    = LinLibertine_R_B.otf,
+        SlantedFeatures = {FakeSlant=0.25},
+        BoldSlantedFeatures = {FakeSlant=0.25},
+        SmallCapsFeatures = {FakeSlant=0},
+        ]{LinLibertine_R_B.otf}		
 
 \iflsNewtxmath							% some users have problems when installing newtxmath
 	\usepackage[libertine]{newtxmath}
@@ -277,13 +284,9 @@
 \let\oldtabular\tabular	% number in tabulars
 \let\endoldtabular\endtabular
 \renewenvironment{tabular}{\normalfont\addfontfeatures{Numbers=Lining}\selectfont\oldtabular}{\endoldtabular}
- 
-  %\usepackage{polyglossia}		% TODO remove this?
-  %\setdefaultlanguage{british}
 
 %\frenchspacing			
 \usepackage[final]{microtype}
-% \usepackage{graphicx}
 
   \newcommand{\lsCoverTitleFont}[1]{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{52pt}{16.75mm}\selectfont #1}
   \newcommand{\lsCoverSubTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
@@ -299,6 +302,7 @@
 
 \setkomafont{sectioning}{\normalcolor\bfseries}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Colors:
@@ -306,9 +310,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{xcolor}
-\input{LSP/lsp-seriesinfo/series.def} % \lsSeriesColor, \lsSeriesTitle and \lsISSN are defined here
-
-
+\input{langsci/seriesinfo/series.def} % \lsSeriesColor, \lsSeriesTitle, \lsISSN and colors are defined here
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -317,8 +319,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-% defaults:
+%% defaults:
 \newcommand{\lsBackBody}{Europan lingues es membres del sam familie. Lor separat existentie es un
 myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li
 lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe
@@ -337,45 +338,55 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\SpineTitle}[1]{\renewcommand{\lsSpineTitle}{#1}}
 \newcommand{\SpineAuthor}[1]{\renewcommand{\lsSpineAuthor}{#1}} 
 
+
+%% for imprint:
 \def\translator#1{\gdef\@translator{#1}}
 \translator{}
 \def\typesetter#1{\gdef\@typesetter{#1}}
 \typesetter{}
 \def\proofreader#1{\gdef\@proofreader{#1}}
 \proofreader{}
-%\def\@author{\@latex@warning@no@line{No \noexpand\author given}}
+\def\illustrator#1{\gdef\@illustrator{#1}}
+\illustrator{}
+\newcommand{\lsAdditionalFontsImprint}{}
+\newcommand{\AdditionalFontImprint}[1]{
+	\edef\fontstemp{\lsAdditionalFontsImprint}
+	\renewcommand{\lsAdditionalFontsImprint}{\fontstemp, #1}
+	}
 
-\newcommand{\keywords}[1]{}%This command is only for bookkeeping purposes and will not be printed out
-\newcommand{\ISBN}[1]{\renewcommand{\lsISBN}{#1}}
+%\def\@author{\@latex@warning@no@line{No \noexpand\author given}}
+\newcommand{\ISBNdigital}[1]{\renewcommand{\lsISBNdigital}{#1}}
+\newcommand{\ISBNsoftcover}[1]{\renewcommand{\lsISBNsoftcover}{#1}}
+\newcommand{\ISBNhardcover}[1]{\renewcommand{\lsISBNhardcover}{#1}}
 \newcommand{\URL}[1]{\renewcommand{\lsURL}{#1}}
 \newcommand{\Series}[1]{\renewcommand{\lsSeries}{#1}}
 \newcommand{\SeriesNumber}[1]{\renewcommand{\lsSeriesNumber}{#1}}
+\newcommand{\BookDOI}[1]{\renewcommand{\lsBookDOI}{#1}}
 
-% for papers of collections:
+%% for papers of collections:
 \newcommand{\lsCollectionPaperAbstract}{Put abstract here with \string\abstract.}
 \newcommand{\abstract}[1]{\renewcommand{\lsCollectionPaperAbstract}{#1}}
+\newcommand{\ChapterDOI}[1]{\renewcommand{\lsChapterDOI}{#1}}
 
 \def\epigram#1{\gdef\@epigram{#1}}			% needs to be defined this way to check emptiness
 \epigram{}
 \def\epigramsource#1{\gdef\@epigramsource{#1}}
 \epigramsource{}
 
-% inside \author
+%% inside \author:
 \renewcommand{\and}{}				
 \newcommand{\lastand}{}
 \newcommand{\affiliation}[1]{}	
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%    Series information:
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% to be used below chapter titles
+\newcommand{\chaptersubtitle}[1]{
+	\vspace*{-2ex}
+	{\Large #1}
+	\chapterheadendvskip
+	\@afterindentfalse
+	\@afterheading
+}
 
-% \input{LSP/lsp-seriesinfo/seriesinfo.tex}
-
-% \@ifundefined{blackandwhite}
-% 	{}
-% 	{\renewcommand{\lsSeriesColor}{black}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -396,16 +407,17 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
   \ifoot{{\color{lsRed}Open review version}. Final version at \url{\lsURL}.}
 \fi
 
-%% \ihead{\upshape{\headmark}}
-%% \ohead{\pagemark}
-%% \cfoot{}
-%% \ifoot[]{}
-%% \ofoot{\upshape{Draft of \today, \currenttime}}
-
+\newcommand{\lsPageStyleEmpty}{
+	\ohead{}
+	\ihead{}
+	\cfoot{}
+	\ofoot[]{}
+}
 
 \renewcommand*{\partpagestyle}{empty}
 
 \pagestyle{scrheadings}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -413,19 +425,20 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Xelatex likes this, must appear before BibLaTeX:
+%% Xelatex likes this, must appear before BibLaTeX:
 \usepackage[hyphens]{url}
 \urlstyle{same}
 
 \iflsBiblatex	% BibLaTeX
 	\usepackage[
 		natbib=true,
-		style=LSP/lsp-bst/biblatex-sp-unified,
-		citestyle=LSP/lsp-bst/sp-authoryear-comp,
+		style=langsci/bst/biblatex-sp-unified,
+		citestyle=langsci/bst/sp-authoryear-comp,
 		%refsection=chapter,
 		maxbibnames=99,
 		isbn=false,
 		doi=false,
+		url=false,
 		eprint=false,
 		backend=\lsBiblatexBackend,
 		indexing=cite,
@@ -437,42 +450,41 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
 	\renewcommand{\compcitedelim}{\multicitedelim}
 	\DeclareFieldFormat{postnote}{#1}%
-	%\renewcommand{\nameyeardelim}{ }%		
+	%\renewcommand{\nameyeardelim}{ }%
 \else	%BibTeX
 	\usepackage{natbib}
 	\setlength{\bibsep}{0mm}
-	% unified style sheet for linguistics journals
-	% put directory in BST_INPUTS
-	% http://celxj.org/downloads/unified.bst
-	\bibliographystyle{./LSP/lsp-bst/unified} 
-	% This does not work ...
-	%% \setcitestyle{
-	%% notesep={: }, % 2002: 125
-	%% aysep={~}     % Gazdar 2002
-	%% }
+	%% unified style sheet for linguistics journals
+	%% http://celxj.org/downloads/unified.bst
+	\bibliographystyle{./langsci/bst/unified} 
+	%% This does not work ...
+	% \setcitestyle{
+	% notesep={: }, % 2002: 125
+	% aysep={~}     % Gazdar 2002
+	% }
 
-	% check what the unified people have to say on this.
+	%% check what the unified people have to say on this.
 	\bibpunct[: ]{(}{)}{;}{a}{}{,}
-	% They do not say anything about citations in the running text.
-	% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
-	% This is what De Gruyter does:
+	%% They do not say anything about citations in the running text.
+	%% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
+	%% This is what De Gruyter does:
 	\let\citew=\citet
-	% This is what Stefan did:
+	%% This is what Stefan did:
 	%\let\citew=\citealt
 \fi
 
 \let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
-% penalties against widows and orphans in bibliography
-% http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
+%% penalties against widows and orphans in bibliography
+%% http://tex.stackexchange.com/questions/51257/how-can-i-force-bibliography-items-not-to-be-split-across-pages
 \usepackage{etoolbox}
 \AtBeginEnvironment{thebibliography}{%
     \clubpenalty10000
     \@clubpenalty \clubpenalty
-    \widowpenalty10000}
- 
-% change the default heading from "Bibliography" "List of references"
-\defbibheading{references}{\chapter{References}}
+    \widowpenalty10000
+    \normalmarginpar}
+  
+\defbibheading{references}{\chapter{References}} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -483,11 +495,34 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \usepackage{floatrow}					% For adjusting the position of the caption (default is below).
 \floatsetup[table]{capposition=top} 	% As for tables, the caption appears above.
 
-% This sets the default for the positioning of floats
+%% This sets the default for the positioning of floats
 \renewcommand{\fps@figure}{htbp}
 \renewcommand{\fps@table}{htbp}
 
-\usepackage{booktabs} %for nicer lines
+\usepackage{booktabs} % for nicer lines
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    Appendices:
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appto\appendix{%
+	%% format of the appendix title page
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapapp~\thechapter\autodot:\enskip}%
+	}
+	%% format of the TOC entry
+	\renewcommand{\addchaptertocentry}[2]{
+		\ifstr{#1}{}{%
+		\addtocentrydefault{chapter}{}{#2}%
+		}{%
+		\addtocentrydefault{chapter}{}{\chapapp~#1: #2}%
+		}%
+	}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -534,7 +569,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsSubjectIndexTitle}{Subject index}
 \newcommand{\lsNameIndexTitle}{Name index}
 
-\AtBeginDocument{
+\AtBeginDocument{ % why this?
 \makeindex
 \newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
 % \newindex{aut}{adx}{and}{Name index}
@@ -544,77 +579,51 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newindex{rwrd}{rdx}{rnd}{Reverse expression index}
 }
 
-
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
-\def\fn#1#2{%
-\hyperpage{#2}$^{#1}$%
+%% \index inside footnote
+\def\infn#1#2{%
+	\hyperpage{#2}n#1%
 }%
+\newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
+\newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
+\newcommand{\footnoteindex@lan}[2]{\index[lan]{#2|infn{#1}}}
+\newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2|infn{#1}}}
+
 \fi
 
 \newcommand{\ia}[1]{\if@noftnote%
 \index{#1}%
 \else%
-\index{#1|fn{\thefootnote}}%
+\edef\tempnumber{\thefootnote}%
+\expandafter\footnoteindex\expandafter{\tempnumber}{#1}%
+% \index{#1|fn{\thefootnote}}%
 \fi%
 }
 
 \newcommand{\is}[1]{\if@noftnote%
 \index[sbj]{#1}%
 \else%
-% irgendwie muss man ihn dazu bringen den Wert für footnote auch einzusetzen
-\index[sbj]{#1|fn{*}}%
+\edef\tempnumber{\thefootnote}%
+\expandafter\footnoteindex@sbj\expandafter{\tempnumber}{#1}%
 %\indexftn{#1}{\value{footnotemark}}%
 \fi%
 }
 
-\newcommand{\isfeat}[1]{\if@noftnote%
-\index{feature!{\sc #1}}%
-\else%
-%\index{feature!{\sc #1}|fn{\thefootnote}}%
-\index{feature!{\sc #1}|fn{*}}%
-\fi%
-}
-
-\newcommand{\istype}[1]{\if@noftnote%
-\index{type!#1@\type{#1}}%
-\else%
-%\index{type!{\it #1}|fn{\thefootnote}}
-\index{type!#1@\type{#1}|fn{*}}%
-\fi%
-}
-
-\newcommand{\isrel}[1]{\if@noftnote%
-\index{relation!\emph{#1}}%
-\else%
-\index{relation!\emph{#1}|fn{*}}%
-\fi%
-}
-
-
-% \index[lan] für Einträge in separaten Index
-
+%% \index[lan] für Einträge in separaten Index
 \newcommand{\il}[1]{%
 \if@noftnote%
 \index[lan]{#1}%
 \else%
-\index[lan]{#1|fn{*}}%
+\edef\tempnumber{\thefootnote}%
+\expandafter\footnoteindex@lan\expandafter{\tempnumber}{#1}%
 \fi%
 }
-
-% index entries for words
-\newcommand{\iw}[1]{%
-\if@noftnote%
-\index[wrd]{#1}%
-\else%
-\index[wrd]{#1|fn{*}}%
-\fi%
-}
-
 
 % \iflsDraft
 %   \usepackage{showidx} 	% Doesn't work with multiple indexes?
 % \fi
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -623,12 +632,10 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
 \usepackage[
 	bookmarks=true,bookmarksopen=true,bookmarksopenlevel=1,%
 	bookmarksdepth=5,
+	bookmarksnumbered=true,
 	hyperindex=true,%
 	breaklinks=true,
 	draft=false,
@@ -639,11 +646,20 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%ps2pdf=true
 	]{hyperref}
 
-%\KOMAoptions{footnotes=multiple}
-
-% xelatex hates this.
+%% xelatex hates this.
 %\usepackage{breakurl} 	
 
+%% add hyperlinks for DOIs in bibliography; must appear after hyperref
+\usepackage{doi}
+\renewcommand{\doitext}{DOI:}
+\iflsBiblatex
+\renewbibmacro*{finentry}{\finentry
+	\iffieldundef{doi}
+		  {}
+		  { {\color{lsGuidelinesGray}\doi{\thefield{doi}}}}
+}
+%\DeclareFieldFormat{doi}{{\color{lsGuidelinesGray}\doi{#1}}}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -651,16 +667,18 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\usepackage[ISBN=\lsISBN,SC4]{ean13isbn}	% for generating bar codes; remove this?
 \usepackage{pst-barcode}					% for generating bar codes
-\newcommand{\logopath}{./LSP/lsp-logos}
+\newcommand{\logopath}{./langsci/graphics}
 \newcommand{\lsCoverFontColor}{white}
 \newcommand{\lsCoverBlockColor}{\lsSeriesColor}
 \newcommand{\lsEditorPrefix}{}
 \newcommand{\lsEditorSuffix}{}   
 
 \iflsCollection  	% for collections: set \lsEditorSuffix depending on \@author
-\AtBeginDocument{	
+\AtBeginDocument{
+	\onlyAuthor
+	\renewcommand{\newlineCover}{}
+	\renewcommand{\newlineSpine}{}	
 	\IfSubStr{\@author}{\&}	 	% if \@author contains \&
 		{\renewcommand{\lsEditorSuffix}{(eds.)}}
 		{\IfSubStr{\@author}{,}	% if \@author contains ,
@@ -687,7 +705,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\fi
 	\iflsOpenReview
 		\iflsDraft
-			\ClassError{LSP/langsci}{Open review mode not compatible with draft mode. Please disable one of them}{}	
+			\ClassError{langsci/langscibook}{Open review mode not compatible with draft mode. Please disable one of them}{}	
 		\fi
 		\begin{textblock}{170}(-20,75)
 			\rotatebox{30}{
@@ -704,6 +722,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\fi}
 
 \newcommand{\lsCoverTitleAuthor}{
+	\renewcommand{\and}{}
+	\renewcommand{\lastand}{}
 	\renewcommand{\newlineCover}{\\}
 	\renewcommand{\newlineSpine}{}
 	\lsCoverBlock
@@ -749,6 +769,11 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\lsCoverTitleAuthor
 	\lsCoverLogo}
 
+\usepackage{pdfpages}
+\newcommand{\lsAdvertisement}{
+	\includepdf[pages={1}]{langsci/graphics/didyoulikethisbook.pdf}
+}
+
 \newcommand{\lsBackPage}{		% Back page
 	\lsCoverBlock
 
@@ -768,10 +793,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\lsBackBodyFont\sffamily
 	\colorbox{white}{%
 	\begin{pspicture}(0,0)(4.1,1in)
-	\psbarcode[transx=0.4,transy=0.3]{\lsISBN}{includetext height=0.7}{isbn}
+	\psbarcode[transx=0.4,transy=0.3]{\lsISBNdigital}{includetext height=0.7}{isbn}
 	\end{pspicture}
-	%\EANisbn%			% remove this?
-	%{\EAN \lsISBN }  	% bar code without isbn line
 	}%	
 	\end{textblock}}
 
@@ -791,7 +814,6 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi}}}
 	\end{minipage}} 
 	\end{textblock}}
-
 
 \newcommand{\onlyAuthor}{%		% collection paper
 	\renewcommand{\and}{, }% 
@@ -829,7 +851,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
 	\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}}%
 	\hspace{0.8em}%
-	\parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText.}}
+	\parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText}}
 \newcommand{\lsCollectionPaperCitationText}{\string\lsCollectionPaperCitationText.}
 \newcommand{\lsPaper}{
 	\renewcommand{\maketitle}{
@@ -871,8 +893,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \newcommands moved to beginning of document so they can be used width geometry.
-
+%% Output types are defined with \newcommand above so they can be used width geometry.
 
 \AtBeginDocument{
 \ifx\lsOutput\lsOutputPaper				% only if output=paper
@@ -887,51 +908,61 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \ifx\lsOutput\lsOutputLong				% only if output=long
 	\setcounter{page}{-3}
-	% First titlepage:
+	%% First titlepage:
 	{\lsFrontPage}
 	%%%%%%%%%%%%%%%%%%%
 	\newpage\thispagestyle{empty}
 	\null\newpage\thispagestyle{empty}
-	% Back page:
+	%% Back page:
 	{\lsBackPage}
 	%%%%%%%%%%%%%%%%%%%
 	\newpage\thispagestyle{empty}
 	\null\newpage\thispagestyle{empty}
-	% Book spine:
+	%% Book spine:
 	{\lsSpine}
 	%%%%%%%%%%%%%%%%
 	\newpage\thispagestyle{empty}
 	\null\newpage\thispagestyle{empty}
-	% Series information:
+	%% Series information:
 	{\lsSeriesHistory}
 	%%%%%%%%%%%%%%%%%%%%%
 	\newpage\thispagestyle{empty}
-	% Schmutztitel:
-	{\renewcommand{\lsCoverBlockColor}{white}
-	 \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
-	\lsSchmutztitel}
-	%%%%%%%%%%%%%%%%%%%%
-\fi		
-
-\ifx\lsOutput\lsOutputShort						% only if output=short
-	\setcounter{page}{-1}
-	% First titlepage:
-	{\lsFrontPage}
-	%%%%%%%%%%%%%%%%%%%
-	\newpage\thispagestyle{empty}
-	\null\newpage\thispagestyle{empty}
-	% Series information:
-	{\lsSeriesHistory}
-	%%%%%%%%%%%%%%%%%%%%%
-	\newpage\thispagestyle{empty}
-	% Schmutztitel:
+	%% Schmutztitel:
 	{\renewcommand{\lsCoverBlockColor}{white}
 	 \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
 	\lsSchmutztitel}
 	%%%%%%%%%%%%%%%%%%%%
 	\AtEndDocument{
+		\lsPageStyleEmpty
 		\null\newpage\thispagestyle{empty}
-		% Back page:
+		%% Advertisement:
+		{\lsAdvertisement}
+	}
+\fi		
+
+\ifx\lsOutput\lsOutputShort						% only if output=short
+	\setcounter{page}{-1}
+	%% First titlepage:
+	{\lsFrontPage}
+	%%%%%%%%%%%%%%%%%%%
+	\newpage\thispagestyle{empty}
+	\null\newpage\thispagestyle{empty}
+	%% Series information:
+	{\lsSeriesHistory}
+	%%%%%%%%%%%%%%%%%%%%%
+	\newpage\thispagestyle{empty}
+	%% Schmutztitel:
+	{\renewcommand{\lsCoverBlockColor}{white}
+	 \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
+	\lsSchmutztitel}
+	%%%%%%%%%%%%%%%%%%%%
+	\AtEndDocument{
+		\lsPageStyleEmpty
+		\null\newpage\thispagestyle{empty}
+		%% Advertisement:
+		{\lsAdvertisement}
+		\null\newpage\thispagestyle{empty}
+		%% Back page:
 		{\lsBackPage}
 		\null\newpage\thispagestyle{empty}
 	}
@@ -946,7 +977,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 \ifx\lsOutput\lsOutputGuidelines				% only if output=guidelines
 	{\setcounter{page}{-1}
-	% First titlepage:
+	%% First titlepage:
 	{\lsFrontPage}}
 \fi
 
@@ -964,13 +995,15 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node at (current page.center) [bg, minimum height=24.6cm, minimum width=\totalspine,dashed] (lspcls_bgspline) {}; % add draw option for preview mode 
 	\end{pgfonlayer}
 	
-	% Text and Graphics Layer
+	%% Text and Graphics Layer
 	
-	% Spine
-	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
+	%% Spine
+	\renewcommand{\newlineCover}{}
+	\node [above = 7.5mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}};
 	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
-	
-	% Book Cover
+	\renewcommand{\newlineCover}{\\}
+
+	%% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
@@ -983,11 +1016,11 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_coversubtitle.south, text width=137mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\@author\par}}};
 	\fi
 	
-	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+	\node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{\logopath/langsci_logo_nocolor.pdf}};
 	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
 	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
-	% Book Back Cover
+	%% Book Back Cover
 	\node [font=\fontsize{25pt}{10mm}\selectfont, right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
@@ -996,7 +1029,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			\begin{pspicture}(0,0)(4.1,1in)
 			\psbarcode[transx=.4,transy=.3]{\lsISBNhardcover}{includetext height=.7}{isbn}\end{pspicture}}};
 	
-	% Guiding Lines
+	%% Guiding Lines
 	%\draw [red, thick, dashed] (lspcls_covertitle.west) -- (lspcls_seriesinfo.west);
 	
 	%	\node [below right=17mm and 17mm of current page.north west] (GL1) {};
@@ -1023,13 +1056,15 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node at (current page.center) [bg, minimum height=24cm, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add [draw] option for preview mode 
 	\end{pgfonlayer}
 	
-	% Text and Graphics Layer
+	%% Text and Graphics Layer
 	
-	% Spine
-	\node [above = 10.675mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{./LSP/lsp-logos/langsci_spinelogo_nocolor.pdf}};
-	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}}; 
+	%% Spine
+	\renewcommand{\newlineCover}{}
+	\node [above = 10.675mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}};
+	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}};
+	\renewcommand{\newlineCover}{\\} 
 	
-	% Book Cover
+	%% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
 	
@@ -1042,24 +1077,25 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	\node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_coversubtitle.south, text width=140mm] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\@author\par}};
 	\fi
 	
-	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{./LSP/lsp-logos/langsci_logo_nocolor.pdf}};
+	\node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{\logopath/langsci_logo_nocolor.pdf}};
 	\node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
 	\path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 	
-	% Book Back Cover
+	%% Book Back Cover
 	\node [font=\fontsize{25pt}{10mm}\selectfont, right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\lsBackTitle\par}};
 	\node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
 	%\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
 	\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
 		\colorbox{white}{
 			\begin{pspicture}(0,0)(4.1,1in)
-			\psbarcode[transx=.4,transy=.3]{\lsISBNsoftcover}{includetext height=.7}{isbn}\end{pspicture}}};
+			\psbarcode[transx=.4,transy=.3]{%
+				\iflsUscover\lsISBNsoftcoverus\else\lsISBNsoftcover\fi
+				}{isbn}\end{pspicture}}};
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
 	\fi		
 	
-
 \end{titlepage}
 
 \frontmatter
@@ -1070,7 +1106,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \color{black}
 \lsInsideFont
 
-% Imprint:
+%% Imprint:
 \ifx\lsOutput\lsOutputInprep{}
 \else{
 	\ifx\lsOutput\lsOutputGuidelines{}
@@ -1082,32 +1118,27 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \null\newpage\thispagestyle{plain}
 %\pagenumbering{roman}		% or \frontmatter
 
-% Dedication:
+%% Dedication:
 \ifx\@dedication\empty{}
 \else{\lsDedication}
 \fi
 %%%%%%%%%%%%%%%%
 
-}	% \maketitle
+}	%% \maketitle
 \fi
 
-% for those who like the example in numbered example sentences to be typeset in italics
-% this is possible for a complete series only.
+%% for those who like the example in numbered example sentences to be typeset in italics
+%% this is possible for a complete series only.
 \ifx\lsSeries\sidl
-	\AtBeginDocument{
 	%\def\exfont{\normalsize\itshape}
 	\renewcommand{\eachwordone}{\itshape} % only \gll
 	
 	\let\oldtable\table 	% footnotes in tables without horizontal line
 	\let\endoldtable\endtable
 	\renewenvironment{table}{\setfootnoterule{0pt}\oldtable}{\endoldtable} 
-
-	}
 \fi
 
-
-}	% \AtBeginDocument
-
+}	%% \AtBeginDocument
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1120,8 +1151,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 \color{black}
 \raggedright\lsCoverSeriesHistoryFont
 
-\IfFileExists{./LSP/lsp-seriesinfo/\lsSeries-info.tex}{\input{./LSP/lsp-seriesinfo/\lsSeries-info}}{
-  Series information: ./LSP/lsp-seriesinfo/\lsSeries-info.tex not found!} 
+\IfFileExists{./langsci/seriesinfo/\lsSeries-info.tex}{\input{./langsci/seriesinfo/\lsSeries-info}}{
+  Series information: ./langsci/seriesinfo/\lsSeries-info.tex not found!} 
 
 \IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
 	{}
@@ -1137,6 +1168,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\lsImpressumCitationText}{
+	\onlyAuthor
 	\renewcommand{\newlineCover}{}
 	\renewcommand{\newlineSpine}{}
 	{\@author}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
@@ -1168,14 +1200,20 @@ http://creativecommons.org/licenses/by-nd/4.0/
 \fi
  
 \begin{tabular}{@{}l@{~}l}
-ISBN: & \lsISBN~(Digital) \\
+ISBN: & \lsISBNdigital~(Digital) \\
       &	\lsISBNhardcover~(Hardcover)\\
       & \lsISBNsoftcover~(Softcover)\\
+      & \lsISBNsoftcoverus~(Softcover US)\\
 \end{tabular}
 
 \IfStrEq{\lsISSN}{??}		% \IfStrEq from xstring
 	{}
 	{ISSN: \lsISSN}
+
+\IfStrEq{\lsBookDOI}{??}		% \IfStrEq from xstring
+	{}
+	{\doi{\lsBookDOI}}
+
 
 \bigskip
  
@@ -1189,11 +1227,15 @@ Translator:
 Typesetting:
 \@typesetter \\
 \fi
+\if\@illustrator\empty\else
+Illustration:
+\@illustrator \\
+\fi
 \if\@proofreader\empty\else
 Proofreading:
 \@proofreader \\
 \fi
-Fonts: Linux Libertine, Arimo, DejaVu Sans Mono\\
+Fonts: Linux Libertine, Arimo, DejaVu Sans Mono\lsAdditionalFontsImprint\\
 Typesetting software: \XeLaTeX
 
 \bigskip
@@ -1215,11 +1257,10 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 \lsp has no responsibility for the persistence or accuracy of URLs for
 external or third-party Internet websites referred to in this
 publication, and does not guarantee that any content on such websites
-is, or will remain, accurate or appropriate. Information regarding
-prices, travel timetables and other factual information given in this
-work are correct at the time of first publication but \lsp does not
-guarantee the accuracy of such information thereafter. 
+is, or will remain, accurate or appropriate. 
+%Information regarding prices, travel timetables and other factual information given in this work are correct at the time of first publication but \lsp does not guarantee the accuracy of such information thereafter. 
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1235,7 +1276,6 @@ guarantee the accuracy of such information thereafter.
 	\end{center}
 	\vfill
 	\clearpage}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1255,10 +1295,9 @@ guarantee the accuracy of such information thereafter.
 \newlength{\normalparindent}
 \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
 
-
 \KOMAoptions{footnotes=multiple}
 
-% http://tex.stackexchange.com/questions/28465/multiple-footnotes-at-one-point/71015#71015
+%% http://tex.stackexchange.com/questions/28465/multiple-footnotes-at-one-point/71015#71015
 \let\oldFootnote\footnote
 \newcommand\nextToken\relax
 
@@ -1267,26 +1306,6 @@ guarantee the accuracy of such information thereafter.
 
 \newcommand\isFootnote{%
 	\ifx\footnote\nextToken\textsuperscript{,}\fi}
-
-%\deffootnote{1.5em}{1em}{% 
-%    \makebox[1.5em][l]{\thefootnotemark}}
-
-%% % this should be removed here, temporary
-%% \newif\if@noftnote\@noftnotetrue
-%% \newif\if@xrec\@xrecfalse
-%% \@definecounter{fnx}
-
-%% %%%% adapted from latex.tex to get examples in footnotes right
-%% \long\def\@footnotetext#1{%
-%%     \@noftnotefalse\setcounter{fnx}{0}%
-%%     \insert\footins{\reset@font\footnotesize
-%%     \interlinepenalty\interfootnotelinepenalty
-%%     \splittopskip\footnotesep
-%%     \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
-%%     \hsize\columnwidth \@parboxrestore
-%%    \edef\@currentlabel{\csname p@footnote\endcsname\@thefnmark}\@makefntext
-%%     {\rule{\z@}{\footnotesep}\ignorespaces
-%%       #1\strut}}\@noftnotetrue}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1297,11 +1316,12 @@ guarantee the accuracy of such information thereafter.
 
 \iflsCollection
 	\iflsBiblatex\else
-		\ClassError{LSP/langsci}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
+		\ClassError{langsci/langscibook}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
 	\fi
 	
 \renewcommand{\lsEditorPrefix}{{\LARGE Edited by}\\}
 \AtBeginDocument{	% for the citation in the footer
+	\onlyAuthor
 	\renewcommand{\newlineCover}{}
 	\renewcommand{\newlineSpine}{} 
 	\edef\lsCollectionTitle{\@title}		% \edef immediately expands \@title
@@ -1370,9 +1390,9 @@ guarantee the accuracy of such information thereafter.
 	\StrSubstitute{\editorTemp}{\&}{ and }[\editorTemp]
 
 	%% write bib entry to file
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},options={skipbib=true}}}
-
-	%\printbibliography[heading=subbibliography,notkeyword=this]  
+	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={\@title},booktitle={\lsCollectionTitle},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
+ 
 	\end{refsection}
 	\end{collectionpaper}}
 \fi
@@ -1384,22 +1404,20 @@ guarantee the accuracy of such information thereafter.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setcounter{secnumdepth}{4} % und (f"urs Inhaltsverzeichnis)
-% \setcounter{tocdepth}{4} (oder so) angegeben werden.
+\setcounter{secnumdepth}{4} 
 
 \def\subsubsubsection{\@startsection{paragraph}{3}{\z@}{-3.25ex plus
 	-1ex minus-.2ex}{1.5ex plus.2ex}{\reset@font\normalsize}}
-%
-\let\subsubsubsectionmark\@gobble
-%
+
+\let\subsubsubsectionmark\@gobble%
 
 \def\subsubsubsubsection{\@startsection{subparagraph}{3}{\z@}{-3.25ex plus
 	-1ex minus-.2ex}{1.5ex plus.2ex}{\reset@font\normalsize}}
-%
+
 \let\subsubsubsubsectionmark\@gobble
-% needed for hyperref
-\def\toclevel@subsubsubsection{4}
-%    
+
+%% needed for hyperref
+\def\toclevel@subsubsubsection{4}   
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1408,44 +1426,26 @@ guarantee the accuracy of such information thereafter.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% bidi has to be loaded in the individual documents
-%\ifxetex
-%\usepackage{bidi} 		% wants to be placed below hyperref, natbib, graphicx, ...
-%\fi
-
 \usepackage[figuresright]{rotating}
 
-% gets rid of the warnings:
-% Failed to convert input string to UTF16
-% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
+%% gets rid of the warnings:
+%% Failed to convert input string to UTF16
+%% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
 \hypersetup{unicode,pdfencoding=auto,bookmarksopenlevel=0}
  
-% this is required by authorindex
+%% this is required by authorindex
 \newif\ifshowindex \showindexfalse
 
 \usepackage{authorindex}
 
-% lsp-eng-hyp is a makeshift package. Authors should use localhyphenation.sty
-% \usepackage{./LSP/lsp-styles/lsp-eng-hyp}
-
-% mex considered evil. We need explicit references to examples for XML conversion, but mex does not provide them
-% The following allows for a quick reference to following or preceeding examples (\mex{1}) or
-% (\mex{0}) but also (\mex{-1})
-% taken from covington.sty (check)
-% \newcounter{lsptempcnt}
-% 
-% \newcommand{\mex}[1]{\setcounter{lsptempcnt}{\value{equation}}%
-% \addtocounter{lsptempcnt}{#1}%
-% \arabic{lsptempcnt}}%
-
-% quotes are indented at one side only.
+%% quotes are indented at one side only.
 \renewenvironment{quote}
 			   {\list{}{\rightmargin0pt\leftmargin8mm}%{\rightmargin\leftmargin}%
 				\item\relax}
 			   {\endlist}
 
-% quotations are indented at one side only
-% there is no indentation at the beginning of the quote
+%% quotations are indented at one side only
+%% there is no indentation at the beginning of the quote
 \renewenvironment{quotation}
 			   {\list{}{\listparindent 1.5em%
 						%\itemindent    \listparindent
@@ -1454,15 +1454,12 @@ guarantee the accuracy of such information thereafter.
 				\item\relax}
 			   {\endlist}
 
-% varioref considered evil. We willh ave various output formats, and we do not know, where elements will be placed in all of them
-% \usepackage[english]{varioref}
 
+%% useful commands for glossings:
+\usepackage{./langsci/styles/langsci-lgr}
 
-% useful commands for glossings:
-\usepackage{./LSP/lsp-styles/lsp-lgr}
-
+%% hspace over width of something without showing it
 \newlength{\LSPTmp}
-% a) hspace over width of something without showing it
 \newcommand*{\hspaceThis}[1]{\settowidth{\LSPTmp}{#1}\hspace*{\LSPTmp}}
 
 %%% epigraph configuration
@@ -1472,31 +1469,28 @@ guarantee the accuracy of such information thereafter.
 %\setlength{\epigraphwidth}{.2\textwidth}
 \setlength{\afterepigraphskip}{0\baselineskip}
 
-\usepackage{./LSP/lsp-styles/lsp-makros}
+\usepackage{./langsci/styles/langsci-basic}
 
+%% floats
+%% http://mintaka.sdsu.edu/GF/bibliog/latex/floats.html
+%% Alter some LaTeX defaults for better treatment of figures:
 
-% floats
-% http://mintaka.sdsu.edu/GF/bibliog/latex/floats.html
-% Alter some LaTeX defaults for better treatment of figures:
-
-    % See p.105 of "TeX Unbound" for suggested values.
-    % See pp. 199-200 of Lamport's "LaTeX" book for details.
-    %   General parameters, for ALL pages:
+    %% See p.105 of "TeX Unbound" for suggested values.
+    %% See pp. 199-200 of Lamport's "LaTeX" book for details.
+    %%   General parameters, for ALL pages:
     \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
     \renewcommand{\bottomfraction}{0.8}	% max fraction of floats at bottom
-    %   Parameters for TEXT pages (not float pages):
+    %%   Parameters for TEXT pages (not float pages):
     \setcounter{topnumber}{2}
     \setcounter{bottomnumber}{2}
     \setcounter{totalnumber}{4}     % 2 may work better
     \setcounter{dbltopnumber}{2}    % for 2-column pages
     \renewcommand{\dbltopfraction}{0.9}	% fit big float above 2-col. text
     \renewcommand{\textfraction}{0.07}	% allow minimal text w. figs
-    %   Parameters for FLOAT pages (not text pages):
+    %%  Parameters for FLOAT pages (not text pages):
     \renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
-	% N.B.: floatpagefraction MUST be less than topfraction !!
+	%% N.B.: floatpagefraction MUST be less than topfraction !!
     \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
-
-	% remember to use [htp] or [htpb] for placement
 
 \iflsShowIndex	% shows index commands in text
 	\usepackage{soul}
