@@ -557,6 +557,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 		\parindent\z@
 		\parskip\z@ \@plus .3\p@\relax
 		\let\item\@idxitem
+		\providecommand*\seealso[2]{\emph{see also} ##1}
 	}{%
 		\if@restonecol
 			\onecolumn
@@ -1090,7 +1091,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			\begin{pspicture}(0,0)(4.1,1in)
 			\psbarcode[transx=.4,transy=.3]{%
 				\iflsUscover\lsISBNsoftcoverus\else\lsISBNsoftcover\fi
-				}{isbn}\end{pspicture}}};
+				}{includetext height=.7}{isbn}\end{pspicture}}};
 	\end{tikzpicture} 
 	\end{titlepage}
 	\end{document}     % the cover and nothing else.
