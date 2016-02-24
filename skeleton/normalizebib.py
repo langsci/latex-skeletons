@@ -113,24 +113,20 @@ class Record():
     return match.group(1) + ' {' +match.group(2).upper()+'}'
 
   def checklanguagenames(self):
-    print(1)
-    try: 
-      title = self.fields.get('title','') 
-      oldtitle = title
-      m = LANGUAGENAMEPATTERN.search(title)
-      if m:
-        for g in m.groups():
-          title = title.replace(g,"{%s}"%g)
-      if oldtitle != title: 
-        print(oldtitle,title)
-    except AttributeError:
-      pass
-    try:
-      bt = LANGUAGENAMEPATTERN.sub(self.booktitle,r'\2')
-      if bt != self.booktitle:
-        print(bt, self.booktitle)
-    except AttributeError:
-      return
+    ts = ['title','booktitle']
+    for t in ts:
+      try: 
+        oldt = self.fields.get(t,'') 
+        newt = oldt
+        m = LANGUAGENAMEPATTERN.search(oldt)
+        if m:
+          for g in m.groups():
+            newt = newt.replace(g,"{%s}"%g)
+        if oldt != newt: 
+          print(oldt,' ==> ',newt)
+          self.fields[t] = newt
+      except AttributeError:
+        pass
       
       
   def conformsubtitles(self):
