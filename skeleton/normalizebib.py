@@ -2,7 +2,7 @@ import sys
 import re
 import pprint
 import glob
-from initd import INITD, REPLACEMENTS, LANGUAGENAMES
+from initd import INITD, REPLACEMENTS, LANGUAGENAMES, OCEANNAMES, COUNTRIES, CONTINENTNAMES
 import string
  
 keys = {} #store for all bibtex keys
@@ -18,13 +18,13 @@ for k in INITD:
     trans+=k
 transtable = str.maketrans(orig, trans)
 
-LANGUAGENAMEPATTERN=re.compile(r"\b(%s)\b"%('|'.join(LANGUAGENAMES)))    
+LANGUAGENAMEPATTERN=re.compile(r"\b(%s)\b"%('|'.join(LANGUAGENAMES+COUNTRIES+OCEANNAMES+CONTINENTNAMES)))    
 
 
 
 class Record(): 
   """
-  A bitex record
+  A bibtex record
   """
 
   TYPKEYFIELDS = r"^([^\{]+)\{([^,]+),[\s\n\t]*((?:.|\n)*)\}"
