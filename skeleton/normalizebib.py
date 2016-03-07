@@ -2,7 +2,7 @@ import sys
 import re
 import pprint
 import glob
-from initd import INITD, REPLACEMENTS
+from initd import INITD, REPLACEMENTS, LANGUAGENAMES, OCEANNAMES, COUNTRIES, CONTINENTNAMES
 import string
  
 keys = {} #store for all bibtex keys
@@ -17,11 +17,14 @@ for k in INITD:
     orig+=c
     trans+=k
 transtable = str.maketrans(orig, trans)
-    
+
+LANGUAGENAMEPATTERN=re.compile(r"\b(%s)\b"%('|'.join(LANGUAGENAMES+COUNTRIES+OCEANNAMES+CONTINENTNAMES)))    
+
+
 
 class Record(): 
   """
-  A bitex record
+  A bibtex record
   """
 
   TYPKEYFIELDS = r"^([^\{]+)\{([^,]+),[\s\n\t]*((?:.|\n)*)\}"
@@ -90,6 +93,7 @@ class Record():
     self.checkarticle()
     self.checkbook()
     self.checkincollection()
+    self.checklanguagenames()
   
   def report(self):
     """
@@ -108,7 +112,22 @@ class Record():
     
     return match.group(1) + ' {' +match.group(2).upper()+'}'
 
- 
+  def checklanguagenames(self):
+    ts = ['title','booktitle']
+    for t in ts:
+      try: 
+        oldt = self.fields.get(t,'') 
+        newt = oldt
+        m = LANGUAGENAMEPATTERN.search(oldt)
+        if m:
+          for g in m.groups():
+            newt = newt.replace(g,"{%s}"%g)
+        if oldt != newt: 
+          print(oldt,' ==> ',newt)
+          self.fields[t] = newt
+      except AttributeError:
+        pass
+      
       
   def conformsubtitles(self):
     """
