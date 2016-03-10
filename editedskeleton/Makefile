@@ -20,7 +20,7 @@ main.aux: $(SOURCE)
 #create only the book
 main1-blx.bbl:  $(SOURCE) localbibliography.bib  
 	xelatex -no-pdf main 
-	./bibtexvolume
+	./bibtexvolume.sh
 
 
 main.snd: main1-blx.bbl
@@ -38,7 +38,7 @@ main.snd: main1-blx.bbl
 
 #create a png of the cover
 cover: FORCE
-	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor grey -border 2  cover.png
+	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  cover.png
 	cp cover.png googlebooks_frontcover.png
 	convert -geometry 50x50% cover.png covertwitter.png
 	display cover.png
