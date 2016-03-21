@@ -107,7 +107,7 @@
 \DeclareVoidOption{collectiontoclong}{  			
 	\lsCollectiontrue%
 	\lsCollectionTOCLongtrue}
-\DeclareVoidOption{coverus}{  			
+\DeclareVoidOption{uscover}{  			
 	\lsUscovertrue}
 \ProcessKeyvalOptions{langscibook}
 
@@ -122,7 +122,6 @@
 	%appendixprefix
 	]{scrbook}
 
-
 \usepackage{etex}
 \reserveinserts{18}
 \usepackage{xstring}	% Needed on Lines 114ff and again on 167
@@ -130,8 +129,8 @@
 \usepackage{hyphenat}	% Needed twice
 
 \usepackage{tikz} % Needed for covers and advert page
- 	\usetikzlibrary{positioning}
- 	\usetikzlibrary{calc}
+	\usetikzlibrary{positioning}
+	\usetikzlibrary{calc}
 
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -234,12 +233,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{ifxetex}
-\ifxetex\else\ClassError{langsci/langscibook}{Please use XeLaTeX!}{}\fi
-	
+\ifxetex\else\ClassError{langsci/langscibook}{Please use XeLaTeX!}{}\fi	
 \usepackage{amssymb} % has to be loaded before other stuff
-% \usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol	
-\usepackage{metalogo}\newcommand{\xelatex}{\XeLaTeX\xspace}	
-\usepackage{fontspec}
+% \usepackage{dtklogos}\newcommand{\xelatex}{\XeLaTeX\xspace}	% the XeLaTeX symbol
+
+%\usepackage{fontspec}	% already loaded by XeLaTeX
+\PassOptionsToPackage{no-math}{fontspec} % must appear before metalogo or any fontspec stuff; deactivates fontspec's math settings, which is necessary to let newtxmath do the job 
+\usepackage{metalogo}\newcommand{\xelatex}{\XeLaTeX\xspace}
 \newcommand{\fontpath}{./langsci/fonts/}
 
 \setsansfont[
@@ -768,8 +768,8 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 
 %\usepackage{pdfpages}
 \newcommand{\lsAdvertisement}{
-	\include{langsci/graphics/didyoulikethisbook}
 %	\includepdf[pages={1}]{langsci/graphics/didyoulikethisbook.pdf}
+	\include{langsci/graphics/didyoulikethisbook}
 }
 
 \newcommand{\lsBackPage}{		% Back page
