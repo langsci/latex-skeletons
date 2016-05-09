@@ -156,8 +156,13 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
+
 \newlength{\csspine} 
 \newlength{\bodspine}
+
+\setlength{\csspine}{28.2mm} % Please calculate: Total Page Number (excluding cover, usually (Total Page - 3)) * 0.0572008 mm
+\setlength{\bodspine}{30mm} % Please calculate: Total Page Number (excluding cover) * BODFACTOR + BODABS
+
         \newlength{\seitenbreite}
         \newlength{\seitenhoehe}
         \newlength{\spinewidth}
@@ -165,7 +170,7 @@
         \newlength{\totalheight}
 
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version 
-	\input{./lengths.tex}
+% 	\input{./lengths.tex}
  
  	\newlength{\bleed}
  	\setlength{\bleed}{3.175mm}
@@ -809,7 +814,7 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 			\rotatebox[origin=c]{180}{\pbox[c]{150mm}{\lsSpineTitle}}}
 		\hspace{13mm}
 		{\lsSpineAuthorFont 
-			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi}}}
+			\rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor}}}
 	\end{minipage}} 
 	\end{textblock}}
 
@@ -1077,12 +1082,13 @@ al desirabilite de un nov lingua franca: On refusa continuar payar custosi tradu
 	%% Spine
 	\renewcommand{\newlineCover}{}
 	\node [above = 10.675mm of lspcls_bgspline.south] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{\logopath/langsci_spinelogo_nocolor.pdf}};
-	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor\lsEditorSuffix} \hspace{13mm} \lsSpineTitleFont{\@title}};
+	\node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor} \hspace{13mm} \lsSpineTitleFont{\@title}};
 	\renewcommand{\newlineCover}{\\} 
 	
 	%% Book Cover
 	
 	\newcommand{\lsCoverFontColour}{white}
+	\renewcommand{\lastand}{\par}
 	
 	\node [execute at begin node={}, font=\fontsize{52pt}{16.75mm}\selectfont, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=140mm, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
 	
@@ -1270,10 +1276,10 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 \vfill
 
 \noindent
-\lsp has no responsibility for the persistence or accuracy of URLs for
-external or third-party Internet websites referred to in this
-publication, and does not guarantee that any content on such websites
-is, or will remain, accurate or appropriate. 
+% \lsp has no responsibility for the persistence or accuracy of URLs for
+% external or third-party Internet websites referred to in this
+% publication, and does not guarantee that any content on such websites
+% is, or will remain, accurate or appropriate. 
 %Information regarding prices, travel timetables and other factual information given in this work are correct at the time of first publication but \lsp does not guarantee the accuracy of such information thereafter. 
 }
 
