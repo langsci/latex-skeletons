@@ -141,3 +141,22 @@
   \end{rotate}%
   \rule{0pt}{\rotheight} %add zero width rule to get the right table height
 }
+
+% example metadata
+
+\newcommand{\langinfo}[3]{{\upshape #1\il{#1}~(%
+\ifx\\#2\\%
+\else%
+#2;
+\fi%
+#3)}\nopagebreak[4]\ignorespaces}
+
+ 
+\newcommand{\fittable}[1]{\resizebox{\textwidth}{!}{#1}}
+
+
+% integrate see also in multiple indexes
+\def\igobble#1 {} 
+\newcommand{\langsciseealso}{\par\addvspace{.1\baselineskip}\hspace*{1.4cm}\hangindent=1.4cm\seealso}
+\newcommand{\ilsa}[2]{\il{#1@\igobble | langsciseealso{#2}}}
+\newcommand{\issa}[2]{\is{#1@\igobble | langsciseealso{#2}}}

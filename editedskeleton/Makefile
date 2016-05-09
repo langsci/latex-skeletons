@@ -51,7 +51,7 @@ pod: bod createspace googlebooks
 bod: bod/bodcontent.pdf 
 
 bod/bodcontent.pdf: complete
-	sed "s/output=short/output=coverbod/" main.tex >bodcover.tex 
+	sed "s/output=book/output=coverbod/" main.tex >bodcover.tex 
 	xelatex bodcover.tex  
 	xelatex bodcover.tex  
 	mv bodcover.pdf bod
@@ -61,7 +61,7 @@ bod/bodcontent.pdf: complete
 createspace:  createspace/createspacecontent.pdf 
 
 createspace/createspacecontent.pdf: complete
-	sed "s/output=short/output=covercreatespace/" main.tex >createspacecover.tex 
+	sed "s/output=book/output=covercreatespace/" main.tex >createspacecover.tex 
 	xelatex createspacecover.tex 
 	xelatex createspacecover.tex 
 	mv createspacecover.pdf createspace
