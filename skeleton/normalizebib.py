@@ -2,7 +2,7 @@ import sys
 import re
 import pprint
 import glob
-from initd import INITD, REPLACEMENTS, LANGUAGENAMES, OCEANNAMES, COUNTRIES, CONTINENTNAMES
+from helpers import INITD, REPLACEMENTS, LANGUAGENAMES, OCEANNAMES, COUNTRIES, CONTINENTNAMES, CITIES, OCCURREDREPLACEMENTS
 import string
  
 keys = {} #store for all bibtex keys
@@ -18,8 +18,9 @@ for k in INITD:
     trans+=k
 transtable = str.maketrans(orig, trans)
 
-LANGUAGENAMEPATTERN=re.compile(r"\b(%s)\b"%('|'.join(LANGUAGENAMES+COUNTRIES+OCEANNAMES+CONTINENTNAMES)))    
-
+PRESERVATIONPATTERN = re.compile(r"\b(%s)\b"%('|'.join(LANGUAGENAMES+COUNTRIES+OCEANNAMES+CONTINENTNAMES+CITIES+OCCURREDREPLACEMENTS)))    
+CONFERENCEPATTERN = re.compile("([A-Z][^ ]*[A-Z][A-Z-a-z]*)") #Binnenmajuskeln should be kept
+PROCEEDINGSPATTERN = re.compile("((?:Proceedings|Workshop|Conference|Symposium).*)\}$") #Binnenmajuskeln should be kept
 
 
 class Record(): 
@@ -117,17 +118,46 @@ class Record():
     for t in ts:
       try: 
         oldt = self.fields.get(t,'') 
-        newt = oldt
-        m = LANGUAGENAMEPATTERN.search(oldt)
+        preservationt = oldt
+        m = PRESERVATIONPATTERN.search(preservationt)
         if m:
           for g in m.groups():
-            newt = newt.replace(g,"{%s}"%g)
-        if oldt != newt: 
-          print(oldt,' ==> ',newt)
-          self.fields[t] = newt
+            preservationt = preservationt.replace(g,"{%s}"%g)
+            if oldt != preservationt: 
+              print(oldt,' ==> ',preservationt)
+              self.fields[t] = preservationt
+      except AttributeError:
+        pass            
+      try:   
+        oldt = self.fields.get(t,'') 
+        conft = oldt
+        m = CONFERENCEPATTERN.search(conft)
+        if m:
+          for g in m.groups():
+            conft = conft.replace(g,"{%s}"%g)
+            if oldt != conft: 
+              print(oldt,' ==> ',conft)
+              self.fields[t] = conft
       except AttributeError:
         pass
-      
+            
+            
+      try:   
+        oldt = self.fields.get(t,'') 
+        proct = oldt
+        m = PROCEEDINGSPATTERN.search(proct)
+        if m:
+          for g in m.groups():
+            proct = proct.replace(g,"{%s}"%g)
+            if oldt != proct: 
+              print(oldt,' ==> ',proct)
+              self.fields[t] = proct
+      except AttributeError:
+        pass
+          
+                
+
+ 
       
   def conformsubtitles(self):
     """
