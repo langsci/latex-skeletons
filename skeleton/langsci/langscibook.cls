@@ -583,8 +583,7 @@
 \newlength{\totalheight}
 \ExecuteMetaData[localmetadata.tex]{coverdimen} % Get only the information between the tag "coverdimen" from localmetadate.tex
 \setlength{\bleed}{3.175mm}
- 
- \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version  
+\ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version  
     \lsCovertrue
     \setlength{\bleed}{3.175mm}
     \setlength{\seitenbreite}{169.9mm}
