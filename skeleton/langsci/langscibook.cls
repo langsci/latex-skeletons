@@ -595,7 +595,7 @@
 \setlength{\bodspine}{20mm}
 \setlength{\bleed}{3.175mm}
 
-\newcommand{\lsEditorPrefix}{abc}
+\newcommand{\lsEditorPrefix}{}
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version  
     \renewcommand{\lsEditorPrefix}{{\LARGE Edited by}\\}
     
