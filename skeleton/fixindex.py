@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-from initd import INITD, REPLACEMENTS
+from helpers import INITD, REPLACEMENTS
 
   
 orig = ''
@@ -15,7 +15,7 @@ for k in INITD:
 transtable = str.maketrans(orig, trans)
 
   
-p = re.compile(r"\\indexentry \{(.*)\|hyperpage")
+p = re.compile(r"\\indexentry \{(.*)\|(\(?hyperpage|\)|infn)")
 
     
 def process(s): 
