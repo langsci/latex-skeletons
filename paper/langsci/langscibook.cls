@@ -573,8 +573,8 @@
  
 % For output type cover
 \usepackage{catchfilebetweentags}
-\newlength{\csspine} 
-\newlength{\bodspine}
+\newlength{\csspine}  % CS spine width algorithm, when page count is known:  Total Page Number (excluding cover), usually (Total Page - 3) * 0.0572008 mm
+\newlength{\bodspine} % BoD spine width algorithm located at http://www.bod.de/hilfe/coverberechnung.html (German only, please contact LangSci for help)
 \newlength{\bleed}
 \newlength{\seitenbreite}
 \newlength{\seitenhoehe}
