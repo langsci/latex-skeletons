@@ -1647,7 +1647,7 @@ is, or will remain, accurate or appropriate.
   \renewcommand{\newlineTOC}{}
   \renewcommand{\newlineCover}{\\}
   \iflsCollectionChapter
-    \vspace*{-2\baselineskip} 
+%     \vspace*{-2\baselineskip} 
     {\LARGE Chapter \thechapter}\newline\newline\fi
   \@title}}
   
