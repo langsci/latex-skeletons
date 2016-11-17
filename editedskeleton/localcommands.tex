@@ -1,10 +1,5 @@
 %add all your local new commands to this file
 
-\newcommand{\tobi}[2]{%
-\parbox{0cm}{\raisebox{.3cm}[0cm]{#2}}#1}
-
-\renewcommand{\H}[1]{\tobi{#1}{\textsc{h}}}
-\renewcommand{\L}[1]{\tobi{#1}{\textsc{l}}}
-\newcommand{\E}[1]{\tobi{#1}{\textsc{!}}}
-\renewcommand{\P}[1]{\tobi{#1}{\textsc{\%}}}
-\renewcommand{\S}[1]{\tobi{#1}{\textsc{*}}}
+\makeatletter
+\def\blx@maxline{77}
+\makeatother
