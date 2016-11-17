@@ -9,6 +9,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
 % Heiko Oberdiek
 % http://tex.stackexchange.com/questions/136644/vertical-space-in-interaction-with-figure-center-environment
 \newcommand{\oneline}[1]{%
@@ -160,3 +161,66 @@
 \newcommand{\langsciseealso}{\par\addvspace{.1\baselineskip}\hspace*{1.4cm}\hangindent=1.4cm\seealso}
 \newcommand{\ilsa}[2]{\il{#1@\igobble | langsciseealso{#2}}}
 \newcommand{\issa}[2]{\is{#1@\igobble | langsciseealso{#2}}}
+
+\usepackage{tabularx}
+\usepackage{array}
+\newenvironment{widetabular}[1][1]
+  {\tabularx{#1\textwidth}}
+  {\endtabularx}
+
+
+\newcommand{\citetv}[1]{\citeauthor{#1} (\citeyear*{#1} [this volume])}
+\newcommand{\citepv}[1]{(\citealt{#1} [this volume])}
+
+
+% Vowel chart tikz commands
+\newcommand{\aeiou}{%
+	\node at (1.5,0) (a) {a};
+	\node at (0,3) (i) {i};
+	\node at (3,3) (u) {u};
+	\node at (0.5,1.5) (e) {e};
+	\node at (2.5,1.5) (o) {o};
+}
+\newcommand{\aeiouEO}{%
+	\node at (1.5,0) (a) {a};
+	\node at (0,3) (i) {i};
+	\node at (3,3) (u) {u};
+	\node at (0.25,2) (e) {e};
+	\node at (2.75,2) (o) {o};
+	\node at (0.75,1) (E) {ε};
+	\node at (2.25,1) (O) {ɔ};	
+}
+
+\newcommand{\xxref}[2]{(\ref{#1}--\ref{#2})}
+
+
+% Underlining in gb4e-example Environments. Usual underlining commands that span multiple words do not work, because gb4e would parse it as one word. 
+% Example: \underline{My example phrase} should become \ulp{My}{~~~~~} \ulp{example}{~~~~~} \ule{phrase}
+% Note: The 2nd Argument of the \ulp command is filled in by experience - if you are not familiar with the command, you should experiment a bit. Usually, five tildes are enough, but be sure to check the outcome. 
+% \ule is meant to be the last word in a phrase that is underlined. Therefore, \ule does not have an extra length.
+\usepackage[normalem]{ulem} 
+\newcommand{\ulp}[2]{%#1: stuff to underline, #2: extra length to skip the whitespace between to components
+  \settowidth{\LSPTmp}{#1}%
+  % several boxes are need to assure that words with ascending and descending letters are underlined at the same 
+  % level, leading to the impression of a continuous stroke
+  \parbox[t]{\LSPTmp}{ %restrict first box to the length of first argument
+      \settowidth{\LSPTmp}{#1#2} %inner box is larger than outerbox, so underlining will extend beyond length of outer box
+      %             align parbox to bottom
+      %              |           mbox to prevent hyphenation
+      \uline{\parbox[b]{\LSPTmp}{\mbox{#1#2}}}
+    }
+}
+
+\newcommand{\ule}[1]{%#1: stuff to underline, no extra length
+  \ulp{#1}{}
+  }
+  
+  
+\newoutputstream{colorfigures}
+\openoutputfile{\jobname.clr}{colorfigures}
+\addtostream{colorfigures}{Note the offset incurred by the frontmatter!}
+\newenvironment{colorfigure}{\begin{figure}\addtostream{colorfigures}{\thepage}}{\end{figure}} 
+
+\AtEndDocument{
+ \closeoutputstream{colorfigures}
+}
