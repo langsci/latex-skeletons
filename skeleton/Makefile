@@ -80,7 +80,15 @@ openreview.pdf: main.pdf
 
 proofreading: proofreading.pdf
 	
-
+paperhive: 
+	git branch gh-pages
+	git checkout gh-pages
+	git add proofreading.pdf versions.json
+	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
+	git push origin gh-pages
+	git checkout master 
+	firefox https://paperhive.org/documents/new
+	
 proofreading.pdf: main.pdf
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
