@@ -87,6 +87,7 @@ paperhive:
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
 	git push origin gh-pages
 	git checkout master 
+	echo "langsci.github.io/BOOKID"
 	firefox https://paperhive.org/documents/new
 	
 proofreading.pdf: main.pdf
