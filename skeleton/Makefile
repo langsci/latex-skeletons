@@ -119,6 +119,10 @@ clean:
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup
 
 realclean: clean
-	rm -f *.dvi *.ps *.pdf 
+	rm -f *.dvi *.ps *.pdf
+
+chapterlist:
+	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/"
+ 
 
 FORCE:
