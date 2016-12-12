@@ -606,7 +606,7 @@
     \setlength{\bleed}{3.175mm}
     \setlength{\seitenbreite}{169.9mm}
     \setlength{\seitenhoehe}{244.1mm} 	
-    \setlength{\spinewidth}{40mm} % Create Space Version
+    \setlength{\spinewidth}{\csspine} % Create Space Version
     
     \usepackage{calc}
 
