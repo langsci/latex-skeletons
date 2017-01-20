@@ -20,7 +20,7 @@ main.aux: $(SOURCE)
 #create only the book
 main1-blx.bbl:  $(SOURCE) localbibliography.bib  
 	xelatex -no-pdf main 
-	./bibtexvolume.sh
+	bash bibtexvolume.sh
 
 
 main.snd: main1-blx.bbl
@@ -55,7 +55,7 @@ bod/bodcontent.pdf: complete
 	xelatex bodcover.tex  
 	xelatex bodcover.tex  
 	mv bodcover.pdf bod
-	./filluppages 4 main.pdf bod/bodcontent.pdf 
+	bash filluppages 4 main.pdf bod/bodcontent.pdf 
 
 # prepare for submission to createspace
 createspace:  createspace/createspacecontent.pdf 
@@ -65,7 +65,7 @@ createspace/createspacecontent.pdf: complete
 	xelatex createspacecover.tex 
 	xelatex createspacecover.tex 
 	mv createspacecover.pdf createspace
-	./filluppages 1 main.pdf createspace/createspacecontent.pdf 
+	bash filluppages 1 main.pdf createspace/createspacecontent.pdf 
 
 googlebooks: googlebooks_interior.pdf
 
