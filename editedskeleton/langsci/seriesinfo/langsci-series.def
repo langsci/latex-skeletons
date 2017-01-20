@@ -9,6 +9,7 @@
 \newcommand{\calseries}{calseries}
 \newcommand{\eotms}{eotms}
 \newcommand{\eotmsig}{eotmsig}
+\newcommand{\eurosla}{eurosla}
 \newcommand{\sidl}{sidl}
 \newcommand{\algad}{algad}
 \newcommand{\tmnlp}{tmnlp}
@@ -57,6 +58,10 @@
 	\newcommand{\lsSeriesTitle}{Implemented Grammars~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidBlue}
 \fi
+\ifx\lsSeries\eurosla
+	\newcommand{\lsSeriesTitle}{Eurosla Studies~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsMidOrange} 
+\fi
 \ifx\lsSeries\lv
 	\newcommand{\lsSeriesTitle}{Language Variation~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkWine}
@@ -68,7 +73,7 @@
 \fi
 \ifx\lsSeries\ogs
 	\newcommand{\lsSeriesTitle}{Open Generative Syntax~\lsSeriesNumber}
-	\newcommand{\lsSeriesColor}{lsDarkGreen1} 
+	\newcommand{\lsSeriesColor}{lsDarkGreenOne} 
 \fi
 \ifx\lsSeries\scl
 	\newcommand{\lsSeriesTitle}{Studies in Caribbean Languages~\lsSeriesNumber}
