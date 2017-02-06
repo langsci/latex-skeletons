@@ -88,9 +88,11 @@
 \newcommand{\lsSpineBreadth}{20mm}
 \newcommand{\lsOutput}{book} %"short" makes no sense if "long" is deprecated
 \newcommand{\lsFontsize}{11pt}
+\newcommand{\lsChapterFooterSize}{\small} %footers in editedvolumes
 \newcommand{\lsCopyright}{CC-BY}
 \newcommand{\lsBiblatexBackend}{bibtex}
-\newcommand{\logotext}{FU-Logo}
+\newcommand{\logotext}{{\color{red}no logo}}
+\newcommand{\lsYear}{\the\year}
 
 \newcommand{\lsBackBody}{Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores.}
 \newcommand{\lsBackTitle}{\@title}
@@ -116,6 +118,7 @@
 
 \newif\iflsDraft \lsDraftfalse
 \newif\iflsOpenReview \lsOpenReviewfalse
+\newif\iflsUndecapitalize \lsUndecapitalizefalse
 \newif\iflsShowIndex \lsShowIndexfalse
 \newif\iflsBiblatex \lsBiblatextrue
 \newif\iflsCollection \lsCollectionfalse
@@ -125,6 +128,8 @@
 \newif\iflsCover \lsCoverfalse %output format is cover
 \newif\iflsUscover \lsUscoverfalse
 \newif\iflsModfonts \lsModfontsfalse
+\newif\iflsNoBabel \lsNoBabelfalse
+\newif\iflsMultiauthors \lsMultiauthorsfalse
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,6 +176,8 @@
 % 	\renewcommand{\lsOutput}{long}}
 \DeclareVoidOption{smallfont}{  			
 	\renewcommand{\lsFontsize}{10pt}}
+\DeclareVoidOption{undecapitalize}{  			
+	\lsUndecapitalizetrue }	
 \DeclareVoidOption{draftmode}{	% 'draftmode' instead of 'draft' due to undesirable side efects	
 	 \lsDrafttrue
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
@@ -184,8 +191,12 @@
 	\renewcommand{\bstpath}{./langsci/bst/}
 	\renewcommand{\stylepath}{./langsci/styles/}	
 }
+\DeclareVoidOption{nobabel}{  			
+    \lsNoBabeltrue}
 \DeclareVoidOption{modfonts}{  			
     \lsModfontstrue}
+\DeclareVoidOption{multiauthors}{  			
+    \lsMultiauthorstrue}
 \DeclareVoidOption{showindex}{  			
 	\lsShowIndextrue}
 \DeclareVoidOption{biblatex}{  			
@@ -253,7 +264,6 @@
 % \usepackage{\stylepath langsci-lgr} #FIXME this should probably be replaced by \usepackage{leipzig}
 \usepackage{todonotes}
 
-\usepackage[english]{babel}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -576,6 +586,11 @@
   \renewenvironment{table}{\setfootnoterule{0pt}\oldtable}{\endoldtable} 
 \fi
 
+\ifx\lsSeries\pmwe
+ \renewcommand{\eachwordone}{\itshape} 
+\fi
+
+
 } %% \AtBeginDocument
 
 
@@ -792,18 +807,11 @@
   \AtBeginDocument{
     \renewcommand{\newlineCover}{}
     \renewcommand{\newlineSpine}{}  
-    \renewcommand{\lsEditorPrefix}{{\Large Edited by\\}}
+    \renewcommand{\lsEditorPrefix}{{\Large Edited by\\}}  
     \renewcommand{\lsEditorSuffix}{(ed.)}
-    \IfSubStr{\@author}{Press}   % if \@author contains \&
-      %case true
-      {\renewcommand{\lsEditorSuffix}{(eds.)}}
-      %case false
-      {}
-    \IfSubStr{\@author}{,} % if \@author contains ,
-      %case true   
-      {\renewcommand{\lsEditorSuffix}{(eds.)}}
-      %case false
-      {}      
+      \iflsMultiauthors
+	\renewcommand{\lsEditorSuffix}{(eds.)} 
+      \fi
   }
 \else
 \fi
@@ -839,7 +847,23 @@
       }
       }
      \end{textblock}
-  \fi}
+  \fi
+  \iflsUndecapitalize 
+    \begin{textblock}{170}(-20,75)
+      \rotatebox{30}{
+      \colorbox{red}{
+      \parbox[c][15ex][c]{220mm}{\centering\lsCoverTitleFont\color{white}Undecapitalized\\[-0.1ex]}
+      % \begin{tabular}{c}
+      %   ~\\
+      %   \scalebox{6}{\color{red}Open Review}\\[-0.5ex]
+      %   ~%version of \today, \currenttime
+      % \end{tabular}
+      }
+      }
+     \end{textblock}
+  \fi
+  
+  }
 
 \newcommand{\lsCoverTitleAuthor}{
   \renewcommand{\and}{\\}
@@ -999,7 +1023,7 @@
   \renewcommand{\newlineCover}{}
   \renewcommand{\newlineSpine}{}
   {\@author}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
-  {\the\year}. %
+  {\lsYear}. %
   \textit{\@title}\if\@subtitle\empty\else: \textit{\@subtitle}\fi\ %
   (\lsSeriesTitle). %
   Berlin: Language Science Press.
@@ -1015,7 +1039,7 @@
 This title can be downloaded at:\\
 \url{\lsURL}
 
-© \the\year, \iflsCollection the authors\else\@author\fi
+© \lsYear, \iflsCollection the authors\else\@author\fi
 
 \newcommand{\ccby}{CC-BY} 
 \ifx\lsCopyright\ccby 
@@ -1027,10 +1051,23 @@ http://creativecommons.org/licenses/by-nd/4.0/
 \fi
  
 \begin{tabular}{@{}l@{~}l}
-ISBN: & \lsISBNdigital~(Digital) \\
-      & \lsISBNhardcover~(Hardcover)\\
-      & \lsISBNsoftcover~(Softcover)\\
-      & \lsISBNsoftcoverus~(Softcover US)\\
+ISBN: & 
+\IfStrEq{\lsISBNdigital}{000-0-000000-00-0} 
+{\color{red}no digital ISBN}
+{\lsISBNdigital~(Digital)}
+\\
+&
+\IfStrEq{\lsISBNhardcover}{000-0-000000-00-0} 
+{\color{red}no hardcover ISBN}
+{\lsISBNhardcover~(Hardcover)}
+\\&
+\IfStrEq{\lsISBNsoftcover}{000-0-000000-00-0} 
+{\color{red}no softcover ISBN}
+{\lsISBNsoftcover~(Softcover)}
+\\
+%       & \lsISBNhardcover~(Hardcover)\\
+%       & \lsISBNsoftcover~(Softcover)\\
+%       & \lsISBNsoftcoverus~(Softcover US)\\
 \end{tabular}
 
 \IfStrEq{\lsISSN}{??}   % \IfStrEq from xstring
@@ -1038,7 +1075,7 @@ ISBN: & \lsISBNdigital~(Digital) \\
   {ISSN: \lsISSN}
 
 \IfStrEq{\lsBookDOI}{??}    % \IfStrEq from xstring
-  {}
+  {{\color{red} no DOI}}
   {\doi{\lsBookDOI}}
 
 
@@ -1244,52 +1281,33 @@ is, or will remain, accurate or appropriate.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage[
+	natbib=true,
+	\iflsUndecapitalize
+	style=\bstpath biblatex-langsci-unified-undecap,
+	\else
+	style=\bstpath biblatex-langsci-unified,
+	\fi
+	citestyle=\bstpath langsci-authoryear-comp,
+	%refsection=chapter,
+	maxbibnames=99,
+	isbn=false,
+	doi=false,
+	url=false,
+	eprint=false,
+	backend=\lsBiblatexBackend,
+	indexing=cite,
+	\iflsCollection\else
+		toc=bib 		% make bibliography appear in toc
+	\fi
+	]{biblatex} 
+\renewcommand{\postnotedelim}{: }%
+\renewcommand{\multicitedelim}{\addsemicolon\space}%  
+\renewcommand{\compcitedelim}{\multicitedelim}
+\DeclareFieldFormat{postnote}{#1}%
+%\renewcommand{\nameyeardelim}{ }%
+\defbibheading{references}{\chapter{References}} 
  
-\iflsBiblatex	% BibLaTeX
-	\usepackage[
-		natbib=true,
-		style=\bstpath biblatex-langsci-unified,
-		citestyle=\bstpath langsci-authoryear-comp,
-		%refsection=chapter,
-		maxbibnames=99,
-		isbn=false,
-		doi=false,
-		url=false,
-		eprint=false,
-		backend=\lsBiblatexBackend,
-		indexing=cite,
-		\iflsCollection\else
-			toc=bib 		% make bibliography appear in toc
-		\fi
-		]{biblatex}
-	\renewcommand{\postnotedelim}{: }%
-	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
-	\renewcommand{\compcitedelim}{\multicitedelim}
-	\DeclareFieldFormat{postnote}{#1}%
-	%\renewcommand{\nameyeardelim}{ }%
-  \defbibheading{references}{\chapter{References}} 
-\else	%BibTeX (deprecated)
-	\usepackage{natbib}
-	\setlength{\bibsep}{0mm}
-	%% unified style sheet for linguistics journals
-	%% http://celxj.org/downloads/unified.bst
-	\bibliographystyle{./langsci/bst/unified} 
-	%% This does not work ...
-	% \setcitestyle{
-	% notesep={: }, % 2002: 125
-	% aysep={~}     % Gazdar 2002
-	% }
-
-	%% check what the unified people have to say on this.
-	\bibpunct[: ]{(}{)}{;}{a}{}{,}
-	%% They do not say anything about citations in the running text.
-	%% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
-	%% This is what De Gruyter does:
-	\let\citew=\citet
-	%% This is what Stefan did:
-	%\let\citew=\citealt
-\fi
-
 \let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
 %% penalties against widows and orphans in bibliography
@@ -1302,7 +1320,7 @@ is, or will remain, accurate or appropriate.
 }
 {}{}
 
-% temporary workaround to fix wrong wrapping for \verb in bibtex
+% % temporary workaround to fix wrong wrapping for \verb in bibtex
 % \makeatletter
 % \def\blx@maxline{77}
 % \makeatother
@@ -1342,16 +1360,16 @@ is, or will remain, accurate or appropriate.
     %% N.B.: floatpagefraction MUST be less than topfraction !!
 \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
 
-% \usepackage{setspace}
-% \usepackage{caption}
+\usepackage{setspace}
+\usepackage{caption}
 % \captionsetup{labelfont=bf} 
-% \captionsetup{%
-% font={%
-% stretch=.8%
-% ,small%
-% },%
-% width=.8\textwidth
-% }
+\captionsetup{%
+font={%
+stretch=.8%
+,small%
+},%
+width=.8\textwidth
+}
 
 \setcapindent{0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1423,12 +1441,11 @@ is, or will remain, accurate or appropriate.
 
 \AtBeginDocument{
 	\makeindex
-	\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
-	% \newindex{aut}{adx}{and}{Name index}
+	\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle} 
 	\newindex{sbj}{sdx}{snd}{\lsSubjectIndexTitle}
 	\renewindex{default}{adx}{and}{\lsNameIndexTitle} %biblatex can only deal with the default index
-	\newindex{wrd}{wdx}{wnd}{Expression index}
-	\newindex{rwrd}{rdx}{rnd}{Reverse expression index}
+% 	\newindex{wrd}{wdx}{wnd}{Expression index}
+% 	\newindex{rwrd}{rdx}{rnd}{Reverse expression index}
 }
 
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
@@ -1583,6 +1600,7 @@ is, or will remain, accurate or appropriate.
 \renewcommand{\@pnumwidth}{1.5em}	% width of page numbers
 \usepackage{tocstyle}
 \usetocstyle{standard}				%\usetocstyle{allwithdot}
+\settocfeature[toc]{raggedhook}{\raggedright} 
 \iflsCollectionTOCLong\else
 	\setcounter{tocdepth}{0}\fi			% show only parts and chapters
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}	% parts without page number
@@ -1636,7 +1654,7 @@ is, or will remain, accurate or appropriate.
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\lsYear,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
  
 	\end{refsection}
 	\end{collectionpaper}}
@@ -1674,10 +1692,10 @@ is, or will remain, accurate or appropriate.
   
 \newcommand{\lsCollectionPaperTitle}{{%
   \renewcommand{\newlineTOC}{}
-  \renewcommand{\newlineCover}{\\}
-  \iflsCollectionChapter
-%     \vspace*{-2\baselineskip} 
-    {\LARGE Chapter \thechapter}\newline\newline\fi
+  \renewcommand{\newlineCover}{\\} 
+  \\[-1\baselineskip]
+  \noindent{\LARGE Chapter \thechapter}\\
+  \bigskip  
   \@title}}
   
 \newcommand{\lsCollectionPaperAuthor}{{%
@@ -1687,8 +1705,9 @@ is, or will remain, accurate or appropriate.
   
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
   \includegraphics{\logopath langsci_spinelogo_nocolor.pdf}}%
-  \hspace{0.8em}%
-  \parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText}}
+  % \hspace{0.8em}%
+  \hfill%
+  \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText}}
   
 \newcommand{\lsCollectionPaperCitationText}{\string\lsCollectionPaperCitationText.}
 
@@ -1728,14 +1747,14 @@ is, or will remain, accurate or appropriate.
 
 %writeout page numbers for separation of chapters 
 
-\usepackage{newfile}
-\newoutputstream{pages}
-\openoutputfile{\jobname.pgs}{pages}
-\newcommand{\writechapterpages}{\addtostream{pages}{\thepage}}
-
-\AtEndDocument{
- \closeoutputstream{pages}
-}
+% \usepackage{newfile}
+% \newoutputstream{pages}
+% \openoutputfile{\jobname.pgs}{pages}
+% \newcommand{\writechapterpages}{\addtostream{pages}{\thepage}}
+% 
+% \AtEndDocument{
+%  \closeoutputstream{pages}
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1749,6 +1768,9 @@ is, or will remain, accurate or appropriate.
 \newlength{\LSPTmp}
 \newcommand*{\hspaceThis}[1]{\settowidth{\LSPTmp}{#1}\hspace*{\LSPTmp}}
 
-
+\iflsNoBabel
+  \else
+  \usepackage[english]{babel}
+\fi
 
 \endinput
