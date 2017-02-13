@@ -1,0 +1,33 @@
+bookid:  0
+title:  test
+booksubtitle: 
+seriesnumber: 
+creators:
+  authors: [[first,last,"bio"]]
+  editors: 
+editedvolume: 
+blurb: "
+
+"
+isbns: 
+- [digital,978-3-000000-00-0] 
+doi: 
+typesetters:
+proofreaders: 
+illustrators: 
+createspace: 
+bod: 
+publicationdate: 
+chapters:
+- number: 1
+  title: 
+  subtitle: 
+  authors:  []
+  chapterdoi: 
+  downloadlink:
+- number: 2 
+  title: 
+  subtitle:  
+  authors: []
+  chapterdoi:
+  downloadlink:
