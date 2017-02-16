@@ -161,6 +161,7 @@
 \newcommand{\langsciseealso}{\par\addvspace{.1\baselineskip}\hspace*{1.4cm}\hangindent=1.4cm\seealso}
 \newcommand{\ilsa}[2]{\il{#1@\igobble | langsciseealso{#2}}}
 \newcommand{\issa}[2]{\is{#1@\igobble | langsciseealso{#2}}}
+\newcommand{\iasa}[2]{\ia{#1@\igobble | langsciseealso{#2}}}
 
 \usepackage{tabularx}
 \usepackage{array}
@@ -272,3 +273,25 @@
 \newcommand{\threedigitexamples}{\exewidth{(234)}}
 \newcommand{\fourdigitexamples}{\exewidth{(2345)}}
 
+\newcommand{\noabstract}{\vspace*{-2\baselineskip}} %for chapters without abstract
+
+\newcommand{\barplot}[4]{%
+  \begin{tikzpicture}
+    \begin{axis}[
+	xlabel={#1},  
+	ylabel={#2}, 
+	axis lines*=left, 
+        width  = \textwidth,
+	height = .3\textheight,
+    	nodes near coords, 
+	xtick=data,
+	x tick label style={},  
+	ymin=0,
+	symbolic x coords={#3},
+	]
+	\addplot+[ybar,lsRichGreen!80!black,fill=lsRichGreen] plot coordinates {
+	    #4
+	}; 
+    \end{axis} 
+  \end{tikzpicture} 
+}
