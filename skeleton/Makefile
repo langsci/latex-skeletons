@@ -56,6 +56,9 @@ bod/bodcontent.pdf: complete
 	xelatex bodcover.tex  
 	mv bodcover.pdf bod
 	bash filluppages 4 main.pdf bod/bodcontent.pdf 
+	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=output_cover.pdf bodcover.pdf
+	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=output_bookblock.pdf bodcontent.pdf
+
 
 # prepare for submission to createspace
 createspace:  createspace/createspacecontent.pdf 
