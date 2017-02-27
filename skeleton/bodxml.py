@@ -1,8 +1,8 @@
 import  yaml
 from datetime import datetime
 from pyPdf import PdfFileReader
-
-metadata = yaml.load(open('metadata.yaml','r')) 
+import shutil
+import zipfile
 
 template = """<?xml version="1.0" encoding="utf-8"?>
 <BoD>
@@ -63,10 +63,7 @@ authortemplate="""
         <ContributorShortBio>{2}</ContributorShortBio>
       </Contributor>
 """
-try:
-  authors = '\n'.join([authortemplate.format(*a) for a in metadata["creators"]["authors"]])
-except TypeError:
-  authors = '' 
+
 
 editortemplate="""
       <Contributor>
@@ -75,6 +72,14 @@ editortemplate="""
         <ContributorShortBio>{2}</ContributorShortBio>
       </Contributor>
 """
+
+print "extracting metadata"
+
+metadata = yaml.load(open('metadata.yaml','r')) 
+try:
+  authors = '\n'.join([authortemplate.format(*a) for a in metadata["creators"]["authors"]])
+except TypeError:
+  authors = '' 
 
 try:
   editors= '\n'.join([editortemplate.format(*a) for a in metadata["creators"]["editors"]])
@@ -90,7 +95,7 @@ metadata['isbnsc'] = metadata['isbns']['softcover'].replace('-','')
 
 metadata['colorpagecount'] = len(metadata['colorpages'])
 metadata['colorpagesstring'] = ','.join([str(x) for x in metadata['colorpages']])  
-metadata['pagecount'] = PdfFileReader(open('Bookblock.pdf','rb')).getNumPages()
+metadata['pagecount'] = PdfFileReader(open('bodcontent.pdf','rb')).getNumPages()
 metadata['binding'] = 'PB'
 metadata['back'] = ''
 outputSC = template.format(**metadata)
@@ -100,10 +105,36 @@ metadata['binding'] = 'HC'
 metadata['back'] = '<Back>rounded</Back>'
 outputHC = template.format(**metadata)
 
-hcxml = open("%s_MasteringOrder.xml"%metadata['isbnhc'],'w')
-hcxml.write(outputHC)
-hcxml.close()
+print "Creating xml file for softcover", metadata['isbnsc']
 
-scxml = open("%s_MasteringOrder.xml"%metadata['isbnsc'],'w')
+scxml = open("bod/%s_MasteringOrder.xml"%metadata['isbnsc'],'w')
 scxml.write(outputSC)
 scxml.close()
+
+print "Creating xml file for hardcover", metadata['isbnhc']
+hcxml = open("bod/%s_MasteringOrder.xml"%metadata['isbnhc'],'w')
+hcxml.write(outputHC)
+hcxml.close()
+ 
+print "renaming pdf files according to ISBNs"
+shutil.copy('Bookblock.pdf','bod/%s_Bookblock.pdf'%metadata['isbnsc'])
+shutil.copy('Bookblock.pdf','bod/%s_Bookblock.pdf'%metadata['isbnhc'])
+shutil.copy('coverSC.pdf','bod/%s_cover.pdf'%metadata['isbnsc'])
+shutil.copy('coverHC.pdf','bod/%s_coverHC.pdf'%metadata['isbnhc'])
+
+print "Creating zip file for softcover", metadata['isbnsc']
+zfsc = zipfile.ZipFile('bod/%s_MasteringOrder.zip'%metadata['isbnsc'], mode='w')
+zfsc.write('bod/%s_MasteringOrder.xml'%metadata['isbnsc'])
+zfsc.write('bod/%s_Bookblock.pdf'%metadata['isbnsc'])
+zfsc.write('bod/%s_cover.pdf'%metadata['isbnsc'])
+zfsc.close()
+
+
+print "Creating zip file for hardcover", metadata['isbnhc'] 
+zfhc = zipfile.ZipFile('bod/%s_MasteringOrder.zip'%metadata['isbnhc'], mode='w')
+zfhc.write('bod/%s_MasteringOrder.xml'%metadata['isbnhc'])
+zfhc.write('bod/%s_Bookblock.pdf'%metadata['isbnhc'])
+zfhc.write('bod/%s_coverHC.pdf'%metadata['isbnhc'])
+zfhc.close()
+
+print "All files created. Files are in /bod"

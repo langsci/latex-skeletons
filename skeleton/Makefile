@@ -51,14 +51,23 @@ pod: bod createspace googlebooks
 bod: bod/bodcontent.pdf 
 
 bod/bodcontent.pdf: complete
-	sed "s/output=book/output=coverbod/" main.tex >bodcover.tex 
-	xelatex bodcover.tex  
-	xelatex bodcover.tex  
-	mv bodcover.pdf bod
-	bash filluppages 4 main.pdf bod/bodcontent.pdf 
-	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=output_cover.pdf bodcover.pdf
-	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=output_bookblock.pdf bodcontent.pdf
-
+	echo "creating cover for hardcover"
+	sed "s/output=book/output=coverbod/" main.tex >bodcoverHC.tex 
+	xelatex bodcoverHC.tex  
+	xelatex bodcoverHC.tex
+	echo "creating cover for softcover"
+	sed "s/output=book/output=coverbod/" main.tex >bodcoverSC.tex 
+	xelatex bodcoverSC.tex  
+	xelatex bodcoverSC.tex
+	echo "creating bookblock"
+	bash filluppages 4 main.pdf bodcontent.pdf 
+	echo "conforming files to pdf X/3"
+	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=Bookblock.pdf bodcontent.pdf
+	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverHC.pdf bodcoverHC.pdf
+	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverSC.pdf bodcoverSC.pdf
+	python bodxml.py 
+	
+	
 
 # prepare for submission to createspace
 createspace:  createspace/createspacecontent.pdf 
