@@ -1,23 +1,31 @@
 bookid:  0
 title:  test
 booksubtitle: 
-seriesnumber: 
+series: Studies in Diversity Linguistics
+seriesnumber: 99
 creators:
   authors: [[first,last,"bio"]]
-  editors: 
-editedvolume: 
-blurb: "
-
+  editors:  
+blurb: "abc
 "
 isbns: 
-- [digital,978-3-000000-00-0] 
+  digital: 978-3-000000-00-0
+  hardcover: 978-3-000000-00-1 
+  softcover: 978-3-000000-00-2 
 doi: 
 typesetters:
 proofreaders: 
 illustrators: 
 createspace: 
+edition: 1
 bod: 
+scheme: ["BISAC","LAN009000"]
 publicationdate: 
+europrice: 40
+gbprice: 30
+usdprice: 40
+colorpages: [3]
+booklanguage: eng
 chapters:
 - number: 1
   title: 
