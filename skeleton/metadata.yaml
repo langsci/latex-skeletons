@@ -15,15 +15,10 @@ isbns:
 doi: 
 typesetters:
 proofreaders: 
-illustrators: 
-createspace: 
-edition: 1
-bod: 
+illustrators:  
+edition: 1 
 scheme: ["BISAC","LAN009000"]
-publicationdate: 
-europrice: 40
-gbprice: 30
-usdprice: 40
+publicationdate:  
 colorpages: [3]
 booklanguage: eng
 chapters:
