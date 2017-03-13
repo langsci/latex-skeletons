@@ -8,7 +8,7 @@ template = """<?xml version="1.0" encoding="utf-8"?>
 <BoD>
   <Header>
     <FromCompany>Language Science Press</FromCompany>
-    <FromCompanyNumber>112345678</FromCompanyNumber>
+    <FromCompanyNumber>110275446</FromCompanyNumber>
     <SentDate>{date}</SentDate>
     <SentTime>{time}</SentTime>
     <FromPerson>Sebastian Nordhoff</FromPerson>
@@ -96,7 +96,7 @@ metadata['isbnsc'] = metadata['isbns']['softcover'].replace('-','')
 metadata['colorpagecount'] = len(metadata['colorpages'])
 metadata['colorpagesstring'] = ','.join([str(x) for x in metadata['colorpages']])  
 metadata['pagecount'] = PdfFileReader(open('bodcontent.pdf','rb')).getNumPages()
-#price is 3 EUR base + 3ct per page + 30ct extra per colorpage, rounded up to multiples of 5
+#price is 3 EUR base + 5ct per page + 50ct extra per colorpage, rounded up to multiples of 5
 metadata['europrice'] = "%i,%s" %(((300+metadata['pagecount']*5+metadata['colorpagecount']*30)/500+1)*5,"00")
 metadata['gbprice'] = metadata['europrice']
 metadata['usdprice'] = metadata['europrice'] 
