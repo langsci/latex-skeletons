@@ -43,6 +43,9 @@ cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
 	display cover.png
  
+
+
+
 	
 #prepare for print on demand services	
 pod: bod createspace googlebooks
@@ -135,7 +138,11 @@ realclean: clean
 	rm -f *.dvi *.ps *.pdf
 
 chapterlist:
-	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/"
+	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/" 
+
+podcover:
+	bash podcovers.sh
+
  
 
 FORCE:
