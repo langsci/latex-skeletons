@@ -21,16 +21,28 @@ for f in files:
   if len(a) == 2:
     preamble = a[0]
     joiner = r"\begin{document}"
-  for lg in lgs:
-    lg = lg.strip()
-    if lg == '':
-      continue
-    content= re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, content)
-  for term in terms:
-    term = term.strip() 
-    if term == '':
-       continue
-    content= re.sub('(?<!isi{)%s(?![-_\w}])'%term, '\isi{%s}'%term, content)
+  lines = content.split('\n')
+  excluders = ("section","caption","chapter")
+  newlines = []
+  for line in lines: 
+    included = True
+    for excluder in excluders: 
+      if "%s{"%excluder in line:
+	included = False
+	print line
+    if included:
+      for lg in lgs: 
+	lg = lg.strip()
+	if lg == '':
+	  continue 
+	line = re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, line)
+      for term in terms:
+	term = term.strip() 
+	if term == '':
+	  continue
+	line = re.sub('(?<!isi{|...[A-Za-z])%s(?![-_\w}])'%term, '\isi{%s}'%term, line) 
+    newlines.append(line)
+  content = "\n".join(newlines)  
   nlg = len(re.findall('\\ili{',content))
   nt = len(re.findall('\\isi{',content))
   outfile = open(f.replace('chapters','indexed'), 'w')
