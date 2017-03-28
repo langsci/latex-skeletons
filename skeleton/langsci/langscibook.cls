@@ -90,6 +90,7 @@
 \newcommand{\lsFontsize}{11pt}
 \newcommand{\lsChapterFooterSize}{\small} %footers in editedvolumes
 \newcommand{\lsCopyright}{CC-BY}
+\newcommand{\lsSpinewidth}{20mm}
 \newcommand{\lsBiblatexBackend}{bibtex}
 \newcommand{\logotext}{{\color{red}no logo}}
 \newcommand{\lsYear}{\the\year}
@@ -172,6 +173,10 @@
 \DeclareStringOption{biblatexbackend}[bibtex]
 	\define@key{langscibook}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
+
+\DeclareStringOption{spinewidth}[20mm]
+	\define@key{langscibook}{spinewidth}{%
+		\renewcommand{\lsSpinewidth}{#1}}
 % \DeclareVoidOption{long}{
 % 	\renewcommand{\lsOutput}{long}}
 \DeclareVoidOption{smallfont}{  			
@@ -378,10 +383,9 @@
 \newcommand{\lsOutputShort}{short}            % standard book, old key name
 \newcommand{\lsOutputInprep}{inprep}          % marks manuscript as in preparation
 \newcommand{\lsOutputPaper}{paper}            % paper in edited volume
-\newcommand{\lsOutputGuidelines}{guidelines}  % guidelines
-\newcommand{\lsOutputCover}{cover}            % FIXME remove this?
-\newcommand{\lsOutputCoverBOD}{coverbod}      % cover with BoD measurements
-\newcommand{\lsOutputCoverDOB}{coverdob}      % FIXME remove this?
+\newcommand{\lsOutputGuidelines}{guidelines}  % guidelines 
+\newcommand{\lsOutputCoverBODsc}{coverbodsc}      % cover with BoD measurements 
+\newcommand{\lsOutputCoverBODhc}{coverbodhc}      % cover with BoD measurements 
 \newcommand{\lsOutputCoverCS}{covercreatespace} % cover with CreateSpace measurements
 
 
@@ -505,10 +509,26 @@
 
 \fi
 
-\ifx\lsOutput\lsOutputCoverBOD         % only if output=cover 
+\ifx\lsOutput\lsOutputCoverBODhc         % only if output=cover 
   \podsetup  
   \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
     \podgeometry{24.5mm}{23.1cm}{15.2cm}
+    \podspine 
+    \podfrontcovertoptext{137mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
+    \podcoverbottomtext
+    \newcommand{\lsISBNcover}{\lsISBNhardcover}
+    \podbackcover{135.5mm}  
+  \end{tikzpicture}  
+  %exit the document right here
+  \end{titlepage}
+  \end{document}    
+  \fi 
+  
+
+\ifx\lsOutput\lsOutputCoverBODsc         % only if output=cover 
+  \podsetup  
+  \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
+    \podgeometry{10.5mm}{23.1cm}{15.2cm}
     \podspine 
     \podfrontcovertoptext{137mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
@@ -612,17 +632,17 @@
 \newlength{\spinewidth}
 \newlength{\totalwidth}
 \newlength{\totalheight}
-\IfFileExists{./localmetadata.tex}{\ExecuteMetaData[localmetadata.tex]{coverdimen}}{\typeout{No local meta data found, therefore default spline length was chosen}} % Get only the information between the tag "coverdimen" from localmetadata.tex
+% \IfFileExists{./localmetadata.tex}{\ExecuteMetaData[localmetadata.tex]{coverdimen}}{\typeout{No local meta data found, therefore default spline length was chosen}} % Get only the information between the tag "coverdimen" from localmetadata.tex
 \setlength{\bleed}{3.175mm}
+\setlength{\spinewidth}{\lsSpinewidth} % Create Space Version
+\usepackage{calc}
  
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version  
     \lsCovertrue
     \setlength{\bleed}{3.175mm}
     \setlength{\seitenbreite}{169.9mm}
     \setlength{\seitenhoehe}{244.1mm} 	
-    \setlength{\spinewidth}{\csspine} % Create Space Version
     
-    \usepackage{calc}
 
     \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
     \setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
@@ -630,17 +650,30 @@
     \hyphenpenalty 750
 \fi
  	   
-\ifx\lsOutput\lsOutputCoverBOD 
-  \lsCovertrue 	
-  \usepackage{calc}
-%     \input{./lengths.tex}
+\ifx\lsOutput\lsOutputCoverBODhc 
+  \lsCovertrue 	 
+%   \newlength{\bodfold}
+  \newlength{\totalspine}
+%   \setlength{\bodfold}{8mm}
+  \setlength{\seitenbreite}{192mm}
+  \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Runder Rücken, Kaschiert, papier 80g/m², weiß
+%   \setlength{\spinewidth}{\bodspine}  
+%   \setlength{\totalspine}{\spinewidth+\bodfold+\bodfold} %check whether we need fold for rundrücken
+  \setlength{\totalspine}{\spinewidth} 
+  \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
+  \setlength{\totalheight}{\seitenhoehe}
+  \usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+  \hyphenpenalty 750
+\fi
+  
+ 	   
+\ifx\lsOutput\lsOutputCoverBODsc 
+  \lsCovertrue 	  
   \newlength{\bodfold}
   \newlength{\totalspine}
-  \setlength{\bodfold}{8mm}
-  \setlength{\seitenbreite}{192mm}
-  \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Gerader Rücken, Kaschiert, papier 80g/m², weiß
-  \setlength{\spinewidth}{\bodspine}  
-  \setlength{\totalspine}{\spinewidth+\bodfold+\bodfold} 
+  \setlength{\seitenbreite}{175mm}
+  \setlength{\seitenhoehe}{240mm} % For BOD: Softcover, papier 80g/m², weiß
+  \setlength{\totalspine}{\spinewidth} 
   \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
   \setlength{\totalheight}{\seitenhoehe}
   \usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
@@ -1645,8 +1678,10 @@ width=.8\textwidth
 	\renewcommand{\lsCollectionPaperCitationText}{\fullciteFooter{#1}} 
 	
 	\include{#1}%
+  \addtocounter{page}{-1}
 	\edef\lsCollectionPaperLastPage{\thepage}	% \lsCollectionPaperFirstPage is defined in \lsPaper
-
+  \addtocounter{page}{1}
+  
 	%%% for citation in footer
 	%% preprocessing of author/editor names
 	\onlyAuthor		
@@ -1660,7 +1695,7 @@ width=.8\textwidth
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\lsYear,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\lsYear,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true,skiplab=true}}}
  
 	\end{refsection}
 	\end{collectionpaper}}
@@ -1699,7 +1734,8 @@ width=.8\textwidth
 \newcommand{\lsCollectionPaperTitle}{{%
   \renewcommand{\newlineTOC}{}
   \renewcommand{\newlineCover}{\\} 
-  \\[-1\baselineskip]
+  %   \\[-1\baselineskip]
+  \vspace*{-2\baselineskip}
   \noindent{\LARGE Chapter \thechapter}\\
   \bigskip  
   \@title}}
