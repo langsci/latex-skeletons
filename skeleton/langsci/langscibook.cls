@@ -336,7 +336,7 @@
               right = #1 of current page.west, 
               fill=\lsSeriesColor, 
               minimum height=#2, 
-              minimum width=#3
+              minimum width=#3  
             ] (CoverColouredRectangleBack) {}; 
       \node at (current page.center) [ % Create a reference node for the spine
               bg, 
@@ -560,12 +560,12 @@
 \ifx\lsOutput\lsOutputCoverBODhc         % only if output=cover 
   \podsetup  
   \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
-    \podgeometry{24.5mm}{23.1cm}{15.2cm}
+    \podgeometry{24.2mm}{23.1cm}{15.5cm}
     \podspine 
-    \podfrontcovertoptext{137mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
+    \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
     \newcommand{\lsISBNcover}{\lsISBNhardcover}
-    \podbackcover{135.5mm}  
+    \podbackcover{140mm}  
   \end{tikzpicture}  
   %exit the document right here
   \end{titlepage}
@@ -576,12 +576,12 @@
 \ifx\lsOutput\lsOutputCoverBODsc         % only if output=cover 
   \podsetup  
   \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
-    \podgeometry{10.5mm}{23.1cm}{15.2cm}
+    \podgeometry{13.75mm}{23.1cm}{15.5cm}
     \podspine 
-    \podfrontcovertoptext{137mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
+    \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
     \newcommand{\lsISBNcover}{\lsISBNsoftcover}
-    \podbackcover{135.5mm}  
+    \podbackcover{140mm}  
   \end{tikzpicture}  
   %exit the document right here
   \end{titlepage}
@@ -605,7 +605,7 @@
 %     \path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 %     %-----------------------------
 	\iflsUscover\newcommand{\lsISBNcover}{\lsISBNsoftcoverus}\else\newcommand{\lsISBNcover}{\lsISBNsoftcover}\fi
-    \podbackcover{137mm}
+    \podbackcover{140mm}
   \end{tikzpicture} 
   %exit the document right here  
   \end{titlepage}
@@ -1782,9 +1782,10 @@ width=.8\textwidth
 \newcommand{\lsCollectionPaperTitle}{{%
   \renewcommand{\newlineTOC}{}
   \renewcommand{\newlineCover}{\\} 
-  %   \\[-1\baselineskip]
-  \vspace*{-2\baselineskip}
-  \noindent{\LARGE Chapter \thechapter}\\
+%     \\[-1\baselineskip]
+%     \vspace*{-2\baselineskip}
+  \renewcommand{\chapterheadstartvskip}{}
+  {\LARGE \noindent \hspace*{-.7cm} Chapter \thechapter}\\ %there must be a better way to undo this length than a hard value
   \bigskip  
   \@title}}
   
