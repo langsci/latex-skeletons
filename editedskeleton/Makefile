@@ -110,7 +110,7 @@ clean:
 	*.run.xml \
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup \
 	*/*/*aux \
-	*/*~ */*backup */*.bak
+	*/*~ */*backup */*.bak\
 	*.mw *.clr *.pgs 
 
 realclean: clean
