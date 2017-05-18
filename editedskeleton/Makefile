@@ -111,6 +111,7 @@ clean:
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup \
 	*/*/*aux \
 	*/*~ */*backup */*.bak
+	*.mw *.clr *.pgs 
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf
