@@ -67,7 +67,7 @@ bod/bodcontent.pdf: complete
 	echo "conforming files to pdf X/3"
 	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=Bookblock.pdf bodcontent.pdf
 	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverHC.pdf bodcoverHC.pdf
-	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverSC.pdf bodcoverSC.pdf
+	gs -dPDFX -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverSC.pdf bodcoverSC.pdf
 	python bodxml.py 
 	
 	

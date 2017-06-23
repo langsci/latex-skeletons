@@ -8,7 +8,7 @@ author=$3
 title=$4
 subtitle=$5
 
-cp localmetadata.tex localmetadata.tex~
+# cp localmetadata.tex localmetadata.tex~
 
 echo "\author{$3}"> localmetadata.tex
 echo "\title{$4}">> localmetadata.tex
