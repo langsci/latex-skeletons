@@ -108,7 +108,10 @@ clean:
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
 	*.glg *.glo *.gls *.wrd *.wdv *.xdv \
 	*.run.xml \
-	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup
+	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup \
+	*/*/*aux \
+	*/*~ */*backup */*.bak\
+	*.mw *.clr *.pgs 
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf
