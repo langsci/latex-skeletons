@@ -52,7 +52,7 @@
 %   \_ Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langsci/langscibook}[2016/10/29 Language Science Press]
+\ProvidesClass{langscibook}[2017/06/21 Language Science Press]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,6 +64,8 @@
 \newcommand{\logopath}{}
 \newcommand{\seriesinfopath}{}
 \newcommand{\bstpath}{}
+\newcommand{\bbxpath}{}
+\newcommand{\cbxpath}{}
 \newcommand{\stylepath}{}
 % Paths can be overwritten with option "nonflat"
 
@@ -91,7 +93,7 @@
 \newcommand{\lsChapterFooterSize}{\small} %footers in editedvolumes
 \newcommand{\lsCopyright}{CC-BY}
 \newcommand{\lsSpinewidth}{20mm}
-\newcommand{\lsBiblatexBackend}{bibtex}
+\newcommand{\lsBiblatexBackend}{biber}
 \newcommand{\logotext}{{\color{red}no logo}}
 \newcommand{\lsYear}{\the\year}
 
@@ -143,42 +145,18 @@
 \SetupKeyvalOptions{
 	family=langscibook,
 	prefix=langscibook@ }
-\DeclareStringOption{number}[??]
-	\define@key{langscibook}{number}{%
-		\renewcommand{\lsSeriesNumber}{#1}}
-\DeclareStringOption{issn}[??]
-	\define@key{langscibook}{issn}{%
-		\renewcommand{\lsISSN}{#1}}
-\DeclareStringOption{isbndigital}[000-0-000000-00-0]
-	\define@key{langscibook}{isbndigital}{%
-		\renewcommand{\lsISBNdigital}{#1}}
-\DeclareStringOption{isbnsoftcover}[000-0-000000-00-0]
-	\define@key{langscibook}{isbnsoftcover}{%
-		\renewcommand{\lsISBNsoftcover}{#1}}
-\DeclareStringOption{isbnhardcover}[000-0-000000-00-0]
-	\define@key{langscibook}{isbnhardcover}{%
-		\renewcommand{\lsISBNhardcover}{#1}}
-\DeclareStringOption{url}[http://langsci-press.org/catalog]
-	\define@key{langscibook}{url}{%
-		\renewcommand{\lsURL}{#1}}
-\DeclareStringOption{series}[eotms]
-	\define@key{langscibook}{series}{%
-		\renewcommand{\lsSeries}{#1}}
 \DeclareStringOption{output}[book]
 	\define@key{langscibook}{output}{%
 		\renewcommand{\lsOutput}{#1}}
 \DeclareStringOption{copyright}[CC-BY]
 	\define@key{langscibook}{copyright}{%
 		\renewcommand{\lsCopyright}{#1}}
-\DeclareStringOption{biblatexbackend}[bibtex]
+\DeclareStringOption{biblatexbackend}[biber]
 	\define@key{langscibook}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
-
 \DeclareStringOption{spinewidth}[20mm]
 	\define@key{langscibook}{spinewidth}{%
-		\renewcommand{\lsSpinewidth}{#1}}
-% \DeclareVoidOption{long}{
-% 	\renewcommand{\lsOutput}{long}}
+		\renewcommand{\lsSpinewidth}{#1}} 
 \DeclareVoidOption{smallfont}{  			
 	\renewcommand{\lsFontsize}{10pt}}
 \DeclareVoidOption{undecapitalize}{  			
@@ -194,6 +172,10 @@
 	\renewcommand{\logopath}{./langsci/graphics/}
 	\renewcommand{\seriesinfopath}{./langsci/seriesinfo/}
 	\renewcommand{\bstpath}{./langsci/bst/}
+  \renewcommand{\bbxpath}{\bstpath biblatex-sp-unified/bbx/}
+  % \renewcommand{\bbxpath}{\bstpath}
+  \renewcommand{\cbxpath}{\bstpath biblatex-sp-unified/cbx/}
+  % \renewcommand{\cbxpath}{\bstpath}
 	\renewcommand{\stylepath}{./langsci/styles/}	
 }
 \DeclareVoidOption{nobabel}{  			
@@ -218,9 +200,7 @@
 	\lsCollectionChaptertrue}
 \DeclareVoidOption{collectiontoclong}{  			
 	\lsCollectiontrue%
-	\lsCollectionTOCLongtrue}
-\DeclareVoidOption{coverus}{  			
-	\lsUscovertrue}
+	\lsCollectionTOCLongtrue} 
 \ProcessKeyvalOptions{langscibook}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -427,8 +407,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \newcommand{\lsOutputLong}{long}
-\newcommand{\lsOutputBook}{book}             % standard book
-\newcommand{\lsOutputShort}{short}            % standard book, old key name
+\newcommand{\lsOutputBook}{book}             % standard book 
 \newcommand{\lsOutputInprep}{inprep}          % marks manuscript as in preparation
 \newcommand{\lsOutputPaper}{paper}            % paper in edited volume
 \newcommand{\lsOutputGuidelines}{guidelines}  % guidelines 
@@ -449,40 +428,7 @@
 \renewcommand{\maketitle}{
 \begin{titlepage}
 \thispagestyle{empty}
-
-% \ifx\lsOutput\lsOutputLong        % only if output=long
-%   \setcounter{page}{-3}
-%   %% First titlepage:
-%   {\lsFrontPage}
-%   %%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Back page:
-%   {\lsBackPage}
-%   %%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Book spine:
-%   {\lsSpine}
-%   %%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Series information:
-%   {\lsSeriesHistory}
-%   %%%%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   %% Schmutztitel:
-%   {\renewcommand{\lsCoverBlockColor}{white}
-%    \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
-%   \lsSchmutztitel}
-%   %%%%%%%%%%%%%%%%%%%%
-%   \AtEndDocument{
-%     \lsPageStyleEmpty
-%     \null\newpage\thispagestyle{empty}
-%     %% Advertisement:
-%     {\lsAdvertisement}
-%   }
-% \fi   
+ 
 
 \ifx\lsOutput\lsOutputBook   % only if output=book
   \setcounter{page}{-1}
@@ -510,36 +456,7 @@
     {\lsBackPage}
     \null\newpage\thispagestyle{empty}
   }
-\fi
-
-
-\ifx\lsOutput\lsOutputShort  %repeated from \lsOutputBook above for backward compatibility
-  \setcounter{page}{-1}
-  %% First titlepage:
-  {\lsFrontPage}
-  %%%%%%%%%%%%%%%%%%%
-  \newpage\thispagestyle{empty}
-  \null\newpage\thispagestyle{empty}
-  %% Series information:
-  {\lsSeriesHistory}
-  %%%%%%%%%%%%%%%%%%%%%
-  \newpage\thispagestyle{empty}
-  %% Schmutztitel:
-  {\renewcommand{\lsCoverBlockColor}{white}
-   \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
-  \lsSchmutztitel}
-  %%%%%%%%%%%%%%%%%%%%
-  \AtEndDocument{
-    \lsPageStyleEmpty
-    \null\newpage\thispagestyle{empty}
-    %% Advertisement:
-    {\lsAdvertisement}
-    \null\newpage\thispagestyle{empty}
-    %% Back page:
-    {\lsBackPage}
-    \null\newpage\thispagestyle{empty}
-  }
-\fi
+\fi 
 
 \ifx\lsOutput\lsOutputInprep          % only if output=inprep
   {\renewcommand{\lsCoverBlockColor}{white}
@@ -565,7 +482,7 @@
     \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
     \newcommand{\lsISBNcover}{\lsISBNhardcover}
-    \podbackcover{140mm}  
+    \podbackcover{137mm}  
   \end{tikzpicture}  
   %exit the document right here
   \end{titlepage}
@@ -581,7 +498,7 @@
     \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
     \newcommand{\lsISBNcover}{\lsISBNsoftcover}
-    \podbackcover{140mm}  
+    \podbackcover{137mm}  
   \end{tikzpicture}  
   %exit the document right here
   \end{titlepage}
@@ -658,6 +575,11 @@
  \renewcommand{\eachwordone}{\itshape} 
 \fi
 
+\ifx\lsSeries\nc
+ \renewcommand{\eachwordone}{\itshape} 
+\fi
+
+
 
 } %% \AtBeginDocument
 
@@ -671,7 +593,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
  
 % For output type cover
-\usepackage{catchfilebetweentags}
+% \usepackage{catchfilebetweentags}
 \newlength{\csspine}   % CS spine width algorithm, when page count is known:  Total Page Number (excluding cover), usually (Total Page - 3) * 0.0572008 mm 
 \newlength{\bodspine}  % BoD spine width algorithm located at http://www.bod.de/hilfe/coverberechnung.html (German only, please contact LangSci for help)
 \newlength{\bleed}
@@ -1023,23 +945,6 @@
     }%  
   \end{textblock}}
 
-% \newcommand{\lsSpine}{      % Book spine
-%   \renewcommand{\newlineSpine}{\\}
-%   \renewcommand{\newlineCover}{}
-%   \begin{textblock}{40}(65,0)
-%   \rotatebox{90}{\color{black}\begin{minipage}[c][\lsSpineBreadth][c]{\paperheight}
-%     \color{\lsSeriesColor}
-%     \hspace{7.5mm}
-%     \IfFileExists{\logopath langsci_spinelogo_nocolor.pdf}{$\vcenter{\hbox{\includegraphics[angle=-90,origin=c]{\logopath langsci_spinelogo_nocolor.pdf}}}$}{logo}
-%     \hspace{15mm} 
-%     {\lsSpineTitleFont
-%       \rotatebox[origin=c]{180}{\pbox[c]{150mm}{\lsSpineTitle}}}
-%     \hspace{13mm}
-%     {\lsSpineAuthorFont 
-%       \rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi}}}
-%   \end{minipage}} 
-%   \end{textblock}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1198,7 +1103,7 @@ Unter den Linden 6\\
 
 Storage and cataloguing done by FU Berlin \\[3ex]   
 
-\IfFileExists{\logopath logo.pdf}{\includegraphics[width=5cm]{\logopath logo.pdf}}{\logotext} \\[3ex]
+\IfFileExists{\logopath logo.pdf}{\includegraphics[width=5cm]{\logopath langscibook-logo.pdf}}{\logotext} \\[3ex]
 
 
 \vfill
@@ -1210,7 +1115,6 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 external or third-party Internet websites referred to in this
 publication, and does not guarantee that any content on such websites
 is, or will remain, accurate or appropriate. 
-%Information regarding prices, travel timetables and other factual information given in this work are correct at the time of first publication but \lsp does not guarantee the accuracy of such information thereafter. 
 }
 
 
@@ -1316,7 +1220,7 @@ is, or will remain, accurate or appropriate.
 \fi
 
 \raggedbottom
-\deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}\ }
+\deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}} % putting a space after footnotemark has undesirable side effects with footnotes that start with an empty line; instead use \xspace in the footnote definition below
 \newlength{\normalparindent}
 \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
 
@@ -1327,7 +1231,7 @@ is, or will remain, accurate or appropriate.
 \newcommand\nextToken\relax
 
 \renewcommand\footnote[1]{%
-\oldFootnote{#1}\futurelet\nextToken\isFootnote}
+\oldFootnote{\xspace#1}\futurelet\nextToken\isFootnote}
 
 \newcommand\isFootnote{%
 \ifx\footnote\nextToken\textsuperscript{,}\fi}
@@ -1355,7 +1259,6 @@ is, or will remain, accurate or appropriate.
 {\endlist}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Citations:
@@ -1364,12 +1267,13 @@ is, or will remain, accurate or appropriate.
 
 \usepackage[
 	natbib=true,
-	\iflsUndecapitalize
-	style=\bstpath biblatex-langsci-unified-undecap,
-	\else
-	style=\bstpath biblatex-langsci-unified,
-	\fi
-	citestyle=\bstpath langsci-authoryear-comp,
+	% \iflsUndecapitalize
+	% style=\bstpath biblatex-langsci-unified-undecap,
+	% \else
+	% style=\bstpath biblatex-langsci-unified,
+	% \fi
+  style=\bbxpath biblatex-sp-unified,
+	citestyle=\cbxpath sp-authoryear-comp,
 	%refsection=chapter,
 	maxbibnames=99,
 	isbn=false,
@@ -1381,13 +1285,20 @@ is, or will remain, accurate or appropriate.
 	\iflsCollection\else
 		toc=bib 		% make bibliography appear in toc
 	\fi
-	]{biblatex} 
+	]{biblatex}
+
+
+%% changes of citestyle (cbx) (FIXME: documentation missing)   
 \renewcommand{\postnotedelim}{: }%
 \renewcommand{\multicitedelim}{\addsemicolon\space}%  
 \renewcommand{\compcitedelim}{\multicitedelim}
+% \renewcommand{\nameyeardelim}{ }%
+
+%% changes of bibliography style (bbx)
 \DeclareFieldFormat{postnote}{#1}%
-%\renewcommand{\nameyeardelim}{ }%
-\defbibheading{references}{\chapter{References}} 
+\DeclareBibliographyAlias{inbook}{incollection} % see https://github.com/semprag/biblatex-sp-unified/issues/35
+%% DOIs are handled after hyperref.
+\defbibheading{references}{\chapter{References}} % FIXME: adjust with language
  
 \let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
@@ -1673,7 +1584,7 @@ width=.8\textwidth
 	\onlyAuthor
 	\renewcommand{\newlineCover}{}
 	\renewcommand{\newlineSpine}{} 
-	\edef\lsCollectionTitle{\@title}		% \edef immediately expands \@title
+	\edef\lsCollectionTitle{\@title\ifx\@subtitle\empty\else{: \@subtitle}\fi}		% \edef immediately expands \@title
 	\edef\lsCollectionEditor{\@author}
 	\addbibresource{collection_tmp.bib}
 	\newwrite\tempfile						% open temporary bib file
