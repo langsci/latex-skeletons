@@ -19,7 +19,7 @@ main.aux: $(SOURCE)
 #create only the book
 main.bbl:  $(SOURCE) localbibliography.bib  
 	xelatex -no-pdf main 
-	bibtex -min-crossrefs=200 main 
+	biber   main 
 
 
 main.snd: main.bbl
@@ -42,45 +42,7 @@ cover: FORCE
 	convert -geometry 50x50% cover.png covertwitter.png
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
 	display cover.png
- 
 
-
-
-	
-#prepare for print on demand services	
-pod: bod createspace googlebooks
- 
-#prepare for submission to BOD
-bod: bod/bodcontent.pdf 
-
-bod/bodcontent.pdf: complete
-	echo "creating cover for hardcover"
-	sed "s/output=book/output=coverbod/" main.tex >bodcoverHC.tex 
-	xelatex bodcoverHC.tex  
-	xelatex bodcoverHC.tex
-	echo "creating cover for softcover"
-	sed "s/output=book/output=coverbod/" main.tex >bodcoverSC.tex 
-	xelatex bodcoverSC.tex  
-	xelatex bodcoverSC.tex
-	echo "creating bookblock"
-	bash filluppages 4 main.pdf bodcontent.pdf 
-	echo "conforming files to pdf X/3"
-	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=Bookblock.pdf bodcontent.pdf
-	gs -dPDFA -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverHC.pdf bodcoverHC.pdf
-	gs -dPDFX -dBATCH -dNOPAUSE -dUseCIEColor -sProcessColorModel=DeviceCMYK -sDEVICE=pdfwrite -sPDFACompatibilityPolicy=1 -sOutputFile=bod/coverSC.pdf bodcoverSC.pdf
-	python bodxml.py 
-	
-	
-
-# prepare for submission to createspace
-createspace:  createspace/createspacecontent.pdf 
-
-createspace/createspacecontent.pdf: complete
-	sed "s/output=book/output=covercreatespace/" main.tex >createspacecover.tex 
-	xelatex createspacecover.tex 
-	xelatex createspacecover.tex 
-	mv createspacecover.pdf createspace
-	bash filluppages 1 main.pdf createspace/createspacecontent.pdf 
 
 googlebooks: googlebooks_interior.pdf
 
@@ -132,7 +94,8 @@ clean:
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
 	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr \
 	*.run.xml \
-	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup
+	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
+	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
 realclean: clean
 	rm -f *.dvi *.ps *.pdf
