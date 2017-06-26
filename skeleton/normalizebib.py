@@ -41,13 +41,16 @@ class Record():
     """
     
     #analyze first line
-    m = re.match(self.TYPKEYFIELDS,s)
-    self.typ = m.group(1).lower()
+    m = re.match(self.TYPKEYFIELDS,s) 
+    try:
+      self.typ = m.group(1).lower()
+    except AttributeError:
+      return
     self.key = m.group(2)
     
     #analyze remainder
     try: 
-      self.fields = dict((tp[0].strip()\
+      self.fields = dict((tp[0].strip().lower()\
           .replace('\n',' ')\
           .replace('\t',' '),
           tp[1].strip()\
@@ -124,7 +127,7 @@ class Record():
           for g in m.groups():
             preservationt = preservationt.replace(g,"{%s}"%g)
             if oldt != preservationt: 
-              print(oldt,' ==> ',preservationt)
+              #print(oldt,' ==> ',preservationt)
               self.fields[t] = preservationt
       except AttributeError:
         pass            
@@ -136,7 +139,7 @@ class Record():
           for g in m.groups():
             conft = conft.replace(g,"{%s}"%g)
             if oldt != conft: 
-              print(oldt,' ==> ',conft)
+              #print(oldt,' ==> ',conft)
               self.fields[t] = conft
       except AttributeError:
         pass
@@ -150,7 +153,7 @@ class Record():
           for g in m.groups():
             proct = proct.replace(g,"{%s}"%g)
             if oldt != proct: 
-              print(oldt,' ==> ',proct)
+              #print(oldt,' ==> ',proct)
               self.fields[t] = proct
       except AttributeError:
         pass
@@ -231,6 +234,18 @@ class Record():
     
     if self.typ != 'book':
       return 
+    if not self.fields.get('address'):
+      publisher = self.fields.get('publisher','')
+      if "John Benjamins" in publisher:
+	self.fields['address'] = "Amsterdam"
+      elif "Cambridge" in publisher or "CUP" in publisher :
+	self.fields['publisher'] = "Cambridge"
+      elif "Oxford" in publisher or "OUP" in publisher :
+	self.fields['publisher'] = "Oxford"
+      elif "Blackwell" in publisher or "Routledge" in publisher :
+	self.fields['publisher'] = "London"
+      elif "Gruyter" in publisher or "Mouton" in publisher :
+	self.fields['publisher'] = "Berlin"
     mandatory = ('year', 'title', 'address', 'publisher')
     for m in mandatory:
       self.handleerror(m)
@@ -287,6 +302,10 @@ class Record():
     mandatory = ('author', 'year', 'title', 'journal', 'volume', 'pages') 
     for m in mandatory:
       self.handleerror(m)
+    if self.fields.get('pages') == None: #only check for pages if no electronic journal
+      if self.fields.get('url') == None:
+        self.fields['pages'] = r"{\biberror{no pages}}"
+        self.errors.append("missing pages")  
     auth = self.fields.get('author')
     if auth:
       self.addsortname(auth)
@@ -297,18 +316,28 @@ class Record():
     """
     if self.typ != 'incollection':
       return 
-    mandatory = ('author', 'year', 'title', 'pages')
+    mandatory = ('author', 'year', 'title')
     for m in mandatory:
-      self.handleerror(m)
-    if self.fields.get('crossref'):
-      #the content is available in the crossref'd record
-      return
-    mandatory2 = ('booktitle', 'editor', 'publisher', 'address')
-    for m2 in mandatory2:
-      self.handleerror(m2)
+      self.handleerror(m)      
+    if self.fields.get('pages') == None: #only check for pages if no electronic journal
+      if self.fields.get('url') == None:
+        self.fields['pages'] = r"{\biberror{no pages}}"
+        self.errors.append("missing pages")  
     auth = self.fields.get('author')
     if auth:
       self.addsortname(auth)
+    if self.fields.get('crossref'):
+      #the content is available in the crossref'd record
+      return
+    mandatory2 = ['booktitle']
+    for m2 in mandatory2:
+      self.handleerror(m2)
+    if "proceedings" in self.fields.get('booktitle').lower():
+      #proceedings often do note have editor, publisher, or address
+      return
+    mandatory3 = ('editor', 'publisher', 'address')
+    for m3 in mandatory3:
+      self.handleerror(m3)
       
   def checkquestionmarks(self):
     """
@@ -382,7 +411,7 @@ if __name__ == "__main__":
   #sort and reverse in order to get the order of edited volumes and incollection right 
   r.sort() 
   r = r[::-1] 
-  restrict = False #should only cited works be written to sorted.bib?
+  restrict = True #should only cited works be written to sorted.bib?
   #create the new bibtex records
   bibtexs = [Record(q,
                     inkeysd=citationsd, 

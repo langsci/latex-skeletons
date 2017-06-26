@@ -19,10 +19,11 @@ main.aux: $(SOURCE)
 #create only the book
 main.bbl:  $(SOURCE) localbibliography.bib  
 	xelatex -no-pdf main 
-	bibtex -min-crossrefs=200 main 
+	biber   main 
 
 
 main.snd: main.bbl
+	touch main.adx main.sdx main.ldx
 	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
@@ -40,31 +41,9 @@ cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  cover.png
 	cp cover.png googlebooks_frontcover.png
 	convert -geometry 50x50% cover.png covertwitter.png
+	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
 	display cover.png
- 
-	
-#prepare for print on demand services	
-pod: bod createspace googlebooks
- 
-#prepare for submission to BOD
-bod: bod/bodcontent.pdf 
 
-bod/bodcontent.pdf: complete
-	sed "s/output=book/output=coverbod/" main.tex >bodcover.tex 
-	xelatex bodcover.tex  
-	xelatex bodcover.tex  
-	mv bodcover.pdf bod
-	./filluppages 4 main.pdf bod/bodcontent.pdf 
-
-# prepare for submission to createspace
-createspace:  createspace/createspacecontent.pdf 
-
-createspace/createspacecontent.pdf: complete
-	sed "s/output=book/output=covercreatespace/" main.tex >createspacecover.tex 
-	xelatex createspacecover.tex 
-	xelatex createspacecover.tex 
-	mv createspacecover.pdf createspace
-	./filluppages 1 main.pdf createspace/createspacecontent.pdf 
 
 googlebooks: googlebooks_interior.pdf
 
@@ -80,7 +59,16 @@ openreview.pdf: main.pdf
 
 proofreading: proofreading.pdf
 	
-
+paperhive: 
+	git branch gh-pages
+	git checkout gh-pages
+	git add proofreading.pdf versions.json
+	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
+	git push origin gh-pages
+	git checkout master 
+	echo "langsci.github.io/BOOKID"
+	firefox https://paperhive.org/documents/new
+	
 proofreading.pdf: main.pdf
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
@@ -105,11 +93,20 @@ clean:
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr \
 	*.run.xml \
-	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup
+	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
+	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
 realclean: clean
-	rm -f *.dvi *.ps *.pdf 
+	rm -f *.dvi *.ps *.pdf
+
+chapterlist:
+	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/" 
+
+podcover:
+	bash podcovers.sh
+
+ 
 
 FORCE:

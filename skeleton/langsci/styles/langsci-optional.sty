@@ -161,6 +161,7 @@
 \newcommand{\langsciseealso}{\par\addvspace{.1\baselineskip}\hspace*{1.4cm}\hangindent=1.4cm\seealso}
 \newcommand{\ilsa}[2]{\il{#1@\igobble | langsciseealso{#2}}}
 \newcommand{\issa}[2]{\is{#1@\igobble | langsciseealso{#2}}}
+\newcommand{\iasa}[2]{\ia{#1@\igobble | langsciseealso{#2}}}
 
 \usepackage{tabularx}
 \usepackage{array}
@@ -191,6 +192,20 @@
 	\node at (2.25,1) (O) {ɔ};	
 }
 
+%no hyphenation left alingned
+\newcolumntype{Q}{>{\raggedright\arraybackslash}X}
+%no hyphenation right aligned
+\newcolumntype{S}{>{\raggedleft\arraybackslash}X}
+%no hyphenation centered
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+%no hyphenation fixed width
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%no hyphenation centered fixed width
+\newcolumntype{Z}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%no hyphenation right aligned fixed width
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newcolumntype{d}[1]{D{.}{.}{#1}} 
 \newcommand{\xxref}[2]{(\ref{#1}--\ref{#2})}
 
 
@@ -216,6 +231,8 @@
   }
   
   
+
+\usepackage{newfile}  
 \newoutputstream{colorfigures}
 \openoutputfile{\jobname.clr}{colorfigures}
 \addtostream{colorfigures}{Note the offset incurred by the frontmatter!}
@@ -224,3 +241,61 @@
 \AtEndDocument{
  \closeoutputstream{colorfigures}
 }
+
+\newcommand{\longrule}{\rule{1em}{.3pt}}
+\usepackage{colortbl} 
+\newcommand{\shadecell}{\cellcolor{black!20!white}}
+
+% vertical alignment of  numbered  example
+\newcommand{\eabox}[2][-.7\baselineskip]{
+  \ea
+    \parbox[t]{.8\textwidth}{
+      \vspace{#1}
+      #2
+     } 
+  \z
+}
+\newcommand{\exbox}[2][-.7\baselineskip]{
+  \ex
+    \parbox[t]{.8\textwidth}{
+      \vspace{#1}
+      #2
+     }  
+}
+
+%fix \verb error in biblatex
+\makeatletter
+\def\blx@maxline{77}
+\makeatother
+
+
+\newcommand{\twodigitexamples}{\exewidth{(23)}}
+\newcommand{\threedigitexamples}{\exewidth{(234)}}
+\newcommand{\fourdigitexamples}{\exewidth{(2345)}}
+
+\newcommand{\noabstract}{\vspace*{-2\baselineskip}} %for chapters without abstract
+
+\newcommand{\barplot}[4]{%
+  \begin{tikzpicture}
+    \begin{axis}[
+	xlabel={#1},  
+	ylabel={#2}, 
+	axis lines*=left, 
+        width  = \textwidth,
+	height = .3\textheight,
+    	nodes near coords, 
+	xtick=data,
+	x tick label style={},  
+	ymin=0,
+	symbolic x coords={#3},
+	]
+	\addplot+[ybar,lsRichGreen!80!black,fill=lsRichGreen] plot coordinates {
+	    #4
+	}; 
+    \end{axis} 
+  \end{tikzpicture} 
+}
+
+\newcommand{\rephrase}[2]{{\color{yellow!30!black}#2}\todo{replaced `#1'}}
+
+\newcommand{\missref}[2][]{\todo[#1]{missing reference #2}}

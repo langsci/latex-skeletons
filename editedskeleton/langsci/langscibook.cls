@@ -52,7 +52,7 @@
 %   \_ Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langsci/langscibook}[2016/10/29 Language Science Press]
+\ProvidesClass{langscibook}[2017/06/21 Language Science Press]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,6 +64,8 @@
 \newcommand{\logopath}{}
 \newcommand{\seriesinfopath}{}
 \newcommand{\bstpath}{}
+\newcommand{\bbxpath}{}
+\newcommand{\cbxpath}{}
 \newcommand{\stylepath}{}
 % Paths can be overwritten with option "nonflat"
 
@@ -88,9 +90,12 @@
 \newcommand{\lsSpineBreadth}{20mm}
 \newcommand{\lsOutput}{book} %"short" makes no sense if "long" is deprecated
 \newcommand{\lsFontsize}{11pt}
+\newcommand{\lsChapterFooterSize}{\small} %footers in editedvolumes
 \newcommand{\lsCopyright}{CC-BY}
-\newcommand{\lsBiblatexBackend}{bibtex}
-\newcommand{\logotext}{FU-Logo}
+\newcommand{\lsSpinewidth}{20mm}
+\newcommand{\lsBiblatexBackend}{biber}
+\newcommand{\logotext}{{\color{red}no logo}}
+\newcommand{\lsYear}{\the\year}
 
 \newcommand{\lsBackBody}{Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores.}
 \newcommand{\lsBackTitle}{\@title}
@@ -116,6 +121,7 @@
 
 \newif\iflsDraft \lsDraftfalse
 \newif\iflsOpenReview \lsOpenReviewfalse
+\newif\iflsUndecapitalize \lsUndecapitalizefalse
 \newif\iflsShowIndex \lsShowIndexfalse
 \newif\iflsBiblatex \lsBiblatextrue
 \newif\iflsCollection \lsCollectionfalse
@@ -125,6 +131,8 @@
 \newif\iflsCover \lsCoverfalse %output format is cover
 \newif\iflsUscover \lsUscoverfalse
 \newif\iflsModfonts \lsModfontsfalse
+\newif\iflsNoBabel \lsNoBabelfalse
+\newif\iflsMultiauthors \lsMultiauthorsfalse
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,40 +145,22 @@
 \SetupKeyvalOptions{
 	family=langscibook,
 	prefix=langscibook@ }
-\DeclareStringOption{number}[??]
-	\define@key{langscibook}{number}{%
-		\renewcommand{\lsSeriesNumber}{#1}}
-\DeclareStringOption{issn}[??]
-	\define@key{langscibook}{issn}{%
-		\renewcommand{\lsISSN}{#1}}
-\DeclareStringOption{isbndigital}[000-0-000000-00-0]
-	\define@key{langscibook}{isbndigital}{%
-		\renewcommand{\lsISBNdigital}{#1}}
-\DeclareStringOption{isbnsoftcover}[000-0-000000-00-0]
-	\define@key{langscibook}{isbnsoftcover}{%
-		\renewcommand{\lsISBNsoftcover}{#1}}
-\DeclareStringOption{isbnhardcover}[000-0-000000-00-0]
-	\define@key{langscibook}{isbnhardcover}{%
-		\renewcommand{\lsISBNhardcover}{#1}}
-\DeclareStringOption{url}[http://langsci-press.org/catalog]
-	\define@key{langscibook}{url}{%
-		\renewcommand{\lsURL}{#1}}
-\DeclareStringOption{series}[eotms]
-	\define@key{langscibook}{series}{%
-		\renewcommand{\lsSeries}{#1}}
 \DeclareStringOption{output}[book]
 	\define@key{langscibook}{output}{%
 		\renewcommand{\lsOutput}{#1}}
 \DeclareStringOption{copyright}[CC-BY]
 	\define@key{langscibook}{copyright}{%
 		\renewcommand{\lsCopyright}{#1}}
-\DeclareStringOption{biblatexbackend}[bibtex]
+\DeclareStringOption{biblatexbackend}[biber]
 	\define@key{langscibook}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
-% \DeclareVoidOption{long}{
-% 	\renewcommand{\lsOutput}{long}}
+\DeclareStringOption{spinewidth}[20mm]
+	\define@key{langscibook}{spinewidth}{%
+		\renewcommand{\lsSpinewidth}{#1}} 
 \DeclareVoidOption{smallfont}{  			
 	\renewcommand{\lsFontsize}{10pt}}
+\DeclareVoidOption{undecapitalize}{  			
+	\lsUndecapitalizetrue }	
 \DeclareVoidOption{draftmode}{	% 'draftmode' instead of 'draft' due to undesirable side efects	
 	 \lsDrafttrue
 	 \overfullrule=5pt	}	% to indicate overfull hboxes
@@ -182,10 +172,18 @@
 	\renewcommand{\logopath}{./langsci/graphics/}
 	\renewcommand{\seriesinfopath}{./langsci/seriesinfo/}
 	\renewcommand{\bstpath}{./langsci/bst/}
+  \renewcommand{\bbxpath}{\bstpath biblatex-sp-unified/bbx/}
+  % \renewcommand{\bbxpath}{\bstpath}
+  \renewcommand{\cbxpath}{\bstpath biblatex-sp-unified/cbx/}
+  % \renewcommand{\cbxpath}{\bstpath}
 	\renewcommand{\stylepath}{./langsci/styles/}	
 }
+\DeclareVoidOption{nobabel}{  			
+    \lsNoBabeltrue}
 \DeclareVoidOption{modfonts}{  			
     \lsModfontstrue}
+\DeclareVoidOption{multiauthors}{  			
+    \lsMultiauthorstrue}
 \DeclareVoidOption{showindex}{  			
 	\lsShowIndextrue}
 \DeclareVoidOption{biblatex}{  			
@@ -202,9 +200,7 @@
 	\lsCollectionChaptertrue}
 \DeclareVoidOption{collectiontoclong}{  			
 	\lsCollectiontrue%
-	\lsCollectionTOCLongtrue}
-\DeclareVoidOption{coverus}{  			
-	\lsUscovertrue}
+	\lsCollectionTOCLongtrue} 
 \ProcessKeyvalOptions{langscibook}
 	
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,6 +227,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage{morewrites} %more helper files to write to
 \usepackage{etex}
 \reserveinserts{18}
 \usepackage{xstring}	 
@@ -252,7 +249,6 @@
 % \usepackage{\stylepath langsci-lgr} #FIXME this should probably be replaced by \usepackage{leipzig}
 \usepackage{todonotes}
 
-\usepackage[english]{babel}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -265,10 +261,10 @@
 \newcommand{\podsetup}{
   \lsCovertrue
   \renewcommand{\maketitle}{}  %no need for this
-  \StrLen{\@subtitle}[\subtitleStrLen]     % check if a subtitle exists
+  \StrLen{\@subtitle}[\subtitleStrLen]     % Get the length of the subtitle. Later, we use this length to check if a subtitle exists.
   \pagestyle{empty}
-  \pgfdeclarelayer{lspcls_bg} % Please make sure to never use lspcls_... PGF layers in any document
-  \pgfsetlayers{lspcls_bg,main}  
+  \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
+  \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
   \renewcommand{\and}{, }% 
   \renewcommand{\lastand}{ \& }%  
   \renewcommand{\affiliation}[1]{}
@@ -281,16 +277,16 @@
   \renewcommand{\newlineCover}{}
   \renewcommand{\and}{, }
   \renewcommand{\lastand}{ \& }
-  \node [above = 0mm of lspcls_bgspline.south, anchor=base] (lspcls_splinelogo) {\color{\lsSeriesColor}\includegraphics{\logopath langsci_spinelogo_nocolor.pdf}};
+  \node [above = 0mm of CoverSpine.south, anchor=base] (lspcls_spinelogo) {\color{\lsSeriesColor}\includegraphics{\logopath langsci_spinelogo_nocolor.pdf}};
 % add number on spine
 % inside logo
-%   \node [below = -7mm of lspcls_splinelogo] (lspcls_splinenumber)  { \hspace*{4mm}{\parbox{.37cm}{\centering \contour{\lsSeriesColor}{\color{white}\sffamily \large \lsSeriesNumber }}}};
+%   \node [below = -7mm of lspcls_spinelogo] (lspcls_splinenumber)  { \hspace*{4mm}{\parbox{.37cm}{\centering \contour{\lsSeriesColor}{\color{white}\sffamily \large \lsSeriesNumber }}}};
 % bottom centered
-%   \node [below = -1mm of lspcls_splinelogo] (lspcls_splinenumber)  {\color{\lsSeriesColor} \hspace*{4mm}{\parbox{.37cm}{\centering\sffamily \large \lsSeriesNumber }}};
+%   \node [below = -1mm of lspcls_spinelogo] (lspcls_splinenumber)  {\color{\lsSeriesColor} \hspace*{4mm}{\parbox{.37cm}{\centering\sffamily \large \lsSeriesNumber }}};
 % bottom leftaligned
-%   \node [below = -1mm of lspcls_splinelogo] (lspcls_splinenumber)  {\color{\lsSeriesColor} \hspace*{4mm}{\parbox{.37cm}{\sffamily \large \lsSeriesNumber }}};
+%   \node [below = -1mm of lspcls_spinelogo] (lspcls_splinenumber)  {\color{\lsSeriesColor} \hspace*{4mm}{\parbox{.37cm}{\sffamily \large \lsSeriesNumber }}};
 %
-\node [below = 0mm of lspcls_bgspline.north, anchor=north] (lspcls_splinenumber)  {\color{\lsSeriesColor} 
+\node [below = 0mm of CoverSpine.north, anchor=north] (lspcls_splinenumber)  {\color{\lsSeriesColor} 
   {\parbox{.47cm}{
    \centering
     \sffamily 
@@ -300,7 +296,7 @@
   }
 };
 
-  \node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_splinelogo.north, rotate=270] (lspcls_splinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor\xspace\lsEditorSuffix} \hspace{13mm} \lsSpineTitleFont{\lsSpineTitle}}; 
+  \node [font=\fontsize{18pt}{14pt}\selectfont, above left = 15mm and 4mm of lspcls_spinelogo.north, rotate=270] (lspcls_spinetitle) {\color{\lsSeriesColor} \lsSpineAuthorFont{\lsSpineAuthor\xspace\lsEditorSuffix} \hspace{13mm} \lsSpineTitleFont{\lsSpineTitle}}; 
   \renewcommand{\newlineCover}{\\}
 }
 
@@ -309,19 +305,41 @@
 % Argument 2: Height of the coloured title and backtitle form and of the spine. Input: 12.45cm
 % Argument 3: Width  of the coloured title and backtitle form. Input: 12.45cm
 \newcommand{\podgeometry}[3]{
-    \begin{pgfonlayer}{lspcls_bg} % background layer
-      \node [bg, left = #1 of current page.east, fill=\lsSeriesColor, minimum height=#2, minimum width=#3] (lspcls_bg1) {}; % Die können wir noch dynamisch bestimmen % 7.5mm -> 10.675mm for bleed
-      \node [bg, right = #1 of current page.west, fill=\lsSeriesColor, minimum height=#2, minimum width=#3] (lspcls_bg2) {};
-      \node at (current page.center) [bg, minimum height=#2, minimum width=\spinewidth,dashed] (lspcls_bgspline) {}; % add [draw] option for preview mode 
+    \begin{pgfonlayer}{lspcls_bg} % Draw on the background layer
+      \node [ bg, % Draw the coloured background on the front cover
+	      left = #1 of current page.east, 
+	      fill=\lsSeriesColor, 
+	      minimum height=#2, 
+	      minimum width=#3
+	     ] (CoverColouredRectangleFront) {}; % Die können wir noch dynamisch bestimmen % 7.5mm -> 10.675mm for bleed
+      \node [ bg, % Draw the coloured background on the back cover 
+              right = #1 of current page.west, 
+              fill=\lsSeriesColor, 
+              minimum height=#2, 
+              minimum width=#3  
+            ] (CoverColouredRectangleBack) {}; 
+      \node at (current page.center) [ % Create a reference node for the spine
+              bg, 
+              minimum height=#2, 
+              minimum width=\spinewidth,dashed
+            ] (CoverSpine) {}; % add [draw] option for preview mode 
     \end{pgfonlayer}   
 }
 
 % Generates the content of the back cover
-\newcommand{\podbackcover}{
-    \node [font=\fontsize{25pt}{10mm}\selectfont, right, below right = 16.5mm and 7.5mm of lspcls_bg2.north west, text width=11.5cm] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\raggedright\lsBackTitle\par}};
-  \node [below = 10mm of lspcls_backtitle, text width=11.5cm, align=justify] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
-  %\node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west] {\color{\lsCoverFontColour}ISBN \lsBackBodyFont{\lsISBN}};
-  \node [below right = 192.5mm and 97.5mm of lspcls_bg2.north west, text width=4cm] {
+% Argument 1: Text width, corresponding to Argument 1 of \podfrontcovertoptext
+\newcommand{\podbackcover}[1]{
+  \node [ font=\fontsize{25pt}{10mm}\selectfont, 
+          right,
+          below right = 10mm and 7.5mm of CoverColouredRectangleBack.north west, 
+          text width=#1
+         ] (lspcls_backtitle) {\color{\lsCoverFontColour}\lsBackTitleFont{\raggedright\lsBackTitle\par}};
+  \node [ below = 10mm of lspcls_backtitle,
+          text width=#1,
+          align=justify
+        ] {\color{\lsCoverFontColour}\lsBackBodyFont{\parindent=15pt\lsBackBody}};
+ \node [  below right = 192.5mm and 97.5mm of CoverColouredRectangleBack.north west, 
+          text width=4cm] {%
     \colorbox{white}{
       \begin{pspicture}(0,0)(4.1,1in)
         \psbarcode[transx=.4,transy=.3]{\lsISBNcover}{includetext height=.7}{isbn}%
@@ -332,27 +350,54 @@
 
 % Generates the content on the front cover, including title, author, subtitle. See below for remaining commands
 % Argument 1: Text width on the front cover. Input: 12.34mm
-% Argument 2: Font size on the front cover. Adjust to compensate varying text width Input: 12.34pt
+% Argument 2: Font size on the front cover. Adjust to compensate varying text width. Input: 12.34pt
 \newcommand{\podfrontcovertoptext}[2]{
   \newcommand{\lsCoverFontColour}{white}
   \renewcommand{\and}{\\}
   \renewcommand{\lastand}{\\}
   
-  \node [execute at begin node={}, font=\fontsize{#2}{17.25mm}\selectfont, below right = 10mm and 7.5mm of lspcls_bg1.north west, text width=#1, align=left] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\raggedright\@title\par}}; % x = 15mm - 7.5mm ; y = 17.5mm - 7.5mm
+  \node [ execute at begin node={}, 
+          font=\fontsize{#2}{17.25mm}\selectfont, 
+          below right = 10mm and 7.5mm of CoverColouredRectangleFront.north west, 
+          text width=#1, 
+          align=left
+        ] (lspcls_covertitle) {\color{\lsCoverFontColour}\lsCoverTitleFont{\raggedright\@title\par}};
   
-  \ifnum\subtitleStrLen=0  % Is there a subtitle?
-  \node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_covertitle.south, text width=#1] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\lsEditorPrefix\@author\par}}; % If not, just print the author
-  \else
-  \node [font=\fontsize{25pt}{10mm}\selectfont,below = 8mm of lspcls_covertitle.south, text width=#1] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
-  \node [font=\fontsize{25pt}{12.5mm}\selectfont, right, below = 11.2mm of lspcls_coversubtitle.south, text width=#1] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\lsEditorPrefix\@author\par}}};
+  \ifnum\subtitleStrLen=0  % Is there a subtitle? If no, just print the author.
+  \node [ font=\fontsize{25pt}{12.5mm}\selectfont, 
+          right, 
+          below = 11.2mm of lspcls_covertitle.south, 
+          text width=#1
+        ] {\color{\lsCoverFontColour}\lsCoverAuthorFont\nohyphens{\lsEditorPrefix\@author\par}}; 
+  \else % If yes, create a node for subtitle and author
+  \node [ font=\fontsize{25pt}{10mm}\selectfont,
+          below = 8mm of lspcls_covertitle.south, 
+          text width=#1
+        ] (lspcls_coversubtitle) {\color{\lsCoverFontColour} \lsCoverSubTitleFont \nohyphens{\@subtitle}\par}; 
+  \node [
+          font=\fontsize{25pt}{12.5mm}\selectfont, 
+          right, 
+          below = 11.2mm of lspcls_coversubtitle.south, 
+          text width=#1
+        ] {\color{\lsCoverFontColour}\lsCoverAuthorFont{\nohyphens{\lsEditorPrefix\@author\par}}};
   \fi
 }
 
 % Generates the bottom half of the front cover content: series, series number, logo.
 \newcommand{\podcoverbottomtext}{
-  \node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-  \node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}};
-  \path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};  
+  \node [ above right = 18.5mm and -.1mm of CoverColouredRectangleFront.south west, 
+          rectangle, 
+          fill=white, 
+          minimum size=17pt] (lspcls_square) {}; % This is the white square at the bottom left of the front cover
+  \node [ above left = 10mm and 7.5mm of CoverColouredRectangleFront.south east] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}}; % Print the Language Science press Logo
+  \path let \p1 = (lspcls_square.north east), % Calculate the exact coordinates for the Series Title to print.
+            \p2 = (lspcls_covertitle.west) 
+            in node at (\x2,\y1) (lspcls_seriesinfo) [
+                  font=\fontsize{17pt}{7.5mm}\selectfont,
+                  right,
+                  text width=95mm,
+                  anchor=north west] 
+            {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};  
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -362,14 +407,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \newcommand{\lsOutputLong}{long}
-\newcommand{\lsOutputBook}{book}             % standard book
-\newcommand{\lsOutputShort}{short}            % standard book, old key name
+\newcommand{\lsOutputBook}{book}             % standard book 
 \newcommand{\lsOutputInprep}{inprep}          % marks manuscript as in preparation
 \newcommand{\lsOutputPaper}{paper}            % paper in edited volume
-\newcommand{\lsOutputGuidelines}{guidelines}  % guidelines
-\newcommand{\lsOutputCover}{cover}            % FIXME remove this?
-\newcommand{\lsOutputCoverBOD}{coverbod}      % cover with BoD measurements
-\newcommand{\lsOutputCoverDOB}{coverdob}      % FIXME remove this?
+\newcommand{\lsOutputGuidelines}{guidelines}  % guidelines 
+\newcommand{\lsOutputCoverBODsc}{coverbodsc}      % cover with BoD measurements 
+\newcommand{\lsOutputCoverBODhc}{coverbodhc}      % cover with BoD measurements 
 \newcommand{\lsOutputCoverCS}{covercreatespace} % cover with CreateSpace measurements
 
 
@@ -385,40 +428,7 @@
 \renewcommand{\maketitle}{
 \begin{titlepage}
 \thispagestyle{empty}
-
-% \ifx\lsOutput\lsOutputLong        % only if output=long
-%   \setcounter{page}{-3}
-%   %% First titlepage:
-%   {\lsFrontPage}
-%   %%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Back page:
-%   {\lsBackPage}
-%   %%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Book spine:
-%   {\lsSpine}
-%   %%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   \null\newpage\thispagestyle{empty}
-%   %% Series information:
-%   {\lsSeriesHistory}
-%   %%%%%%%%%%%%%%%%%%%%%
-%   \newpage\thispagestyle{empty}
-%   %% Schmutztitel:
-%   {\renewcommand{\lsCoverBlockColor}{white}
-%    \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
-%   \lsSchmutztitel}
-%   %%%%%%%%%%%%%%%%%%%%
-%   \AtEndDocument{
-%     \lsPageStyleEmpty
-%     \null\newpage\thispagestyle{empty}
-%     %% Advertisement:
-%     {\lsAdvertisement}
-%   }
-% \fi   
+ 
 
 \ifx\lsOutput\lsOutputBook   % only if output=book
   \setcounter{page}{-1}
@@ -446,36 +456,7 @@
     {\lsBackPage}
     \null\newpage\thispagestyle{empty}
   }
-\fi
-
-
-\ifx\lsOutput\lsOutputShort  %repeated from \lsOutputBook above for backward compatibility
-  \setcounter{page}{-1}
-  %% First titlepage:
-  {\lsFrontPage}
-  %%%%%%%%%%%%%%%%%%%
-  \newpage\thispagestyle{empty}
-  \null\newpage\thispagestyle{empty}
-  %% Series information:
-  {\lsSeriesHistory}
-  %%%%%%%%%%%%%%%%%%%%%
-  \newpage\thispagestyle{empty}
-  %% Schmutztitel:
-  {\renewcommand{\lsCoverBlockColor}{white}
-   \renewcommand{\lsCoverFontColor}{\lsSeriesColor}
-  \lsSchmutztitel}
-  %%%%%%%%%%%%%%%%%%%%
-  \AtEndDocument{
-    \lsPageStyleEmpty
-    \null\newpage\thispagestyle{empty}
-    %% Advertisement:
-    {\lsAdvertisement}
-    \null\newpage\thispagestyle{empty}
-    %% Back page:
-    {\lsBackPage}
-    \null\newpage\thispagestyle{empty}
-  }
-\fi
+\fi 
 
 \ifx\lsOutput\lsOutputInprep          % only if output=inprep
   {\renewcommand{\lsCoverBlockColor}{white}
@@ -493,15 +474,31 @@
 
 \fi
 
-\ifx\lsOutput\lsOutputCoverBOD         % only if output=cover 
+\ifx\lsOutput\lsOutputCoverBODhc         % only if output=cover 
   \podsetup  
   \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
-    \podgeometry{24.5mm}{23.1cm}{15.2cm}
+    \podgeometry{24.2mm}{23.1cm}{15.5cm}
     \podspine 
-    \podfrontcovertoptext{137mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
+    \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
     \podcoverbottomtext
     \newcommand{\lsISBNcover}{\lsISBNhardcover}
-    \podbackcover  
+    \podbackcover{137mm}  
+  \end{tikzpicture}  
+  %exit the document right here
+  \end{titlepage}
+  \end{document}    
+  \fi 
+  
+
+\ifx\lsOutput\lsOutputCoverBODsc         % only if output=cover 
+  \podsetup  
+  \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}] 
+    \podgeometry{13.75mm}{23.1cm}{15.5cm}
+    \podspine 
+    \podfrontcovertoptext{140mm}{51pt} % Due to different cover sizes, the text size was adjusted so that the difference in line breaks would be minimal between hard and softcover books. 
+    \podcoverbottomtext
+    \newcommand{\lsISBNcover}{\lsISBNsoftcover}
+    \podbackcover{137mm}  
   \end{tikzpicture}  
   %exit the document right here
   \end{titlepage}
@@ -519,13 +516,13 @@
     \podcoverbottomtext
 %     %unclear why this was different between BOD and CS
 %     %-----------------------------
-%     \node [above right = 18.5mm and -.1mm of lspcls_bg1.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
-%     \node [above left = 10mm and 7.5mm of lspcls_bg1.south east] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}};
-% %     \node [below right = 197.5mm and 117.1mm of lspcls_bg1.north west] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}};
+%     \node [above right = 18.5mm and -.1mm of CoverColouredRectangleFront.south west, rectangle, fill=white, minimum size=17pt] (lspcls_square) {}; % 2
+%     \node [above left = 10mm and 7.5mm of CoverColouredRectangleFront.south east] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}};
+% %     \node [below right = 197.5mm and 117.1mm of CoverColouredRectangleFront.north west] {\color{\lsCoverFontColour}\includegraphics{\logopath langsci_logo_nocolor.pdf}};
 %     \path let \p1 = (lspcls_square.north east), \p2 = (lspcls_covertitle.west) in node at (\x2,\y1) (lspcls_seriesinfo) [font=\fontsize{17pt}{7.5mm}\selectfont, right, text width=95mm, anchor=north west] {\color{\lsCoverFontColour}\lsCoverSeriesFont{\lsSeriesTitle\par}};
 %     %-----------------------------
 	\iflsUscover\newcommand{\lsISBNcover}{\lsISBNsoftcoverus}\else\newcommand{\lsISBNcover}{\lsISBNsoftcover}\fi
-    \podbackcover
+    \podbackcover{140mm}
   \end{tikzpicture} 
   %exit the document right here  
   \end{titlepage}
@@ -574,6 +571,16 @@
   \renewenvironment{table}{\setfootnoterule{0pt}\oldtable}{\endoldtable} 
 \fi
 
+\ifx\lsSeries\pmwe
+ \renewcommand{\eachwordone}{\itshape} 
+\fi
+
+\ifx\lsSeries\nc
+ \renewcommand{\eachwordone}{\itshape} 
+\fi
+
+
+
 } %% \AtBeginDocument
 
 
@@ -586,7 +593,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
  
 % For output type cover
-\usepackage{catchfilebetweentags}
+% \usepackage{catchfilebetweentags}
 \newlength{\csspine}   % CS spine width algorithm, when page count is known:  Total Page Number (excluding cover), usually (Total Page - 3) * 0.0572008 mm 
 \newlength{\bodspine}  % BoD spine width algorithm located at http://www.bod.de/hilfe/coverberechnung.html (German only, please contact LangSci for help)
 \newlength{\bleed}
@@ -595,17 +602,17 @@
 \newlength{\spinewidth}
 \newlength{\totalwidth}
 \newlength{\totalheight}
-\IfFileExists{./localmetadata.tex}{\ExecuteMetaData[localmetadata.tex]{coverdimen}}{\typeout{No local meta data found, therefore default spline length was chosen}} % Get only the information between the tag "coverdimen" from localmetadata.tex
+% \IfFileExists{./localmetadata.tex}{\ExecuteMetaData[localmetadata.tex]{coverdimen}}{\typeout{No local meta data found, therefore default spline length was chosen}} % Get only the information between the tag "coverdimen" from localmetadata.tex
 \setlength{\bleed}{3.175mm}
+\setlength{\spinewidth}{\lsSpinewidth} % Create Space Version
+\usepackage{calc}
  
  \ifx\lsOutput\lsOutputCoverCS % if output = cover; This is the CreateSpace Version  
     \lsCovertrue
     \setlength{\bleed}{3.175mm}
     \setlength{\seitenbreite}{169.9mm}
     \setlength{\seitenhoehe}{244.1mm} 	
-    \setlength{\spinewidth}{\csspine} % Create Space Version
     
-    \usepackage{calc}
 
     \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
     \setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
@@ -613,20 +620,33 @@
     \hyphenpenalty 750
 \fi
  	   
-\ifx\lsOutput\lsOutputCoverBOD 
-  \lsCovertrue 	
-  \usepackage{calc}
-%     \input{./lengths.tex}
+\ifx\lsOutput\lsOutputCoverBODhc 
+  \lsCovertrue 	 
   \newlength{\bodfold}
   \newlength{\totalspine}
   \setlength{\bodfold}{8mm}
   \setlength{\seitenbreite}{192mm}
-  \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Gerader Rücken, Kaschiert, papier 80g/m², weiß
-  \setlength{\spinewidth}{\bodspine}  
-  \setlength{\totalspine}{\spinewidth+\bodfold+\bodfold} 
+  \setlength{\seitenhoehe}{280mm} % For BOD: Hardcover, Runder Rücken, Kaschiert, papier 80g/m², weiß, Papier 17x24cm
+%   \setlength{\spinewidth}{\bodspine}  
+%   \setlength{\totalspine}{\spinewidth+\bodfold+\bodfold}
+  \setlength{\totalspine}{\spinewidth} 
   \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite}
   \setlength{\totalheight}{\seitenhoehe}
-  \usepackage[paperheight=\seitenhoehe, paperwidth=\totalwidth]{geometry}
+  \usepackage[paperheight=\totalheight, paperwidth=\totalwidth]{geometry}
+  \hyphenpenalty 750
+\fi
+  
+ 	   
+\ifx\lsOutput\lsOutputCoverBODsc 
+  \lsCovertrue
+  \newlength{\totalspine}
+  \setlength{\seitenbreite}{170mm}
+  \setlength{\seitenhoehe}{240mm} % For BOD: Softcover, papier 80g/m², weiß, Papier 17x24cm
+  \setlength{\bleed}{5mm}
+  \setlength{\totalspine}{\spinewidth} 
+  \setlength{\totalwidth}{\spinewidth+\seitenbreite+\seitenbreite+\bleed+\bleed}
+  \setlength{\totalheight}{\seitenhoehe+\bleed+\bleed}
+  \usepackage[paperheight=\totalheight, paperwidth=\totalwidth]{geometry}
   \hyphenpenalty 750
 \fi
   
@@ -758,8 +778,8 @@
 \newcommand{\lsDedicationFont}{\fontsize{15pt}{10mm}\selectfont}
 \newcommand{\lsBackTitleFont}{\sffamily\addfontfeatures{Scale=MatchUppercase}\fontsize{25pt}{10mm}\selectfont}
 \newcommand{\lsBackBodyFont}{\lsInsideFont}
-\newcommand{\lsSpineAuthorFont}{\fontsize{16pt}{14pt}\selectfont}
-\newcommand{\lsSpineTitleFont}{\sffamily\fontsize{18pt}{14pt}\selectfont}
+\newcommand{\lsSpineAuthorFont}{\bfseries\fontsize{16pt}{14pt}\selectfont}
+\newcommand{\lsSpineTitleFont}{\sffamily\bfseries\fontsize{18pt}{14pt}\selectfont}
 
 \setkomafont{sectioning}{\normalcolor\bfseries}
 
@@ -790,18 +810,11 @@
   \AtBeginDocument{
     \renewcommand{\newlineCover}{}
     \renewcommand{\newlineSpine}{}  
-    \renewcommand{\lsEditorPrefix}{{\Large Edited by\\}}
+    \renewcommand{\lsEditorPrefix}{{\Large Edited by\\}}  
     \renewcommand{\lsEditorSuffix}{(ed.)}
-    \IfSubStr{\@author}{Press}   % if \@author contains \&
-      %case true
-      {\renewcommand{\lsEditorSuffix}{(eds.)}}
-      %case false
-      {}
-    \IfSubStr{\@author}{,} % if \@author contains ,
-      %case true   
-      {\renewcommand{\lsEditorSuffix}{(eds.)}}
-      %case false
-      {}      
+      \iflsMultiauthors
+	\renewcommand{\lsEditorSuffix}{(eds.)} 
+      \fi
   }
 \else
 \fi
@@ -837,7 +850,23 @@
       }
       }
      \end{textblock}
-  \fi}
+  \fi
+  \iflsUndecapitalize 
+    \begin{textblock}{170}(-20,75)
+      \rotatebox{30}{
+      \colorbox{red}{
+      \parbox[c][15ex][c]{220mm}{\centering\lsCoverTitleFont\color{white}Undecapitalized\\[-0.1ex]}
+      % \begin{tabular}{c}
+      %   ~\\
+      %   \scalebox{6}{\color{red}Open Review}\\[-0.5ex]
+      %   ~%version of \today, \currenttime
+      % \end{tabular}
+      }
+      }
+     \end{textblock}
+  \fi
+  
+  }
 
 \newcommand{\lsCoverTitleAuthor}{
   \renewcommand{\and}{\\}
@@ -916,23 +945,6 @@
     }%  
   \end{textblock}}
 
-% \newcommand{\lsSpine}{      % Book spine
-%   \renewcommand{\newlineSpine}{\\}
-%   \renewcommand{\newlineCover}{}
-%   \begin{textblock}{40}(65,0)
-%   \rotatebox{90}{\color{black}\begin{minipage}[c][\lsSpineBreadth][c]{\paperheight}
-%     \color{\lsSeriesColor}
-%     \hspace{7.5mm}
-%     \IfFileExists{\logopath langsci_spinelogo_nocolor.pdf}{$\vcenter{\hbox{\includegraphics[angle=-90,origin=c]{\logopath langsci_spinelogo_nocolor.pdf}}}$}{logo}
-%     \hspace{15mm} 
-%     {\lsSpineTitleFont
-%       \rotatebox[origin=c]{180}{\pbox[c]{150mm}{\lsSpineTitle}}}
-%     \hspace{13mm}
-%     {\lsSpineAuthorFont 
-%       \rotatebox[origin=c]{180}{\pbox[c]{100mm}{\lsSpineAuthor\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi}}}
-%   \end{minipage}} 
-%   \end{textblock}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -997,7 +1009,7 @@
   \renewcommand{\newlineCover}{}
   \renewcommand{\newlineSpine}{}
   {\@author}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
-  {\the\year}. %
+  {\lsYear}. %
   \textit{\@title}\if\@subtitle\empty\else: \textit{\@subtitle}\fi\ %
   (\lsSeriesTitle). %
   Berlin: Language Science Press.
@@ -1013,7 +1025,7 @@
 This title can be downloaded at:\\
 \url{\lsURL}
 
-© \the\year, \iflsCollection the authors\else\@author\fi
+© \lsYear, \iflsCollection the authors\else\@author\fi
 
 \newcommand{\ccby}{CC-BY} 
 \ifx\lsCopyright\ccby 
@@ -1025,10 +1037,23 @@ http://creativecommons.org/licenses/by-nd/4.0/
 \fi
  
 \begin{tabular}{@{}l@{~}l}
-ISBN: & \lsISBNdigital~(Digital) \\
-      & \lsISBNhardcover~(Hardcover)\\
-      & \lsISBNsoftcover~(Softcover)\\
-      & \lsISBNsoftcoverus~(Softcover US)\\
+ISBN: & 
+\IfStrEq{\lsISBNdigital}{000-0-000000-00-0} 
+{\color{red}no digital ISBN}
+{\lsISBNdigital~(Digital)}
+\\
+&
+\IfStrEq{\lsISBNhardcover}{000-0-000000-00-0} 
+{\color{red}no hardcover ISBN}
+{\lsISBNhardcover~(Hardcover)}
+\\&
+\IfStrEq{\lsISBNsoftcover}{000-0-000000-00-0} 
+{\color{red}no softcover ISBN}
+{\lsISBNsoftcover~(Softcover)}
+\\
+%       & \lsISBNhardcover~(Hardcover)\\
+%       & \lsISBNsoftcover~(Softcover)\\
+%       & \lsISBNsoftcoverus~(Softcover US)\\
 \end{tabular}
 
 \IfStrEq{\lsISSN}{??}   % \IfStrEq from xstring
@@ -1036,7 +1061,7 @@ ISBN: & \lsISBNdigital~(Digital) \\
   {ISSN: \lsISSN}
 
 \IfStrEq{\lsBookDOI}{??}    % \IfStrEq from xstring
-  {}
+  {{\color{red} no DOI}}
   {\doi{\lsBookDOI}}
 
 
@@ -1070,15 +1095,15 @@ Typesetting software: \XeLaTeX
 \bigskip
 
 Language Science Press\\
-Habelschwerdter Allee 45\\
-14195 Berlin, Germany\\
+Unter den Linden 6\\
+10099 Berlin, Germany\\
 \href{http://langsci-press.org}{langsci-press.org}
 
 \vfill
 
 Storage and cataloguing done by FU Berlin \\[3ex]   
 
-\IfFileExists{\logopath logo.pdf}{\includegraphics[width=5cm]{\logopath logo.pdf}}{\logotext} \\[3ex]
+\IfFileExists{\logopath logo.pdf}{\includegraphics[width=5cm]{\logopath langscibook-logo.pdf}}{\logotext} \\[3ex]
 
 
 \vfill
@@ -1090,7 +1115,6 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 external or third-party Internet websites referred to in this
 publication, and does not guarantee that any content on such websites
 is, or will remain, accurate or appropriate. 
-%Information regarding prices, travel timetables and other factual information given in this work are correct at the time of first publication but \lsp does not guarantee the accuracy of such information thereafter. 
 }
 
 
@@ -1196,7 +1220,7 @@ is, or will remain, accurate or appropriate.
 \fi
 
 \raggedbottom
-\deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}\ }
+\deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}} % putting a space after footnotemark has undesirable side effects with footnotes that start with an empty line; instead use \xspace in the footnote definition below
 \newlength{\normalparindent}
 \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
 
@@ -1207,7 +1231,7 @@ is, or will remain, accurate or appropriate.
 \newcommand\nextToken\relax
 
 \renewcommand\footnote[1]{%
-\oldFootnote{#1}\futurelet\nextToken\isFootnote}
+\oldFootnote{\xspace#1}\futurelet\nextToken\isFootnote}
 
 \newcommand\isFootnote{%
 \ifx\footnote\nextToken\textsuperscript{,}\fi}
@@ -1235,59 +1259,47 @@ is, or will remain, accurate or appropriate.
 {\endlist}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Citations:
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage[
+	natbib=true,
+	% \iflsUndecapitalize
+	% style=\bstpath biblatex-langsci-unified-undecap,
+	% \else
+	% style=\bstpath biblatex-langsci-unified,
+	% \fi
+  style=\bbxpath biblatex-sp-unified,
+	citestyle=\cbxpath sp-authoryear-comp,
+	%refsection=chapter,
+	maxbibnames=99,
+	isbn=false,
+	doi=false,
+	url=false,
+	eprint=false,
+	backend=\lsBiblatexBackend,
+	indexing=cite,
+	\iflsCollection\else
+		toc=bib 		% make bibliography appear in toc
+	\fi
+	]{biblatex}
+
+
+%% changes of citestyle (cbx) (FIXME: documentation missing)   
+\renewcommand{\postnotedelim}{: }%
+\renewcommand{\multicitedelim}{\addsemicolon\space}%  
+\renewcommand{\compcitedelim}{\multicitedelim}
+% \renewcommand{\nameyeardelim}{ }%
+
+%% changes of bibliography style (bbx)
+\DeclareFieldFormat{postnote}{#1}%
+\DeclareBibliographyAlias{inbook}{incollection} % see https://github.com/semprag/biblatex-sp-unified/issues/35
+%% DOIs are handled after hyperref.
+\defbibheading{references}{\chapter{References}} % FIXME: adjust with language
  
-\iflsBiblatex	% BibLaTeX
-	\usepackage[
-		natbib=true,
-		style=\bstpath biblatex-langsci-unified,
-		citestyle=\bstpath langsci-authoryear-comp,
-		%refsection=chapter,
-		maxbibnames=99,
-		isbn=false,
-		doi=false,
-		url=false,
-		eprint=false,
-		backend=\lsBiblatexBackend,
-		indexing=cite,
-		\iflsCollection\else
-			toc=bib 		% make bibliography appear in toc
-		\fi
-		]{biblatex}
-	\renewcommand{\postnotedelim}{: }%
-	\renewcommand{\multicitedelim}{\addsemicolon\space}%  
-	\renewcommand{\compcitedelim}{\multicitedelim}
-	\DeclareFieldFormat{postnote}{#1}%
-	%\renewcommand{\nameyeardelim}{ }%
-  \defbibheading{references}{\chapter{References}} 
-\else	%BibTeX (deprecated)
-	\usepackage{natbib}
-	\setlength{\bibsep}{0mm}
-	%% unified style sheet for linguistics journals
-	%% http://celxj.org/downloads/unified.bst
-	\bibliographystyle{./langsci/bst/unified} 
-	%% This does not work ...
-	% \setcitestyle{
-	% notesep={: }, % 2002: 125
-	% aysep={~}     % Gazdar 2002
-	% }
-
-	%% check what the unified people have to say on this.
-	\bibpunct[: ]{(}{)}{;}{a}{}{,}
-	%% They do not say anything about citations in the running text.
-	%% As was sown in \citew{Meier2002} -> As was shown in Meier (2002), ...
-	%% This is what De Gruyter does:
-	\let\citew=\citet
-	%% This is what Stefan did:
-	%\let\citew=\citealt
-\fi
-
 \let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
 %% penalties against widows and orphans in bibliography
@@ -1300,6 +1312,10 @@ is, or will remain, accurate or appropriate.
 }
 {}{}
 
+% % temporary workaround to fix wrong wrapping for \verb in bibtex
+% \makeatletter
+% \def\blx@maxline{77}
+% \makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1336,6 +1352,18 @@ is, or will remain, accurate or appropriate.
     %% N.B.: floatpagefraction MUST be less than topfraction !!
 \renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
 
+\usepackage{setspace}
+\usepackage{caption}
+% \captionsetup{labelfont=bf} 
+\captionsetup{%
+font={%
+stretch=.8%
+,small%
+},%
+width=.8\textwidth
+}
+
+\setcapindent{0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Appendices:
@@ -1405,19 +1433,20 @@ is, or will remain, accurate or appropriate.
 
 \AtBeginDocument{
 	\makeindex
-	\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
-	% \newindex{aut}{adx}{and}{Name index}
+	\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle} 
 	\newindex{sbj}{sdx}{snd}{\lsSubjectIndexTitle}
 	\renewindex{default}{adx}{and}{\lsNameIndexTitle} %biblatex can only deal with the default index
-	\newindex{wrd}{wdx}{wnd}{Expression index}
-	\newindex{rwrd}{rdx}{rnd}{Reverse expression index}
+% 	\newindex{wrd}{wdx}{wnd}{Expression index}
+% 	\newindex{rwrd}{rdx}{rnd}{Reverse expression index}
 }
 
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
 %% \index inside footnote
 \def\infn#1#2{%
-	\hyperpage{#2}n#1%
+% 	\hyperpage{#2}n#1%  99n2
+% 	\hyperpage{#2}*%   99*
+	\hyperpage{#2}\textsuperscript{#1}%  99²
 }%
 \newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
 \newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
@@ -1467,11 +1496,17 @@ is, or will remain, accurate or appropriate.
 
 \iflsShowIndex	% shows index commands in text
     \RequirePackage{soul}
-    \RequirePackage[noadjust]{marginnote}
+%     \RequirePackage[noadjust]{marginnote}
     \renewcommand{\marginpar}{\marginnote}
     \let\isold\is 
+    \let\ilold\il 
+    \let\iaold\ia 
     \renewcommand{\isi}[1]{\sethlcolor{green}\hl{#1}\isold{#1}}
     \renewcommand{\is}[1]{{\tikzstyle{notestyleraw} += [text width=1.5cm]\todo[color=green,size=\scriptsize]{\tiny#1}\isold{#1}}}
+    \renewcommand{\ili}[1]{\sethlcolor{yellow}\hl{#1}\ilold{#1}}
+    \renewcommand{\il}[1]{{\tikzstyle{notestyleraw} += [text width=1.5cm]\todo[color=yellow,size=\scriptsize]{\tiny#1}\ilold{#1}}}
+    \renewcommand{\iai}[1]{\sethlcolor{pink}\hl{#1}\iaold{#1}}
+    \renewcommand{\ia}[1]{{\tikzstyle{notestyleraw} += [text width=1.5cm]\todo[color=pink,size=\scriptsize]{\tiny#1}\iaold{#1}}}
 \fi
 
 
@@ -1549,7 +1584,7 @@ is, or will remain, accurate or appropriate.
 	\onlyAuthor
 	\renewcommand{\newlineCover}{}
 	\renewcommand{\newlineSpine}{} 
-	\edef\lsCollectionTitle{\@title}		% \edef immediately expands \@title
+	\edef\lsCollectionTitle{\@title\ifx\@subtitle\empty\else{: \@subtitle}\fi}		% \edef immediately expands \@title
 	\edef\lsCollectionEditor{\@author}
 	\addbibresource{collection_tmp.bib}
 	\newwrite\tempfile						% open temporary bib file
@@ -1563,6 +1598,7 @@ is, or will remain, accurate or appropriate.
 \renewcommand{\@pnumwidth}{1.5em}	% width of page numbers
 \usepackage{tocstyle}
 \usetocstyle{standard}				%\usetocstyle{allwithdot}
+\settocfeature[toc]{raggedhook}{\raggedright} 
 \iflsCollectionTOCLong\else
 	\setcounter{tocdepth}{0}\fi			% show only parts and chapters
 \settocstylefeature[-1]{pagenumberbox}{\csname @gobble\endcsname}	% parts without page number
@@ -1601,8 +1637,10 @@ is, or will remain, accurate or appropriate.
 	\renewcommand{\lsCollectionPaperCitationText}{\fullciteFooter{#1}} 
 	
 	\include{#1}%
+  \addtocounter{page}{-1}
 	\edef\lsCollectionPaperLastPage{\thepage}	% \lsCollectionPaperFirstPage is defined in \lsPaper
-
+  \addtocounter{page}{1}
+  
 	%%% for citation in footer
 	%% preprocessing of author/editor names
 	\onlyAuthor		
@@ -1616,7 +1654,7 @@ is, or will remain, accurate or appropriate.
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\the\year,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\,\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
  
 	\end{refsection}
 	\end{collectionpaper}}
@@ -1654,10 +1692,12 @@ is, or will remain, accurate or appropriate.
   
 \newcommand{\lsCollectionPaperTitle}{{%
   \renewcommand{\newlineTOC}{}
-  \renewcommand{\newlineCover}{\\}
-  \iflsCollectionChapter
-    \vspace*{-2\baselineskip} 
-    {\LARGE Chapter \thechapter}\newline\newline\fi
+  \renewcommand{\newlineCover}{\\} 
+%     \\[-1\baselineskip]
+%     \vspace*{-2\baselineskip}
+  \renewcommand{\chapterheadstartvskip}{}
+  {\LARGE \noindent \hspace*{-.7cm} Chapter \thechapter}\\ %there must be a better way to undo this length than a hard value
+  \bigskip  
   \@title}}
   
 \newcommand{\lsCollectionPaperAuthor}{{%
@@ -1667,8 +1707,9 @@ is, or will remain, accurate or appropriate.
   
 \newcommand{\lsCollectionPaperCitation}{\scalebox{1.2}{
   \includegraphics{\logopath langsci_spinelogo_nocolor.pdf}}%
-  \hspace{0.8em}%
-  \parbox[b]{.85\textwidth}{\linespread{0.8}\small\normalfont\lsCollectionPaperCitationText}}
+  % \hspace{0.8em}%
+  \hfill%
+  \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText}}
   
 \newcommand{\lsCollectionPaperCitationText}{\string\lsCollectionPaperCitationText.}
 
@@ -1708,14 +1749,14 @@ is, or will remain, accurate or appropriate.
 
 %writeout page numbers for separation of chapters 
 
-\usepackage{newfile}
-\newoutputstream{pages}
-\openoutputfile{\jobname.pgs}{pages}
-\newcommand{\writechapterpages}{\addtostream{pages}{\thepage}}
-
-\AtEndDocument{
- \closeoutputstream{pages}
-}
+% \usepackage{newfile}
+% \newoutputstream{pages}
+% \openoutputfile{\jobname.pgs}{pages}
+% \newcommand{\writechapterpages}{\addtostream{pages}{\thepage}}
+% 
+% \AtEndDocument{
+%  \closeoutputstream{pages}
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1729,6 +1770,9 @@ is, or will remain, accurate or appropriate.
 \newlength{\LSPTmp}
 \newcommand*{\hspaceThis}[1]{\settowidth{\LSPTmp}{#1}\hspace*{\LSPTmp}}
 
-
+\iflsNoBabel
+  \else
+  \usepackage[english]{babel}
+\fi
 
 \endinput
