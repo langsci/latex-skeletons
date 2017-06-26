@@ -130,7 +130,7 @@ clean:
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr \
 	*.run.xml \
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup
 
