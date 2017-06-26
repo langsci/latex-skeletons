@@ -86,7 +86,7 @@ class Record():
         self.errors.append("neither title nor booktitle")
     pages = self.fields.get('pages')
     if pages != None: 
-      self.fields['pages'] = re.sub(r'([0-9])-([0-9])',r'\1--\2',pages)		 
+      self.fields['pages'] = re.sub(r'([0-9])-([0-9])',r'\1--\2',pages)                 
     self.conformsubtitles() 
     self.conforminitials()
     self.checkand()
@@ -234,18 +234,19 @@ class Record():
     
     if self.typ != 'book':
       return 
-    if not self.fields.get('address'):
-      publisher = self.fields.get('publisher','')
+    if not self.fields.get('address'):      
+      publisher = self.fields.get('publisher','') 
       if "John Benjamins" in publisher:
-	self.fields['address'] = "Amsterdam"
+        self.fields['address'] = "Amsterdam"
+        0/0
       elif "Cambridge" in publisher or "CUP" in publisher :
-	self.fields['publisher'] = "Cambridge"
+        self.fields['publisher'] = "Cambridge"
       elif "Oxford" in publisher or "OUP" in publisher :
-	self.fields['publisher'] = "Oxford"
+        self.fields['publisher'] = "Oxford"
       elif "Blackwell" in publisher or "Routledge" in publisher :
-	self.fields['publisher'] = "London"
+        self.fields['publisher'] = "London"
       elif "Gruyter" in publisher or "Mouton" in publisher :
-	self.fields['publisher'] = "Berlin"
+        self.fields['publisher'] = "Berlin"
     mandatory = ('year', 'title', 'address', 'publisher')
     for m in mandatory:
       self.handleerror(m)
@@ -316,6 +317,21 @@ class Record():
     """
     if self.typ != 'incollection':
       return 
+    
+    if not self.fields.get('address'):      
+      publisher = self.fields.get('publisher','') 
+      if "John Benjamins" in publisher:
+        self.fields['address'] = "{Amsterdam}" 
+      elif "Cambridge" in publisher or "CUP" in publisher :
+        self.fields['address'] = "{Cambridge}"
+      elif "Oxford" in publisher or "OUP" in publisher :
+        self.fields['address'] = "{Oxford}"
+      elif "Blackwell" in publisher or "Routledge" in publisher :
+        self.fields['address'] = "{London}"
+      elif "Gruyter" in publisher or "Mouton" in publisher :
+        self.fields['address'] = "{Berlin}"
+      elif "Wiley" in publisher:
+        self.fields['address'] = "{Hoboken}"
     mandatory = ('author', 'year', 'title')
     for m in mandatory:
       self.handleerror(m)      
@@ -358,7 +374,7 @@ class Record():
       self.fields[m] = r"{\biberror{no %s}}" % m
       self.errors.append("missing %s"%m) 
       
-		
+                
     
     
   def bibtex(self): 
