@@ -52,7 +52,7 @@
 %   \_ Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langscibook}[2017/06/21 Language Science Press]
+\ProvidesClass{langscibook}[2017/04/24 Language Science Press]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,8 +64,6 @@
 \newcommand{\logopath}{}
 \newcommand{\seriesinfopath}{}
 \newcommand{\bstpath}{}
-\newcommand{\bbxpath}{}
-\newcommand{\cbxpath}{}
 \newcommand{\stylepath}{}
 % Paths can be overwritten with option "nonflat"
 
@@ -93,7 +91,7 @@
 \newcommand{\lsChapterFooterSize}{\small} %footers in editedvolumes
 \newcommand{\lsCopyright}{CC-BY}
 \newcommand{\lsSpinewidth}{20mm}
-\newcommand{\lsBiblatexBackend}{biber}
+\newcommand{\lsBiblatexBackend}{bibtex}
 \newcommand{\logotext}{{\color{red}no logo}}
 \newcommand{\lsYear}{\the\year}
 
@@ -151,7 +149,7 @@
 \DeclareStringOption{copyright}[CC-BY]
 	\define@key{langscibook}{copyright}{%
 		\renewcommand{\lsCopyright}{#1}}
-\DeclareStringOption{biblatexbackend}[biber]
+\DeclareStringOption{biblatexbackend}[bibtex]
 	\define@key{langscibook}{biblatexbackend}{%
 		\renewcommand{\lsBiblatexBackend}{#1}}
 \DeclareStringOption{spinewidth}[20mm]
@@ -172,10 +170,6 @@
 	\renewcommand{\logopath}{./langsci/graphics/}
 	\renewcommand{\seriesinfopath}{./langsci/seriesinfo/}
 	\renewcommand{\bstpath}{./langsci/bst/}
-  \renewcommand{\bbxpath}{\bstpath biblatex-sp-unified/bbx/}
-  % \renewcommand{\bbxpath}{\bstpath}
-  \renewcommand{\cbxpath}{\bstpath biblatex-sp-unified/cbx/}
-  % \renewcommand{\cbxpath}{\bstpath}
 	\renewcommand{\stylepath}{./langsci/styles/}	
 }
 \DeclareVoidOption{nobabel}{  			
@@ -574,11 +568,6 @@
 \ifx\lsSeries\pmwe
  \renewcommand{\eachwordone}{\itshape} 
 \fi
-
-\ifx\lsSeries\nc
- \renewcommand{\eachwordone}{\itshape} 
-\fi
-
 
 
 } %% \AtBeginDocument
@@ -1259,6 +1248,7 @@ is, or will remain, accurate or appropriate.
 {\endlist}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %    Citations:
@@ -1267,13 +1257,12 @@ is, or will remain, accurate or appropriate.
 
 \usepackage[
 	natbib=true,
-	% \iflsUndecapitalize
-	% style=\bstpath biblatex-langsci-unified-undecap,
-	% \else
-	% style=\bstpath biblatex-langsci-unified,
-	% \fi
-  style=\bbxpath biblatex-sp-unified,
-	citestyle=\cbxpath sp-authoryear-comp,
+	\iflsUndecapitalize
+	style=\bstpath biblatex-langsci-unified-undecap,
+	\else
+	style=\bstpath biblatex-langsci-unified,
+	\fi
+	citestyle=\bstpath langsci-authoryear-comp,
 	%refsection=chapter,
 	maxbibnames=99,
 	isbn=false,
@@ -1285,20 +1274,13 @@ is, or will remain, accurate or appropriate.
 	\iflsCollection\else
 		toc=bib 		% make bibliography appear in toc
 	\fi
-	]{biblatex}
-
-
-%% changes of citestyle (cbx) (FIXME: documentation missing)   
+	]{biblatex} 
 \renewcommand{\postnotedelim}{: }%
 \renewcommand{\multicitedelim}{\addsemicolon\space}%  
 \renewcommand{\compcitedelim}{\multicitedelim}
-% \renewcommand{\nameyeardelim}{ }%
-
-%% changes of bibliography style (bbx)
 \DeclareFieldFormat{postnote}{#1}%
-\DeclareBibliographyAlias{inbook}{incollection} % see https://github.com/semprag/biblatex-sp-unified/issues/35
-%% DOIs are handled after hyperref.
-\defbibheading{references}{\chapter{References}} % FIXME: adjust with language
+%\renewcommand{\nameyeardelim}{ }%
+\defbibheading{references}{\chapter{References}} 
  
 \let\cite=\citet 	% in order to prevent inconsistencies between \cite and \citet
 
@@ -1584,7 +1566,7 @@ width=.8\textwidth
 	\onlyAuthor
 	\renewcommand{\newlineCover}{}
 	\renewcommand{\newlineSpine}{} 
-	\edef\lsCollectionTitle{\@title\ifx\@subtitle\empty\else{: \@subtitle}\fi}		% \edef immediately expands \@title
+	\edef\lsCollectionTitle{\@title}		% \edef immediately expands \@title
 	\edef\lsCollectionEditor{\@author}
 	\addbibresource{collection_tmp.bib}
 	\newwrite\tempfile						% open temporary bib file
@@ -1654,7 +1636,7 @@ width=.8\textwidth
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\,\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\lsYear,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true,skiplab=true}}}
  
 	\end{refsection}
 	\end{collectionpaper}}
@@ -1699,6 +1681,38 @@ width=.8\textwidth
   {\LARGE \noindent \hspace*{-.7cm} Chapter \thechapter}\\ %there must be a better way to undo this length than a hard value
   \bigskip  
   \@title}}
+   
+\newcommand{\lsCollectionPaperFrontmatterMode}{% %%% Sometimes, chapters like prefaces appear in edited volumes that need special treatment in their headers and TOC
+  \renewcommand{\lsCollectionPaperTitle}{{%
+  \renewcommand{\newlineTOC}{}
+  \renewcommand{\newlineCover}{\\} 
+  \\[-1\baselineskip]
+  \noindent{\LARGE ~}\\
+  \bigskip  
+  \noindent\@title}}
+  
+  \renewcommand{\lsCollectionPaperTOC}{{%
+  \iflsCollectionChapter%
+    \protect\numberline{~}\fi
+  \@title\newline{\normalfont\@author}}}
+}
+
+\newcommand{\lsCollectionPaperMainmatterMode}{% %%% This resets the changes done by FrontmatterMode
+  \renewcommand{\lsCollectionPaperTitle}{{%
+  \renewcommand{\newlineTOC}{}
+  \renewcommand{\newlineCover}{\\} 
+  \\[-1\baselineskip]
+% \vspace*{-2\baselineskip}
+  \noindent{\LARGE Chapter \thechapter}\\
+  \bigskip  
+  \@title}}
+  
+  \renewcommand{\lsCollectionPaperTOC}{{%
+  \iflsCollectionChapter%
+    \protect\numberline{\thechapter}\fi
+  \@title\newline{\normalfont\@author}}}
+}
+
   
 \newcommand{\lsCollectionPaperAuthor}{{%
   \renewcommand{\newlineTOC}{}
