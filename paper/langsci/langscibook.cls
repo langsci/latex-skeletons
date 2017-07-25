@@ -694,7 +694,7 @@
 	BoldSlantedFont = DejaVuSansMono-BoldOblique.ttf 		
 	]{DejaVuSansMono.ttf}
 
-\iflsModfonts{% use Langsci fonts
+\iflsModfonts% use Langsci fonts
   \setsansfont[
 	  %Ligatures={TeX,Common},		% not supported by ttf
 	  Scale=MatchLowercase,
@@ -1295,8 +1295,13 @@ is, or will remain, accurate or appropriate.
 % \renewcommand{\nameyeardelim}{ }%
 
 %% changes of bibliography style (bbx)
-\DeclareFieldFormat{postnote}{#1}%
+\DeclareFieldFormat{postnote}{#1}% display pages without page prefix (p., pp.)
 \DeclareBibliographyAlias{inbook}{incollection} % see https://github.com/semprag/biblatex-sp-unified/issues/35
+%% The note field should appear at end of an entry just before the DOI, other than with the used bibliography style. It is therefore first removed, then again restored and included together with the DOI. 
+\AtEveryBibitem{%
+  \savefield*{note}{\lsnote}% 
+  \clearfield{note}%
+}
 %% DOIs are handled after hyperref.
 \defbibheading{references}{\chapter{References}} % FIXME: adjust with language
  
@@ -1541,6 +1546,8 @@ width=.8\textwidth
 \iflsBiblatex
 \renewbibmacro*{finentry}{\finentry
 	\iffieldundef{url}{}{ \url{\thefield{url}}\iffieldundef{urlday}{}{, accessed \thefield{urlyear}-\thefield{urlmonth}-\thefield{urlday}}.}
+  \restorefield{note}{\lsnote}
+  \iffieldundef{note}{}{\addspace{\thefield{note}\addperiod}}
 	\iffieldundef{doi}{}{ {\color{lsGuidelinesGray}\doi{\thefield{doi}}}}
 }
 %\DeclareFieldFormat{doi}{{\color{lsGuidelinesGray}\doi{#1}}}
@@ -1654,7 +1661,7 @@ width=.8\textwidth
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year=\lsYear,pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true,skiplab=true}}}
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\@title}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\,\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true,skiplab=true}}}
  
 	\end{refsection}
 	\end{collectionpaper}}
@@ -1699,6 +1706,38 @@ width=.8\textwidth
   {\LARGE \noindent \hspace*{-.7cm} Chapter \thechapter}\\ %there must be a better way to undo this length than a hard value
   \bigskip  
   \@title}}
+   
+\newcommand{\lsCollectionPaperFrontmatterMode}{% %%% Sometimes, chapters like prefaces appear in edited volumes that need special treatment in their headers and TOC
+  \renewcommand{\lsCollectionPaperTitle}{{%
+  \renewcommand{\newlineTOC}{}
+  \renewcommand{\newlineCover}{\\} 
+  \\[-1\baselineskip]
+  \noindent{\LARGE ~}\\
+  \bigskip  
+  \noindent\@title}}
+  
+  \renewcommand{\lsCollectionPaperTOC}{{%
+  \iflsCollectionChapter%
+    \protect\numberline{~}\fi
+  \@title\newline{\normalfont\@author}}}
+}
+
+\newcommand{\lsCollectionPaperMainmatterMode}{% %%% This resets the changes done by FrontmatterMode
+  \renewcommand{\lsCollectionPaperTitle}{{%
+  \renewcommand{\newlineTOC}{}
+  \renewcommand{\newlineCover}{\\} 
+  \\[-1\baselineskip]
+% \vspace*{-2\baselineskip}
+  \noindent{\LARGE Chapter \thechapter}\\
+  \bigskip  
+  \@title}}
+  
+  \renewcommand{\lsCollectionPaperTOC}{{%
+  \iflsCollectionChapter%
+    \protect\numberline{\thechapter}\fi
+  \@title\newline{\normalfont\@author}}}
+}
+
   
 \newcommand{\lsCollectionPaperAuthor}{{%
   \renewcommand{\newlineTOC}{}
