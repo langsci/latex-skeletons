@@ -13,6 +13,7 @@
 \newcommand{\sidl}{sidl}
 \newcommand{\algad}{algad}
 \newcommand{\tmnlp}{tmnlp}
+\newcommand{\mi}{mi}	
 \newcommand{\nc}{nc}		%Niger Congo
 \newcommand{\tbls}{tbls}	%Textbooks in Language Sciences
 \newcommand{\silp}{silp}	%Studies in Laboratory Phonology
@@ -33,7 +34,6 @@
 \ifx\lsSeries\calseries %\cal is already taken as a command
 	\newcommand{\lsSeriesTitle}{Contemporary African Linguistics~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidWine}
-	\renewcommand{\lsISSN}{2511-7726}
 \fi
 \ifx\lsSeries\cfls
 	\newcommand{\lsSeriesTitle}{Conceptual Foundations of \newlineCover Language Science~\lsSeriesNumber}
@@ -71,6 +71,10 @@
 \ifx\lsSeries\nc
 	\newcommand{\lsSeriesTitle}{Monographs on Comparative Niger-Congo~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRed} 
+\fi
+\ifx\lsSeries\mi
+	\newcommand{\lsSeriesTitle}{Morphological Investigations~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsDarkGreenTwo} 
 \fi
 \ifx\lsSeries\ogs
 	\newcommand{\lsSeriesTitle}{Open Generative Syntax~\lsSeriesNumber}
