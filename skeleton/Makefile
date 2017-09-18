@@ -107,6 +107,10 @@ chapterlist:
 podcover:
 	bash podcovers.sh
 
+barechapters:
+	cat *tex | detex > barechapters.txt
+
+
  
 
 FORCE:
