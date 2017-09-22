@@ -1,21 +1,23 @@
-\backmatter 
+\backmatter
 \phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{chapter}{Indexes} 
+\printbibliography[heading=references] 
+\cleardoublepage
 
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Name index}
-\ohead{Name index} 
-\printindex
+\phantomsection 
+\addcontentsline{toc}{chapter}{Index} 
+\addcontentsline{toc}{section}{\lsNameIndexTitle}
+\ohead{Name \lsNameIndexTitle} 
+\printindex 
 \cleardoublepage
   
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Language index}
-\ohead{Language index} 
+\phantomsection 
+\addcontentsline{toc}{section}{\lsLanguageIndexTitle}
+\ohead{\lsLanguageIndexTitle} 
 \printindex[lan] 
 \cleardoublepage
-
-\phantomsection%this allows hyperlink in ToC to work
-\addcontentsline{toc}{section}{Subject index}
-\ohead{Subject index} 
+  
+\phantomsection 
+\addcontentsline{toc}{section}{\lsSubjectIndexTitle}
+\ohead{\lsSubjectIndexTitle} 
 \printindex[sbj]
-\cleardoublepage
+\ohead{} 
