@@ -110,6 +110,8 @@ podcover:
 barechapters:
 	cat *tex | detex > barechapters.txt
 
+languagecandidates:
+	egrep -oh "[a-z] [A-Z][a-z]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
 
  
 
