@@ -59,7 +59,25 @@ openreview.pdf: main.pdf
 
 proofreading: proofreading.pdf
 	
-paperhive: 
+githubrepo:
+	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
+# 	echo git clone https://github.com/langsci/`cat ID`.git
+	mkdir -p `cat ID`
+# 	mv `cat ID` ..
+	
+	
+paperhive: proofreading githubrepo	
+	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
+	grep "^.title{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">title
+	grep "^.author{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+" |sed 's/\\\(last\)\?and/"},{"name":"/g'>author
+	echo -n '{ "versions": [{ "versiontype": "proofreading", "title": "'>versions.json
+	cat title >> versions.json
+	echo -n '","authors": [{"name": "'>> versions.json
+	cat author >> versions.json
+	echo -n '"}],"publishedAt": "'>> versions.json
+	date --rfc-3339=s|sed s/" "/T/|sed s/+.*/.000Z/ >> versions.json
+	echo -n '"}]}'>> versions.json
+	cp proofreading.pdf versions.json Makefile `cat ID`	
 	git branch gh-pages
 	git checkout gh-pages
 	git add proofreading.pdf versions.json
@@ -69,7 +87,7 @@ paperhive:
 	echo "langsci.github.io/BOOKID"
 	firefox https://paperhive.org/documents/new
 	
-proofreading.pdf: main.pdf
+proofreading.pdf:
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
 blurb: blurb.html blurb.tex biosketch.tex biosketch.html
