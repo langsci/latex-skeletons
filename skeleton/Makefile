@@ -59,15 +59,13 @@ openreview.pdf: main.pdf
 
 proofreading: proofreading.pdf
 	
-githubrepo:
+githubrepo: localmetadata.tex proofreading versions.json
 	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
-# 	echo git clone https://github.com/langsci/`cat ID`.git
-	mkdir -p `cat ID`
-# 	mv `cat ID` ..
+	git clone https://github.com/langsci/`cat ID`.git
+	cp proofreading.pdf Makefile versions.json `cat ID`
+	mv `cat ID` ..
 	
-	
-paperhive: proofreading githubrepo	
-	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
+versions.json: localmetadata.tex
 	grep "^.title{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">title
 	grep "^.author{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+" |sed 's/\\\(last\)\?and/"},{"name":"/g'>author
 	echo -n '{ "versions": [{ "versiontype": "proofreading", "title": "'>versions.json
@@ -77,7 +75,9 @@ paperhive: proofreading githubrepo
 	echo -n '"}],"publishedAt": "'>> versions.json
 	date --rfc-3339=s|sed s/" "/T/|sed s/+.*/.000Z/ >> versions.json
 	echo -n '"}]}'>> versions.json
-	cp proofreading.pdf versions.json Makefile `cat ID`	
+	rm author title
+	
+paperhive: versions.json	
 	git branch gh-pages
 	git checkout gh-pages
 	git add proofreading.pdf versions.json
@@ -85,7 +85,10 @@ paperhive: proofreading githubrepo
 	git push origin gh-pages
 	git checkout master 
 	echo "langsci.github.io/BOOKID"
-	firefox https://paperhive.org/documents/new
+	firefox https://paperhive.org/documents/new	
+	cd ..
+	mv `cat ID` ..
+	rm ID 
 	
 proofreading.pdf:
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
