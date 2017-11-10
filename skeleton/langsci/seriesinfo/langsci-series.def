@@ -13,14 +13,17 @@
 \newcommand{\sidl}{sidl}
 \newcommand{\algad}{algad}
 \newcommand{\tmnlp}{tmnlp}
-\newcommand{\mi}{mi}	
 \newcommand{\nc}{nc}		%Niger Congo
 \newcommand{\tbls}{tbls}	%Textbooks in Language Sciences
 \newcommand{\silp}{silp}	%Studies in Laboratory Phonology
-\newcommand{\tdgi}{tdgi}	%Topics at the Discourse Grammar Interface
+\newcommand{\tgdi}{tgdi}	%Topics at the  Grammar-Discourse Interface
 \newcommand{\cmle}{cmle}	%Computational Models of Language Evolution
 \newcommand{\cfls}{cfls}	%Conceptual Foundation of the Language Sciences
 \newcommand{\lv}{lv}		%Language Variation
+\newcommand{\ogs}{ogs}		%Open Generative Syntax 
+\newcommand{\osl}{osl}		%Open Slavic Linguistics
+\newcommand{\mi}{mi}		
+\newcommand{\pmwe}{pmwe}		%Phraseology and Multi-Word Expressions
 \newcommand{\classics}{classics}	
 \newcommand{\dummyseries}{dummyseries}
 \newcommand{\guidelines}{guidelines}
@@ -34,6 +37,7 @@
 \ifx\lsSeries\calseries %\cal is already taken as a command
 	\newcommand{\lsSeriesTitle}{Contemporary African Linguistics~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidWine}
+	\renewcommand{\lsISSN}{2511-7726}
 \fi
 \ifx\lsSeries\cfls
 	\newcommand{\lsSeriesTitle}{Conceptual Foundations of \newlineCover Language Science~\lsSeriesNumber}
@@ -68,17 +72,26 @@
 	\newcommand{\lsSeriesColor}{lsDarkWine}
 	\renewcommand{\lsISSN}{2366-7818}
 \fi
+\ifx\lsSeries\mi
+	\newcommand{\lsSeriesTitle}{Morphological Investigations~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsDarkGreenTwo}
+	\renewcommand{\lsISSN}{2567-742X}
+\fi
 \ifx\lsSeries\nc
 	\newcommand{\lsSeriesTitle}{Monographs on Comparative Niger-Congo~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsRed} 
 \fi
-\ifx\lsSeries\mi
-	\newcommand{\lsSeriesTitle}{Morphological Investigations~\lsSeriesNumber}
-	\newcommand{\lsSeriesColor}{lsDarkGreenTwo} 
-\fi
 \ifx\lsSeries\ogs
 	\newcommand{\lsSeriesTitle}{Open Generative Syntax~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsDarkGreenOne} 
+\fi
+\ifx\lsSeries\osl
+	\newcommand{\lsSeriesTitle}{Open Slavic Linguistics~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsMidGreen} 
+\fi
+\ifx\lsSeries\pmwe
+	\newcommand{\lsSeriesTitle}{Phraseology and Multiword Expressions~\lsSeriesNumber}
+	\newcommand{\lsSeriesColor}{lsLightBlue} 
 \fi
 \ifx\lsSeries\scl
 	\newcommand{\lsSeriesTitle}{Studies in Caribbean Languages~\lsSeriesNumber}
@@ -99,9 +112,10 @@
 	\newcommand{\lsSeriesColor}{lsYellow}
 	\renewcommand{\lsISSN}{2364-6209} 
 \fi	
-\ifx\lsSeries\tdgi
-	\newcommand{\lsSeriesTitle}{Topics at the Discourse Grammar Interface~\lsSeriesNumber}
+\ifx\lsSeries\tgdi
+	\newcommand{\lsSeriesTitle}{Topics at the Grammar-Discourse Interface~\lsSeriesNumber}
 	\newcommand{\lsSeriesColor}{lsMidDarkBlue}
+	\renewcommand{\lsISSN}{2567-3335} 
 \fi
 \ifx\lsSeries\tmnlp
 	\newcommand{\lsSeriesTitle}{Translation and Multilingual Natural \newlineCover Language Processing~\lsSeriesNumber}
