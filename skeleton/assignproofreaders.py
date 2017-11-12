@@ -2,12 +2,11 @@ import sys
 from datetime import datetime, date, time, timedelta
 
 
-paperhiveid = sys.argv[1]
-githubid = sys.argv[2]
+githubid = sys.argv[1] 
 
 template = """Dear  {name},
 thanks for your offer. The book can be found at
-https://paperhive.org/documents/{paperhiveid}
+https://paperhive.org/documents/remote?type=langsci&id={githubid} 
 
 You are assigned the following chapters:
 {chapterlist}
@@ -37,8 +36,7 @@ for a in assignments:
 	chapternumbers = a.split()[1:]
 	chapterlist = '\n'.join("* %s %s"%(i,chapters[int(i)]) for i in chapternumbers)	
 	mails.append(template.format(name=name,   
-			      chapterlist=chapterlist,
-			      paperhiveid=paperhiveid,
+			      chapterlist=chapterlist, 
 			      githubid=githubid,
 			      duedate=(datetime.now() + timedelta(weeks=4)).strftime("%B %d")))
 	
