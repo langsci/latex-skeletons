@@ -22,7 +22,7 @@ for f in files:
     preamble = a[0]
     joiner = r"\begin{document}"
   lines = content.split('\n')
-  excluders = ("section","caption","chapter")
+  excluders = ("section","caption","chapter","addplot")
   newlines = []
   for line in lines: 
     included = True
