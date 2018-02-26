@@ -342,7 +342,7 @@
           text width=4cm] {%
     \colorbox{white}{
       \begin{pspicture}(0,0)(4.1,1in)
-        \psbarcode[transx=.4,transy=.3]{\lsISBNcover}{includetext height=.7}{isbn}%
+        \psbarcode[transx=.4,transy=.3]{\lsISBNsoftcoverus}{includetext height=.7}{isbn}%
       \end{pspicture}
       }
     };
