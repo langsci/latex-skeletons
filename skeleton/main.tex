@@ -12,10 +12,11 @@
   nonflat,
   modfonts,
   colorlinks,citecolor=brown,
-%  draft,draftmode,
+%  draft,draftmode, 
   showindex,
+%  nobabel,
+%  booklanguage=german,
 %   multiauthors,
-%   nobabel
 		  ]{langsci/langscibook}    
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,7 +38,7 @@
 %%%                                              %%%
 %%%             Frontmatter                      %%%
 %%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{document} 
  
 \input{localcommands.tex} 
@@ -49,9 +50,9 @@
 
 \currentpdfbookmark{Contents}{name} % adds a PDF bookmark
 {\sloppy\tableofcontents}
-% \include{chapters/preface}
-% \include{chapters/acknowledgments}
-% \include{chapters/abbreviations} 
+ \include{chapters/preface}
+ \include{chapters/acknowledgments}
+ \include{chapters/abbreviations} 
 \mainmatter     
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,10 +61,7 @@
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- 
- 
-
-% \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
+\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
  
 
 % % copy the lines above and adapt as necessary
