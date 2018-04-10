@@ -10,11 +10,13 @@
 
 \documentclass[output=book,
   nonflat,
-  modfonts,
-  colorlinks,citecolor=brown,
+%   modfonts,
+  colorlinks,citecolor=brown, 
+%  draft,draftmode,  
   showindex,
+%  nobabel,
+%  booklanguage=german,
 %   multiauthors,
-%   nobabel
 		  ]{langsci/langscibook}    
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,7 +39,6 @@
 %%%             Frontmatter                      %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\usepackage{lipsum} 
 \begin{document} 
  
 \input{localcommands.tex} 
@@ -49,9 +50,9 @@
 
 \currentpdfbookmark{Contents}{name} % adds a PDF bookmark
 {\sloppy\tableofcontents}
-% \include{chapters/preface}
-% \include{chapters/acknowledgments}
-% \include{chapters/abbreviations} 
+ \include{chapters/preface}
+ \include{chapters/acknowledgments}
+ \include{chapters/abbreviations} 
 \mainmatter     
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,6 +60,7 @@
 %%%             Chapters                         %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
  
 
