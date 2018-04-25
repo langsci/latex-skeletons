@@ -87,9 +87,9 @@ paperhive: versions.json
 	git add proofreading.pdf versions.json
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
 	git push origin gh-pages
+	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
+	curl -X POST https://paperhive.org/api/document-items/remote?type=langsci&id=`cat ID`
 	git checkout master 
-	echo "langsci.github.io/BOOKID"
-	firefox https://paperhive.org/documents/new	
 	
 proofreading.pdf:
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
