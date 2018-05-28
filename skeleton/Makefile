@@ -88,6 +88,7 @@ paperhive:
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
 	git push origin gh-pages
 	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
+	sleep 3
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
 	git checkout master 
 	
