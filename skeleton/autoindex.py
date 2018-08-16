@@ -29,18 +29,18 @@ for f in files:
     for excluder in excluders: 
       if "%s{"%excluder in line:
         included = False
-	print(line)
+        print(line)
     if included:
       for lg in lgs: 
-	lg = lg.strip()
-	if lg == '':
-	  continue 
-	line = re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, line)
+        lg = lg.strip()
+        if lg == '':
+          continue 
+        line = re.sub('(?<!ili{)%s(?![\w}])'%lg, '\ili{%s}'%lg, line)
       for term in terms:
-	term = term.strip() 
-	if term == '':
-	  continue
-	line = re.sub('(?<!isi{|...[A-Za-z])%s(?![-_\w}])'%term, '\isi{%s}'%term, line) 
+        term = term.strip() 
+        if term == '':
+          continue
+        line = re.sub('(?<!isi{|...[A-Za-z])%s(?![-_\w}])'%term, '\isi{%s}'%term, line) 
     newlines.append(line)
   content = "\n".join(newlines)  
   nlg = len(re.findall('\\ili{',content))
