@@ -12,11 +12,10 @@ for k in INITD:
     orig+=c
     trans+=k
      
-transtable = str.maketrans(orig, trans)
+transtable = str.maketrans(orig, trans) 
 
   
-p = re.compile(r"\\indexentry \{(.*)\|(\(?hyperpage|\)|infn)")
-
+p = re.compile(r"\\indexentry \{(.*)@") 
     
 def process(s): 
   if s.strip()=='':
@@ -34,14 +33,15 @@ def process(s):
   if t == o:
     return s
   else:
-    return s.replace(o,"%s@%s"%(t,o))
+    return s.replace("%s@"%o,"%s@"%t)
+  
   
   
 
 if __name__ == '__main__':
   fn = 'main.adx'
   lines = open(fn).readlines()
-  print(len(lines))
+  #print(len(lines))
   lines2 = list(map(process, lines))
   out = open('mainmod.adx','w')
   out.write(''.join(lines2))

@@ -28,8 +28,8 @@ for f in files:
     included = True
     for excluder in excluders: 
       if "%s{"%excluder in line:
-	included = False
-	print line
+        included = False
+	print(line)
     if included:
       for lg in lgs: 
 	lg = lg.strip()
