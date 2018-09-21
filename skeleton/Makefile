@@ -105,24 +105,9 @@ paperhive:
 	
 proofreading.pdf:
 	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
-
-blurb: blurb.html blurb.tex biosketch.tex biosketch.html
-
-
-blurb.tex: blurb.md
-	pandoc -f markdown -t latex blurb.md>blurb.tex
-	
-blurb.html: blurb.md
-	pandoc -f markdown -t html blurb.md>blurb.html
-	
-biosketch.tex: blurb.md
-	pandoc -f markdown -t latex biosketch.md>biosketch.tex
-	
-biosketch.html: blurb.md
-	pandoc -f markdown -t html biosketch.md>biosketch.html
 	
 	
-chop: FORCE 
+chop:  
 	egrep -o "\{[0-9]+\}\{chapter\*\.[0-9]+\}" main.toc| egrep -o "[0-9]+\}\{chapter"|egrep -o [0-9]+ > cuts.txt
 	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
 	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*"`
@@ -144,8 +129,6 @@ realclean: clean
 chapterlist:
 	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/" 
 
-podcover:
-	bash podcovers.sh
 
 barechapters:
 	cat *tex | detex > barechapters.txt

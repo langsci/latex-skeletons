@@ -1,16 +1,12 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%%     Language Science Press Master File       %%%
-%%%         follow the instructions below        %%%
-%%%                                              %%%
+%%%         follow the instructions below        %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
-\documentclass[output=book,
-  nonflat,
-%   modfonts,
+\documentclass[output=book,nonflat,modfonts,
   colorlinks,citecolor=brown, 
 %  draft,draftmode,  
   showindex,
@@ -19,34 +15,24 @@
 %   multiauthors,
 		  ]{langsci/langscibook}    
   
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%          additional packages                 %%%
-%%%                                              %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% put all additional commands you need in the 
-% following files. {I}f you do not know what this might 
-% mean, you can safely ignore this section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%          additional packages                 %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \input{localmetadata.tex}
 \input{localpackages.tex}
 \input{localhyphenation.tex}
 \bibliography{localbibliography} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%             Frontmatter                      %%%
-%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%             Frontmatter                      %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{document} 
  
 \input{localcommands.tex} 
- 
-
+  
 \maketitle                
-\frontmatter
-% %% uncomment if you have preface and/or acknowledgements
+\frontmatter 
 
 \currentpdfbookmark{Contents}{name} % adds a PDF bookmark
 {\sloppy\tableofcontents}
@@ -55,21 +41,16 @@
  \include{chapters/abbreviations} 
 \mainmatter     
  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%             Chapters                         %%%
-%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%             Chapters                         %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
- 
-
+  
 % % copy the lines above and adapt as necessary
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%                                              %%%
-%%%             Backmatter                       %%%
-%%%                                              %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%             Backmatter                       %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{localseealso.tex} 
@@ -78,8 +59,4 @@
 \end{document} 
 
 % you can create your book by running
-% xelatex main.tex
-%
-% you can also try a simple 
-% make
-% on the commandline
+% xelatex main.tex 
