@@ -36,6 +36,14 @@
 %%%             Frontmatter                      %%%
 %%%                                              %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{xassoccnt}
+\newcounter{realpage}
+\DeclareAssociatedCounters{page}{realpage}
+\AtBeginDocument{%
+  \stepcounter{realpage}
+}
+
 \begin{document}         
 \maketitle                
 \frontmatter
@@ -54,6 +62,9 @@
 % \setcounter{chapter}{0} % Reset the chapter counter so that preceeding prefaces are not counted
 % %% 
 \mainmatter           
+\typeout{mainmatter starts at \therealpage}
+
+% \typeout{mainmatter starts at  \the\zref[abspage]{mainmatter}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                                              %%%
 %%%             Chapters                         %%%
@@ -62,8 +73,11 @@
  
   
 \includepaper{chapters/01} %add a percentage sign in front of the line to exclude this chapter from book
-% \includepaper{chapters/02} 
-% \includepaper{chapters/03} 
+\includepaper{chapters/02} 
+\includepaper{chapters/03} 
+\includepaper{chapters/04} 
+\includepaper{chapters/05} 
+\includepaper{chapters/06} 
 % copy the lines above and adapt as necessary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
