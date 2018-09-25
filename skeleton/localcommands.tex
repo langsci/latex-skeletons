@@ -1,2 +1,12 @@
 \newcommand{\appref}[1]{Appendix \ref{#1}}
 \newcommand{\fnref}[1]{Footnote \ref{#1}} 
+
+\newenvironment{langscibars}{\begin{axis}[ybar,xtick=data, xticklabels from table={\mydata}{pos}, 
+        width  = \textwidth,
+	height = .3\textheight,
+    	nodes near coords, 
+	xtick=data,
+	x tick label style={},  
+	ymin=0,
+	cycle list name=langscicolors
+        ]}{\end{axis}}

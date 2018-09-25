@@ -43,4 +43,18 @@ Sed vitae lorem lectus. Nunc sit amet venenatis risus. Nullam a metus vitae ligu
 <LogEvent Action = "1" Value = "107" Cursor = "477">
 \end{lstlisting}
 \end{figure}
+
+\begin{figure} 
+\pgfplotstableread{data/dataset1.csv}\mydata;
+\begin{tikzpicture}
+\begin{langscibars}
+    \addplot+ table [x=i, y=English] {\mydata}; 
+    \addplot+ table [x=i, y=Spanish] {\mydata}; 
+    
+\end{langscibars}
+
+\end{tikzpicture}
+\caption{Barplot from dataset}
+\end{figure}
+
  
