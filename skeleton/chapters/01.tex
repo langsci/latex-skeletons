@@ -45,19 +45,16 @@ Sed vitae lorem lectus. Nunc sit amet venenatis risus. Nullam a metus vitae ligu
 \end{figure}
 
 \begin{figure} 
-\pgfplotstableread{data/dataset1.csv}\mydata;
-\begin{tikzpicture}
-\begin{langscibars}
-    \addplot+ table [x=i, y=English] {\mydata}; 
-    \addlegendentry{English};
-    \addplot+ table [x=i, y=Spanish] {\mydata}; 
-    \addlegendentry{Spanish};
-    \addplot+ table [x=i, y=French] {\mydata}; 
-    \addlegendentry{French};
-\end{langscibars}
-
-\end{tikzpicture}
-\caption{Barplot from dataset}
+  \langscidata{data/dataset1.csv}
+  \begin{tikzpicture}
+    \begin{langscibars}
+	\langscibar{English}
+	\langscibar{Spanish}
+	\langscibar{French}
+	\langscibar{Italian} 
+    \end{langscibars} 
+  \end{tikzpicture}
+  \caption{Barplot from dataset}
 \end{figure}
 
  
