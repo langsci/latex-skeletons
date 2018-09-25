@@ -49,8 +49,11 @@ Sed vitae lorem lectus. Nunc sit amet venenatis risus. Nullam a metus vitae ligu
 \begin{tikzpicture}
 \begin{langscibars}
     \addplot+ table [x=i, y=English] {\mydata}; 
+    \addlegendentry{English};
     \addplot+ table [x=i, y=Spanish] {\mydata}; 
-    
+    \addlegendentry{Spanish};
+    \addplot+ table [x=i, y=French] {\mydata}; 
+    \addlegendentry{French};
 \end{langscibars}
 
 \end{tikzpicture}
