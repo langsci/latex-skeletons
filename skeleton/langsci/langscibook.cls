@@ -55,6 +55,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{langscibook}[2018/01/15 Language Science Press]
 
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1140,7 +1141,7 @@
   \onlyAuthor
   \renewcommand{\newlineCover}{}
   \renewcommand{\newlineSpine}{}
-  {\@author}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
+  {\lsImpressionCitationAuthor}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
   {\lsYear}. %
   \textit{\@title}\if\@subtitle\empty\else: \textit{\@subtitle}\fi\ %
   (\lsSeriesTitle). %
@@ -1824,7 +1825,6 @@ width=.8\textwidth
 %% gets rid of the warnings:
 %% Failed to convert input string to UTF16
 %% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
-\hypersetup{unicode,pdfencoding=auto,bookmarksopenlevel=0}
 
 %% add hyperlinks for DOIs in bibliography; must appear after hyperref
 \usepackage{doi}

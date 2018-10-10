@@ -14,3 +14,16 @@
 \newcommand{\langscibar}[1]{\addplot+ table [x=i, y=#1] {\mydata};\addlegendentry{#1};}
 
 \newcommand{\langscidata}[1]{\pgfplotstableread{#1}\mydata;}
+
+\makeatletter
+\let\theauthor\@author 
+\makeatother
+ 
+\newcommand{\lsFirstAuthorFullName}{\StrBefore{\theauthor}{\and }}
+\newcommand{\lsFirstAuthorFirstName}{\StrBefore{\theauthor}{ }}
+\newcommand{\lsFirstAuthorLastName}{\StrBetween{\theauthor}{ }{\and }}
+\newcommand{\lsNonFirstAuthorsString}{\and\StrBehind{\theauthor}{\and }} 
+
+\newcommand{\lsImpressionCitationAuthor}{ 
+\lsFirstAuthorLastName, \lsFirstAuthorFirstName \lsNonFirstAuthorsString}
+
