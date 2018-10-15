@@ -138,3 +138,6 @@ languagecandidates:
 
 
 FORCE:
+
+
+supersede: convert cover.png -fill white -colorize 60%  -pointsize 64 -draw "gravity center fill red rotate -45  text 0,12 'superseded' "  superseded.png; display superseded.png
