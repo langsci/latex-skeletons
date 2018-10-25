@@ -25,12 +25,12 @@ main.snd: main.bbl
 	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
-	sed -i 's/.*Office.*/\1/' main.adx
-	sed -i 's/.*Team.*/\1/' main.adx
-	sed -i 's/.*Bureau.*/\1/' main.adx
-	sed -i 's/.*Organisation.*/\1/' main.adx
-	sed -i 's/.*Embassy.*/\1/' main.adx
-	sed -i 's/.*Commission.*/\1/' main.adx
+	sed -i 's/.*Office.*//' main.adx
+	sed -i 's/.*Team.*//' main.adx
+	sed -i 's/.*Bureau.*//' main.adx
+	sed -i 's/.*Organisation.*//' main.adx
+	sed -i 's/.*Embassy.*//' main.adx
+	sed -i 's/.*Commission.*//' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
 # 	python3 fixindex.py
 # 	mv mainmod.adx main.adx
@@ -131,7 +131,7 @@ chapterlist:
 
 
 barechapters:
-	cat *tex | detex > barechapters.txt
+	cat chapters/*tex | detex > barechapters.txt
 
 languagecandidates:
 	egrep -oh "[a-z] [A-Z][a-z]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
