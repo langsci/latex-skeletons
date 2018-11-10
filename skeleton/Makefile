@@ -139,10 +139,7 @@ languagecandidates:
 
 FORCE:
 
-README.md:
-# 	title=`grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\#\1/"`
-# 	author=`grep title localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\#\1/"` 
-# 	series=`grep title localmetadata.tex|sed "s/\\\\\\lsSeries\}{\(.*\)}/\#\1/"` 
+README.md: 
 	echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\# \1/"` > README.md
 	echo '## Publication Info' >> README.md
 	echo -n '- Authors: ' >> README.md
