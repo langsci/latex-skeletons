@@ -139,5 +139,22 @@ languagecandidates:
 
 FORCE:
 
+README.md:
+# 	title=`grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\#\1/"`
+# 	author=`grep title localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\#\1/"` 
+# 	series=`grep title localmetadata.tex|sed "s/\\\\\\lsSeries\}{\(.*\)}/\#\1/"` 
+	echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\# \1/"` > README.md
+	echo '## Publication Info' >> README.md
+	echo -n '- Authors: ' >> README.md
+	echo `grep author localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\1/"` >> README.md
+	echo "- Publication Date: not yet published" >> README.md
+	echo -n "- Series: " >> README.md
+	echo `grep "lsSeries}" localmetadata.tex|sed "s/.*lsSeries}{\(.*\)}/\1/"` >> README.md
+	echo "## Description" >> README.md
+	echo -n "[Book page on langsci-press.org](http://langsci-press.org/catalog/book/" >> README.md
+	echo  `grep lsID localmetadata.tex|sed "s/.*lsID\}{\(.*\)}/\1)/"` >> README.md 
+	echo "## License" >> README.md
+	echo "Copyright: (c) 2017, the authors." >> README.md
+	echo "All data, code and documentation in this repository is published under the [Creative Commons Attribution 4.0 Licence](http://creativecommons.org/licenses/by/4.0/) (CC BY 4.0)." >> README.md
 
 supersede: convert cover.png -fill white -colorize 60%  -pointsize 64 -draw "gravity center fill red rotate -45  text 0,12 'superseded' "  superseded.png; display superseded.png
