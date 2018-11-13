@@ -31,6 +31,7 @@ main.snd: main.bbl
 	sed -i 's/.*Organisation.*//' main.adx
 	sed -i 's/.*Embassy.*//' main.adx
 	sed -i 's/.*Commission.*//' main.adx
+	sed -i 's/\\MakeCapital {([^}]* )}/\1/' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
 # 	python3 fixindex.py
 # 	mv mainmod.adx main.adx
@@ -154,4 +155,6 @@ README.md:
 	echo "Copyright: (c) 2017, the authors." >> README.md
 	echo "All data, code and documentation in this repository is published under the [Creative Commons Attribution 4.0 Licence](http://creativecommons.org/licenses/by/4.0/) (CC BY 4.0)." >> README.md
 
+	
+	
 supersede: convert cover.png -fill white -colorize 60%  -pointsize 64 -draw "gravity center fill red rotate -45  text 0,12 'superseded' "  superseded.png; display superseded.png
