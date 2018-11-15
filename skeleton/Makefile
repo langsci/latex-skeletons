@@ -158,3 +158,15 @@ README.md:
 	
 	
 supersede: convert cover.png -fill white -colorize 60%  -pointsize 64 -draw "gravity center fill red rotate -45  text 0,12 'superseded' "  superseded.png; display superseded.png
+
+
+publish: googlebooks
+	cp main.pdf final.pdf 
+	cp main.pdf first_edition.pdf
+	git checkout gh-pages
+	git add first_edition.pdf 
+	vim versions.json
+	git commit -am 'provide first version'
+	git push origin gh-pages
+	git checkout master
+# 	make bookblock modulo 4
