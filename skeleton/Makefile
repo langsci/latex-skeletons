@@ -169,4 +169,21 @@ publish: googlebooks
 	git commit -am 'provide first version'
 	git push origin gh-pages
 	git checkout master
+	wikicite
 # 	make bookblock modulo 4
+
+wikicite: 
+	echo '<ref name="abc">{{Cite book' > wiki
+	echo -n "| vauthors = " >>wiki; echo `grep author localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\1/"`  >>wiki
+	echo -n "| title =" >>wiki; echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\1/"` >>wiki
+	echo    "| place = Berlin" >>wiki 
+	echo    "| publisher = Language Science Press" >>wiki
+	echo    "| date = 2018" >>wiki
+	echo    "| format = pdf" >>wiki
+	echo -n "| url = http://langsci-press.org/catalog/book/"  >>wiki; echo `grep lsID localmetadata.tex|sed "s/.*lsID\}{\(.*\)}/\1/"` >>wiki
+	echo -n "| doi =" >>wiki; echo `cat doi` >>wiki
+	echo    "| doi-access=free" >>wiki
+	echo -n "| isbn = " >>wiki;  echo `grep lsISBNdigital localmetadata.tex|sed "s/.*lsISBNdigital\}{\(.*\)}/\1)/"` >>wiki
+	echo "}}" >>wiki
+	echo " </ref>" >>wiki
+	more wiki
