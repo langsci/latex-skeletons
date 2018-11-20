@@ -120,7 +120,7 @@ clean:
 	*.log *.blg *.ilg \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib *bcf \
 	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs\
-	*.run.xml \
+	main.run.xml\
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
 	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
