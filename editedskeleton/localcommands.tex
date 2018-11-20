@@ -15,3 +15,22 @@
 
 \newcommand{\langscidata}[1]{\pgfplotstableread{#1}\mydata;}
 
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author 
+\makeatother
+
+\newcommand{\togglepaper}[1][0]{ 
+%   \bibliography{../localbibliography}
+  \papernote{\scriptsize\normalfont
+    \theauthor.
+    \thetitle. 
+    To appear in: 
+    Change Volume Editor \& in localcommands.tex 
+    Change volume title in localcommands.tex
+    Berlin: Language Science Press. [preliminary page numbering]
+  }
+  \pagenumbering{roman}
+  \setcounter{chapter}{#1}
+  \addtocounter{chapter}{-1}
+

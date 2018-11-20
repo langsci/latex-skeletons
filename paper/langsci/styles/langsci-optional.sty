@@ -152,6 +152,13 @@
 \fi%
 #3)}\nopagebreak[4]\ignorespaces}
 
+\newcommand{\langinfoverb}[3]{{\upshape #1~(% langinfo without index marker
+\ifx\\#2\\%
+\else%
+#2;
+\fi%
+#3)}\nopagebreak[4]\ignorespaces}
+
  
 \newcommand{\fittable}[1]{\resizebox{\textwidth}{!}{#1}}
 
@@ -195,7 +202,7 @@
 %no hyphenation left alingned
 \newcolumntype{Q}{>{\raggedright\arraybackslash}X}
 %no hyphenation right aligned
-\newcolumntype{S}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
 %no hyphenation centered
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 %no hyphenation fixed width
@@ -214,33 +221,26 @@
 % Note: The 2nd Argument of the \ulp command is filled in by experience - if you are not familiar with the command, you should experiment a bit. Usually, five tildes are enough, but be sure to check the outcome. 
 % \ule is meant to be the last word in a phrase that is underlined. Therefore, \ule does not have an extra length.
 \usepackage[normalem]{ulem} 
+\usepackage{calc}
+\newlength{\fulllength}
 \newcommand{\ulp}[2]{%#1: stuff to underline, #2: extra length to skip the whitespace between to components
   \settowidth{\LSPTmp}{#1}%
   % several boxes are need to assure that words with ascending and descending letters are underlined at the same 
   % level, leading to the impression of a continuous stroke
   \parbox[t]{\LSPTmp}{ %restrict first box to the length of first argument
-      \settowidth{\LSPTmp}{#1#2} %inner box is larger than outerbox, so underlining will extend beyond length of outer box
+      \settowidth{\fulllength}{\parbox{\LSPTmp}{~}\parbox{#2mm}{~}} %inner box is larger than outerbox, so underlining will extend beyond length of outer box
       %             align parbox to bottom
       %              |           mbox to prevent hyphenation
-      \uline{\parbox[b]{\LSPTmp}{\mbox{#1#2}}}
+      \uline{\parbox[b]{\fulllength}{\mbox{#1}}}
     }
 }
 
 \newcommand{\ule}[1]{%#1: stuff to underline, no extra length
-  \ulp{#1}{}
+  \ulp{#1}{0}
   }
   
   
 
-\usepackage{newfile}  
-\newoutputstream{colorfigures}
-\openoutputfile{\jobname.clr}{colorfigures}
-\addtostream{colorfigures}{Note the offset incurred by the frontmatter!}
-\newenvironment{colorfigure}{\begin{figure}\addtostream{colorfigures}{\thepage}}{\end{figure}} 
-
-\AtEndDocument{
- \closeoutputstream{colorfigures}
-}
 
 \newcommand{\longrule}{\rule{1em}{.3pt}}
 \usepackage{colortbl} 
@@ -275,27 +275,113 @@
 
 \newcommand{\noabstract}{\vspace*{-2\baselineskip}} %for chapters without abstract
 
-\newcommand{\barplot}[4]{%
-  \begin{tikzpicture}
-    \begin{axis}[
-	xlabel={#1},  
-	ylabel={#2}, 
-	axis lines*=left, 
-        width  = \textwidth,
-	height = .3\textheight,
-    	nodes near coords, 
-	xtick=data,
-	x tick label style={},  
-	ymin=0,
-	symbolic x coords={#3},
-	]
-	\addplot+[ybar,lsRichGreen!80!black,fill=lsRichGreen] plot coordinates {
-	    #4
-	}; 
-    \end{axis} 
-  \end{tikzpicture} 
-}
-
 \newcommand{\rephrase}[2]{{\color{yellow!30!black}#2}\todo{replaced `#1'}}
 
 \newcommand{\missref}[2][]{\todo[#1]{missing reference #2}}
+
+\newenvironment{indentquote}[1]%
+  {\list{}{\leftmargin=#1\rightmargin=0pt}\item[]}%
+  {\endlist}
+  
+  
+\newcommand{\phonrule}[3]{#1 $\to$ #2 / #3}
+\newcommand{\featurebox}[1]{$\left[\begin{tabular}{>{\scshape}c}#1\end{tabular}\right]$}
+
+
+\definecolor{RED}{cmyk}{0.05,1,0.8,0}
+
+%connect two elements with lines
+\newcommand{\connect}[2]{%
+  \tikz[overlay,remember picture]{%
+    \draw[-,thick] (#1) -- (#2) node   {};  %
+  }
+} 
+
+\newcommand{\examplesroman}{
+  \let\eachwordone=\upshape
+  \exfont{\upshape}
+}
+\newcommand{\examplesitalics}{
+  \let\eachwordone=\itshape
+  \exfont{\itshape}
+}
+
+\newenvironment{modquote}[1][6mm]% slightly less indented quote for hyphenation issues
+  {\list{}{\leftmargin=#1\rightmargin=0mm}\item[]}%
+  {\endlist}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Experimental feature for pointing out moving things. %%%%
+%%%% Buggy? Write to: kopeckyf@hu-berlin.de               %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{arrows,arrows.meta}
+\newcounter{lsConnectTempGroup}
+\NewDocumentCommand\ConnectTail{m O{\thelsConnectTempGroup}}{%read: mandatory arg #1, optional argument #2 with the current group counter as its default value.
+    \edef\lsConnectTempPosition{#2}%\edef expands the argument, which means reading the current value of the counter.
+    {\tikz[remember picture,
+           anchor=base, baseline,
+           inner xsep=0pt, 
+           inner ysep=-.5ex]\node (ConnectTempTail\lsConnectTempPosition) {\strut{}#1};}%\strut for baseline
+}
+\NewDocumentCommand\ConnectHead{s O{1ex} m O{\thelsConnectTempGroup}}{%read: star #1, optional argument (distance of arrow from text= std. one x-height), mand. arg. (node text), optional argument #2, the group specifier
+    \edef\lsConnectTempPosition{#4}%
+    \stepcounter{lsConnectTempGroup}%We have a match, let's update the group counter   
+    {\tikz[remember picture,
+           anchor=base, baseline, 
+           inner xsep=0pt, 
+           inner ysep=-.5ex] \node (ConnectTempHead\lsConnectTempPosition) {\strut{}#3};%
+     \tikz[remember picture] \draw[% we have a tail and a head, let's bring them together
+                                \IfBooleanTF#1{{Triangle[]}-}{-{Triangle[]}},% Check if the starred version is used. The starred version is right->left, the normal version left->right
+                                overlay] (ConnectTempTail\lsConnectTempPosition.south) -- ++(0,-#2) -| (ConnectTempHead\lsConnectTempPosition.south);
+    }%
+} 
+
+  
+%%%%%%%%%%%%%%%%%%%%
+%%%%           %%%%%
+%%%%   PLOTS   %%%%%
+%%%%           %%%%%
+%%%%%%%%%%%%%%%%%%%%
+ 
+% \newcommand{\barplot}[4]{%
+%   \begin{tikzpicture}
+%     \begin{axis}[
+% 	xlabel={#1},  
+% 	ylabel={#2}, 
+% 	axis lines*=left, 
+%         width  = \textwidth,
+% 	height = .3\textheight,
+%     	nodes near coords, 
+% 	xtick=data,
+% 	x tick label style={},  
+% 	ymin=0,
+% 	symbolic x coords={#3},
+% 	]
+% 	\addplot+[ybar,lsRichGreen!80!black,fill=lsRichGreen] plot coordinates {
+% 	    #4
+% 	}; 
+%     \end{axis} 
+%   \end{tikzpicture} 
+% }
+% \usepackage{pgfmath,pgfplotstable}
+% \newcommand{\langsciplot}[2]{%% experimental
+%         \pgfplotstablegetcolsof{#1.csv}
+%         \pgfmathsetmacro{\langscicsvlength}{\pgfplotsretval-1}
+%         \begin{tikzpicture}[trim axis right,trim axis left]
+%             \begin{axis}[
+%                     #2,
+%                     xtick=data,
+%                     axis lines*=left,
+%                     nodes near coords,
+%                     ymin=0,
+%                     width=\textwidth]
+%             \foreach \i in {0,...,\langscicsvlength} {
+%                 \addplot[
+%                     /pgf/number format/read comma as period
+%                     ] table [x index={0},y index={\i}] {#1.csv};
+%             }
+%             \end{axis}    
+%         \end{tikzpicture}
+% }
+
+\newcommand{\LSfrac}[1]{{\addfontfeature{Fractions=On}#1}}% Use the fraction glyphs shipped with Libertine. The argument is n/m, where n and m are integers
