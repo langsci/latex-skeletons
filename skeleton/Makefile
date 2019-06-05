@@ -25,16 +25,9 @@ main.snd: main.bbl
 	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
-	sed -i 's/.*Office.*//' main.adx
-	sed -i 's/.*Team.*//' main.adx
-	sed -i 's/.*Bureau.*//' main.adx
-	sed -i 's/.*Organisation.*//' main.adx
-	sed -i 's/.*Embassy.*//' main.adx
-	sed -i 's/.*Commission.*//' main.adx
-	sed -i 's/\\MakeCapital {([^}]* )}/\1/' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
-# 	python3 fixindex.py
-# 	mv mainmod.adx main.adx
+	python3 fixindex.py
+	mv mainmod.adx main.adx
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx 
