@@ -44,6 +44,7 @@
 %   \- Indexes
 %   \- Hyperref
 %   \- Edited volumes (Collection)
+%   \- Colors
 %   \_ Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
@@ -57,6 +58,7 @@
 \WarningsOff[hyperref]
 \WarningsOff[tocstyle]
 \typeout{Warnings are disabled in langscibook.cls for hyperref and tocstyle}
+\usepackage{etoolbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Paths
@@ -65,9 +67,9 @@
 \newcommand{\logopath}{}
 \newcommand{\seriesinfopath}{}
 \newcommand{\localepath}{}
-\newcommand{\bstpath}{}
-\newcommand{\bbxpath}{}
-\newcommand{\cbxpath}{}
+\newcommand{\bibstylepath}{}
+% \newcommand{\bbxpath}{}
+% \newcommand{\cbxpath}{}
 \newcommand{\stylepath}{}
 % Paths can be overwritten with option "nonflat"
 
@@ -135,6 +137,7 @@
 \newif\iflsBabelShorthands \lsBabelShorthandsfalse
 \newif\iflsMultiauthors \lsMultiauthorsfalse
 \newif\iflsArseneau \lsArseneaufalse
+\newif\iflsOldStyleNumbers \lsOldStyleNumbersfalse
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -175,11 +178,9 @@
 	\renewcommand{\logopath}{./langsci/graphics/}
 	\renewcommand{\seriesinfopath}{./langsci/seriesinfo/}
 	\renewcommand{\localepath}{./langsci/locale/}
-	\renewcommand{\bstpath}{./langsci/bst/}
-	\renewcommand{\bbxpath}{\bstpath biblatex-sp-unified/bbx/}
-	% \renewcommand{\bbxpath}{\bstpath}
-	\renewcommand{\cbxpath}{\bstpath biblatex-sp-unified/cbx/}
-	% \renewcommand{\cbxpath}{\bstpath}
+	\renewcommand{\bibstylepath}{./langsci/}
+% 	\renewcommand{\bbxpath}{\bibstylepath langsci-unified/bbx/}
+% 	\renewcommand{\cbxpath}{\bibstylepath langsci-unified/cbx/}
 	\renewcommand{\stylepath}{./langsci/styles/}
 }
 \DeclareVoidOption{nobabel}{
@@ -210,6 +211,7 @@
 	\lsCollectiontrue%
 	\lsCollectionTOCLongtrue}
 \DeclareVoidOption{arseneau}{\lsArseneautrue}
+\DeclareVoidOption{oldstylenumbers}{\lsOldStyleNumberstrue}
 \DeclareVoidOption{chinesefont}{
 	\newfontfamily\cn[Mapping=tex-text,Ligatures=Common,Scale=MatchUppercase]{AR PL UMing CN}
 % 	\newcommand{\zh}[1]{{\cn #1}}
@@ -242,6 +244,7 @@
 % 	\newcommand{\textsyriac}[1]{{\syriacfont #1}}
 	\AdditionalFontImprint{Estrangelo Edessa}
 }
+
 \ProcessKeyvalOptions{langscibook}
 
 
@@ -735,6 +738,9 @@
 \fi
 
 \iflsModfonts% use Langsci fonts
+  \iflsOldStyleNumbers
+    \defaultfontfeatures[LinLibertine_RZ_B.otf,LinLibertine_RI_B.otf,LinLibertine_RZI_B.otf,LinLibertine_R_B.otf]{SmallCapsFeatures={Numbers=OldStyle}}
+  \fi
   \setsansfont[
 	  %Ligatures={TeX,Common},		% not supported by ttf
 	  Scale=MatchLowercase,
@@ -756,10 +762,13 @@
 	  SlantedFont    = LinLibertine_R_B.otf,
 	  SlantedFeatures = {FakeSlant=0.25},
 	  BoldSlantedFeatures = {FakeSlant=0.25},
-	  SmallCapsFeatures = {FakeSlant=0,Numbers=OldStyle},
+	  SmallCapsFeatures = {FakeSlant=0},
 	  ]{LinLibertine_R_B.otf}
 \else % use standard fonts
-    \setsansfont[
+  \iflsOldStyleNumbers
+    \defaultfontfeatures[LinLibertine_RZ.otf,LinLibertine_RI.otf,LinLibertine_RZI.otf,LinLibertine_R.otf]{SmallCapsFeatures={Numbers=OldStyle}}
+  \fi
+  \setsansfont[
 	  %Ligatures={TeX,Common},		% not supported by ttf
 	  Scale=MatchLowercase,
 	  Path=\fontpath,
@@ -780,9 +789,8 @@
 	  SlantedFont    = LinLibertine_R.otf,
 	  SlantedFeatures = {FakeSlant=0.25},
 	  BoldSlantedFeatures = {FakeSlant=0.25},
-	  SmallCapsFeatures = {FakeSlant=0,Numbers=OldStyle},
+	  SmallCapsFeatures = {FakeSlant=0},
 	  ]{LinLibertine_R.otf}
-
 \fi
 
 %% Deprecated:
@@ -939,9 +947,10 @@
    \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
    \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
 
-\newcommand{\lsFrontPage}{    % Front page
-	\pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
-	\pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ. 
+\newcommand{\lsFrontPage}{% Front page
+  \ifcsname tikz@library@external@loaded\endcsname\tikzexternaldisable\fi
+  \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
+  \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ. 
   \thispagestyle{empty}
   \renewcommand{\and}{, }%
   \renewcommand{\lastand}{ \& }%
@@ -961,9 +970,11 @@
   \iflsOpenReview \node [rotate=45,align=center,scale=1.5,color=white,text opacity=.75] at (current page.center) {\lsCoverTitleFont Open Review\\Version of \today, \currenttime}; \fi
 %   \iflsUndecapitalize \node [rotate=45,scale=1.5,color=white,text opacity=.75] at (current page.center) {\lsCoverTitleFont Undecapitalized}; \fi  
 \end{tikzpicture}
+\ifcsname tikz@library@external@loaded\endcsname\tikzexternalenable\fi
 }
 
 \newcommand{\lsSchmutztitel}{% Schmutztitel
+  \ifcsname tikz@library@external@loaded\endcsname\tikzexternaldisable\fi
   \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
   \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ. 
   \thispagestyle{empty}
@@ -982,14 +993,16 @@
   \podfrontcovertoptext[\lsSeriesColor]{140mm}{51pt}
   \node [ above left = 10mm and 7.5mm of CoverColouredRectangleFront.south east] {\color{\lsSeriesColor}\includegraphics{\logopath langsci_logo_nocolor.pdf}}; % Print the Language Science press Logo
 \end{tikzpicture}
+\ifcsname tikz@library@external@loaded\endcsname\tikzexternalenable\fi
 }
 
 %\usepackage{pdfpages}
-\newcommand{\lsAdvertisement}{
+\newcommand{\lsAdvertisement}{%
   \include{\logopath langsci-advertisement}
 }
 
-\newcommand{\lsBackPage}{   
+\newcommand{\lsBackPage}{%
+  \ifcsname tikz@library@external@loaded\endcsname\tikzexternaldisable\fi
   \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
   \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
   \pagestyle{empty}
@@ -1008,6 +1021,7 @@
   \end{pgfonlayer}
   \podbackcover{137mm}
   \end{tikzpicture}
+  \ifcsname tikz@library@external@loaded\endcsname\tikzexternalenable\fi
   }
 
 
@@ -1130,11 +1144,17 @@ This title can be downloaded at:\\
 \newcommand{\ccby}{CC-BY}
 \ifx\lsCopyright\ccby
 Published under the Creative Commons Attribution 4.0 Licence (CC BY 4.0):
-http://creativecommons.org/licenses/by/4.0/
+http://creativecommons.org/licenses/by/4.0/ \includegraphics[height=.75em]{\logopath/ccby.eps}
 \else
 Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC BY-ND 4.0):
-http://creativecommons.org/licenses/by-nd/4.0/
+http://creativecommons.org/licenses/by-nd/4.0/ \includegraphics[height=.75em]{\logopath/ccbynd.eps}
 \fi
+
+\ifx\lsSeries\sidl 
+Indexed in EBSCO\smallskip
+\fi
+
+
 
 \begin{tabular}{@{}l@{~}l}
 ISBN: &
@@ -1367,18 +1387,18 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 	\else
 	\iflsBabelShorthands
 		\ifx\lsBookLanguage\lsBookLanguageEnglish
-		  \usepackage[german,\lsBookLanguage]{babel}
+		  \usepackage[ngerman,\lsBookLanguage]{babel}
 		  \addto\extrasenglish{\languageshorthands{german}\useshorthands{"}}
 	  \fi
 		\ifx\lsBookLanguage\lsBookLanguageFrench
-      \usepackage[german,\lsBookLanguage]{babel}
+      \usepackage[ngerman,\lsBookLanguage]{babel}
 			\addto\extrasfrench{\languageshorthands{german}\useshorthands{"}}
     \fi
     \ifx\lsBookLanguage\lsBookLanguageGerman
-      \usepackage[german]{babel}
+      \usepackage[ngerman]{babel}% ngerman provides better hyphenation than german.
     \fi
 		\ifx\lsBookLanguage\lsBookLanguagePortuguese
-      \usepackage[german,\lsBookLanguage]{babel}
+      \usepackage[ngerman,\lsBookLanguage]{babel}
 			\addto\extrasportuges{\languageshorthands{german}\useshorthands{"}}
     \fi
 	\else
@@ -1392,14 +1412,9 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[
-	natbib=true,
-	% \iflsUndecapitalize
-	% style=\bstpath biblatex-langsci-unified-undecap,
-	% \else
-	% style=\bstpath biblatex-langsci-unified,
-	% \fi
-	style=\bbxpath biblatex-sp-unified,
-	citestyle=\cbxpath sp-authoryear-comp,
+	natbib=true, 
+	style=\bibstylepath langsci-unified,
+	citestyle=\bibstylepath langsci-unified,
 	useprefix = true, %sort von, van, de where they should appear
 	%refsection=chapter,
 	maxbibnames=99,
@@ -1417,7 +1432,7 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 	\iflsCollection\else
 		toc=bib, 		% make bibliography appear in toc
   \fi
-  datamodel=\bstpath langsci   % add authauthor and autheditor as possible fields to bibtex entries
+  datamodel=\bibstylepath langsci   % add authauthor and autheditor as possible fields to bibtex entries
 ]{biblatex}
 
 % If the user provided a shortauthor in the bibtex entry, we use the authentic author (as with the
@@ -1443,21 +1458,8 @@ Storage and cataloguing done by FU Berlin \\[3ex]
     {}}
 
 
-%% changes of citestyle (cbx) (FIXME: documentation missing)
-\renewcommand{\postnotedelim}{: }%
-\renewcommand{\multicitedelim}{\addsemicolon\space}%
-\renewcommand{\compcitedelim}{\multicitedelim}
-% \renewcommand{\nameyeardelim}{ }%
 
-%% changes of bibliography style (bbx)
-\DeclareFieldFormat{postnote}{#1}% display pages without page prefix (p., pp.)
-\DeclareBibliographyAlias{inbook}{incollection}% see https://github.com/semprag/biblatex-sp-unified/issues/35
-\DeclareFieldFormat[techreport,report,misc]{titlecase}{\MakeSentenceCase*{#1}}% techreport/report and misc are not genuinely supported by biblatex-sp-unified 
-%% The note field should appear at end of an entry just before the DOI, other than with the used bibliography style. It is therefore first removed, then again restored and included together with the DOI.
-\AtEveryBibitem{%
-  \savefield*{note}{\lsnote}%
-  \clearfield{note}%
-}
+
 %% DOIs are handled after hyperref.
 \defbibheading{references}{\chapter{References}\sloppy}
 \defbibheading{french}{\chapter{Références bibliographiques}\sloppy}
@@ -1502,7 +1504,6 @@ Storage and cataloguing done by FU Berlin \\[3ex]
 
 %% penalties against widows and orphans in bibliography
 %% http://tex.stackexchange.com/questions/297705/atbeginenvironment-does-not-work-with-natbib/297721#297721
-\usepackage{etoolbox}
 \apptocmd{\thebibliography}{%
 \clubpenalty\@M
 \@clubpenalty\clubpenalty
@@ -1582,8 +1583,7 @@ width=.8\textwidth
 %    Indexes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{index}
-%% Wie im Stylefile, aber ohne \MakeUppercase
+\usepackage{index} %% Wie im Stylefile, aber ohne \MakeUppercase
 \renewenvironment{theindex}{%
   \edef\indexname{\the\@nameuse{idxtitle@\@indextype}}%
   \if@twocolumn
@@ -1666,14 +1666,14 @@ width=.8\textwidth
 \IfFileExists{{\localepath langsci-hyphenation-pt}}{\input{\localepath langsci-hyphenation-pt}}{}
 \fi
 
-\AtBeginDocument{
+% \AtBeginDocument{% FK 16-Jan-19: It is unclear why this was set. It conflicts with TikZ externalisation.
 	\makeindex
 	\newindex{lan}{ldx}{lnd}{\lsLanguageIndexTitle}
 	\newindex{sbj}{sdx}{snd}{\lsSubjectIndexTitle}
 	\renewindex{default}{adx}{and}{\lsNameIndexTitle} %biblatex can only deal with the default index
 % 	\newindex{wrd}{wdx}{wnd}{Expression index}
 % 	\newindex{rwrd}{rdx}{rnd}{Reverse expression index}
-}
+% }
 
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
@@ -1759,7 +1759,6 @@ width=.8\textwidth
 	pdfusetitle=true,  % puts author and title in automatically, maybe only in final mode?
 	pdfkeywords={},
 	pdfpagelayout=TwoPageRight,   % first page is separate
-	hypertexnames=false, % better housekeeping of main.toc, required for paperappendix
 	%ps2pdf=true
 	]{hyperref}
 
@@ -1832,10 +1831,13 @@ width=.8\textwidth
 	\edef\lsCollectionTitle{\@title\ifx\@subtitle\empty\else{: \@subtitle}\fi}		% \edef immediately expands \@title
 	\edef\lsCollectionEditor{\@author}
 	\addbibresource{collection_tmp.bib}
+	\if@partsw\AfterEndDocument{\typeout{langscibook Warning: You are in includeonly mode.}\typeout{The bibliographical information for the chapters in this volume have not been updated}}\else% Check for \includeonly mode	
 	\newwrite\tempfile						% open temporary bib file
 	\immediate\openout\tempfile=collection_tmp.bib
+	\fi
 }
-\AtEndDocument{\immediate\closeout\tempfile}% close temporary bib file
+% Only touch the \tempfile if we are NOT in \includeonly mode, prevent flushing of the file
+\AtEndDocument{\if@partsw\else\immediate\closeout\tempfile\fi}% close temporary bib file
 
 %% customize \tableofcontents
 \renewcommand{\@dotsep}{2.5}		% space between dots
@@ -1879,12 +1881,13 @@ width=.8\textwidth
 		   {\thefield{entrytype}}}
 		{\multicitedelim}
 		{\usebibmacro{postnote}}
-	\renewcommand{\lsCollectionPaperCitationText}{\fullciteFooter{#1}}
+	\renewcommand{\lsCollectionPaperCitationText}{\fullciteFooter{#1footer}}
 
 	\include{#1}%
-  \addtocounter{page}{-1}
-	\edef\lsCollectionPaperLastPage{\thepage}	% \lsCollectionPaperFirstPage is defined in \lsPaper
-  \addtocounter{page}{1}
+        \if@partsw\relax\else% This switch controls whether the included chapter is in the range of \includeonly. It's from source2e.
+          \addtocounter{page}{-1}
+	  \edef\lsCollectionPaperLastPage{\thepage}	% \lsCollectionPaperFirstPage is defined in \lsPaper
+          \addtocounter{page}{1}
 
 	%%% for citation in footer
 	%% preprocessing of author/editor names
@@ -1899,8 +1902,9 @@ width=.8\textwidth
 
 	%% write bib entry to file
 	%% FIXME: the publisher field needs a final period, since this is not provided by \fullciteFooter together with DOIs.
-	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\lsCollectionPaperFooterTitle}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\,\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={skipbib=true,skiplab=true}}}
-
+	\immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\lsCollectionPaperFooterTitle}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},keywords={withinvolume}}}
+	\immediate\write\tempfile{@incollection{#1footer,author={\authorTemp},title={{\lsCollectionPaperFooterTitle}},booktitle={{\lsCollectionTitle}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={dataonly=true}}}
+        \fi% If the paper is not within \includeonly, don't do anything.
 	\end{refsection}
 	\end{collectionpaper}}
 \fi
@@ -1984,7 +1988,7 @@ width=.8\textwidth
   \includegraphics{\logopath langsci_spinelogo_nocolor.pdf}}%
   % \hspace{0.8em}%
   \hfill%
-  \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText}}
+  \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText \includegraphics[height=.75em]{\logopath/ccby.eps}}}
 \ifx\lsOutput\lsOutputPaper       % only if output==paper
 	\renewcommand{\lsCollectionPaperCitation}{Change with \string\papernote}
 \fi
@@ -2038,6 +2042,71 @@ width=.8\textwidth
 %  \closeoutputstream{pages}
 % }
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Color definitions:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{lsLightBlue}{cmyk}{0.6,0.05,0.05,0}
+\definecolor{lsMidBlue}{cmyk}{0.75,0.15,0,0}
+\definecolor{lsMidDarkBlue}{cmyk}{0.9,0.4,0.05,0}
+\definecolor{lsDarkBlue}{cmyk}{0.9,0.5,0.15,0.3}
+\definecolor{lsNightBlue}{cmyk}{1,0.47,0.22,0.68}
+
+\definecolor{lsYellow}{cmyk}{0,0.25,1,0}
+\definecolor{lsLightOrange}{cmyk}{0,0.50,1,0}
+\definecolor{lsMidOrange}{cmyk}{0,0.64,1,0}
+\definecolor{lsDarkOrange}{cmyk}{0,0.78,1,0}
+\definecolor{lsRed}{cmyk}{0.05,1,0.8,0}
+
+\definecolor{lsLightWine}{cmyk}{0.3,1,0.6,0}
+\definecolor{lsMidWine}{cmyk}{0.54,1,0.65,0.1}
+\definecolor{lsDarkWine}{cmyk}{0.58,1,0.70,0.35}
+\definecolor{lsSoftGreen}{cmyk}{0.32,0.02,0.72,0}
+\definecolor{lsLightGreen}{cmyk}{0.4,0,1,0}
+
+\definecolor{lsMidGreen}{cmyk}{0.55,0,0.9,0.1}
+\definecolor{lsRichGreen}{cmyk}{0.6,0,0.9,0.35}
+\definecolor{lsDarkGreenOne}{cmyk}{0.85,0.02,0.95,0.38}
+\definecolor{lsDarkGreenTwo}{cmyk}{0.85,0.05,1,0.5}
+\definecolor{lsNightGreen}{cmyk}{0.88,0.15,1,0.66}
+
+\definecolor{lsLightGray}{cmyk}{0,0,0,0.17}
+\definecolor{lsGuidelinesGray}{cmyk}{0,0.04,0,0.45}
+
+\definecolor{lsDOIGray}{cmyk}{0,0,0,0.45}
+
+\definecolor{langscicol1}{cmyk}{0.6,0.05,0.05,0}
+\definecolor{langscicol2}{cmyk}{0.75,0.15,0,0}
+\definecolor{langscicol3}{cmyk}{0.9,0.4,0.05,0}
+\definecolor{langscicol4}{cmyk}{0.9,0.5,0.15,0.3}
+\definecolor{langscicol5}{cmyk}{1,0.47,0.22,0.68}
+\definecolor{langscicol6}{cmyk}{0,0.25,1,0}
+\definecolor{langscicol7}{cmyk}{0,0.50,1,0}
+\definecolor{langscicol8}{cmyk}{0,0.64,1,0}
+\definecolor{langscicol9}{cmyk}{0,0.78,1,0}
+\definecolor{langscicol10}{cmyk}{0.05,1,0.8,0}
+\definecolor{langscicol11}{cmyk}{0.3,1,0.6,0}
+\definecolor{langscicol12}{cmyk}{0.54,1,0.65,0.1}
+\definecolor{langscicol13}{cmyk}{0.58,1,0.70,0.35}
+\definecolor{langscicol14}{cmyk}{0.32,0.02,0.72,0}
+\definecolor{langscicol15}{cmyk}{0.4,0,1,0}
+\definecolor{langscicol16}{cmyk}{0.55,0,0.9,0.1}
+\definecolor{langscicol17}{cmyk}{0.6,0,0.9,0.35}
+\definecolor{langscicol18}{cmyk}{0.85,0.02,0.95,0.38}
+\definecolor{langscicol19}{cmyk}{0.85,0.05,1,0.5}
+\definecolor{langscicol20}{cmyk}{0.88,0.15,1,0.66}
+
+
+% \newcommand{\lsptable}[2]{
+% \resizebox{#1}{!}{
+% \begin{tabularx}{\textwidth}{XXXXXXXXXXXXXXXXXXXX}
+%  \cellcolor{langscicol1}&\cellcolor{langscicol2}&\cellcolor{langscicol3}&\cellcolor{langscicol4}&\cellcolor{langscicol5}&\cellcolor{langscicol6}&\cellcolor{langscicol7}&\cellcolor{langscicol8}&\cellcolor{langscicol9}&\cellcolor{langscicol10}&\cellcolor{langscicol11}&\cellcolor{langscicol12}&\cellcolor{langscicol13}&\cellcolor{langscicol14}&\cellcolor{langscicol15}&\cellcolor{langscicol16}&\cellcolor{langscicol17}&\cellcolor{langscicol18}&\cellcolor{langscicol19}&\cellcolor{langscicol20}
+%  \rule{0pt}{#2}
+% \end{tabularx}
+% }
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Miscellaneous

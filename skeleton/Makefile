@@ -72,7 +72,6 @@ githubrepo: localmetadata.tex proofreading versions.json
 	
 versions.json: 
 	grep "^.title{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">title
-	grep "^.BookDOI{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">doi
 	grep "^.author{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+" |sed 's/\\\(last\)\?and/"},{"name":"/g'>author
 	echo '{"versions": [{"versiontype": "proofreading",' >versions.json
 	echo -n '		"title": "' >>versions.json
@@ -82,9 +81,6 @@ versions.json:
 	echo -n `cat author` >> versions.json 
 	echo  '"}],' >> versions.json 
 	echo  '	"license": "CC-BY-4.0",'>> versions.json
-	echo -n '	"DOI": "'>> versions.json
-	echo -n `cat doi` >> versions.json	
-	echo '",' >> versions.json
 	echo -n '	"publishedAt": "' >> versions.json
 	echo -n `date --rfc-3339=s|sed s/" "/T/|sed s/+.*/.000Z/` >> versions.json
 	echo -n '"'>> versions.json
