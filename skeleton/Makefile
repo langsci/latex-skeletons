@@ -102,6 +102,9 @@ chop:
 	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
 	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*"`
 	
+chapternames:
+	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames	
+	
 #housekeeping	
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
