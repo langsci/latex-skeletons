@@ -168,17 +168,24 @@
 \newcommand{\langsciseealso}{\par\addvspace{.1\baselineskip}\hspace*{1.4cm}\hangindent=1.4cm\seealso}
 \newcommand{\ilsa}[2]{\il{#1@\igobble | langsciseealso{#2}}}
 \newcommand{\issa}[2]{\is{#1@\igobble | langsciseealso{#2}}}
-\newcommand{\iasa}[2]{\ia{#1@\igobble | langsciseealso{#2}}}
+\newcommand{\iasa}[2]{\ia{#1{}@\igobble | langsciseealso{#2}}}
+
+
+\newcommand{\name}[3][]{%add person names to text and author index
+#2 %output first name
+\ifstrempty{#1}{%if no optional argument present
+\ia{#3, #2@#3, #2}%add lastname, firstname to index
+}{%if optional argument present
+\ia{#1@#1}% add optional argument to index
+}%
+#3}%output last name in text
+
 
 \usepackage{tabularx}
 \usepackage{array}
 \newenvironment{widetabular}[1][1]
   {\tabularx{#1\textwidth}}
   {\endtabularx}
-
-
-\newcommand{\citetv}[1]{\citeauthor{#1} (\citeyear*{#1} [this volume])}
-\newcommand{\citepv}[1]{(\citealt{#1} [this volume])}
 
 
 % Vowel chart tikz commands
@@ -227,19 +234,34 @@
   \settowidth{\LSPTmp}{#1}%
   % several boxes are need to assure that words with ascending and descending letters are underlined at the same 
   % level, leading to the impression of a continuous stroke
-  \parbox[t]{\LSPTmp}{ %restrict first box to the length of first argument
+  \parbox[t]{\LSPTmp}{%restrict first box to the length of first argument
       \settowidth{\fulllength}{\parbox{\LSPTmp}{~}\parbox{#2mm}{~}} %inner box is larger than outerbox, so underlining will extend beyond length of outer box
       %             align parbox to bottom
       %              |           mbox to prevent hyphenation
-      \uline{\parbox[b]{\fulllength}{\mbox{#1}}}
-    }
+      \uline{\parbox[b]{\fulllength}{\mbox{#1}}}%
+    }%
 }
 
 \newcommand{\ule}[1]{%#1: stuff to underline, no extra length
-  \ulp{#1}{0}
+  \ulp{#1}{0}%
   }
   
-  
+\newlength{\fullllength}
+\newcommand{\soutp}[2]{%#1: stuff to underline, #2: extra length to skip the whitespace between to components
+  \settowidth{\LSPTmp}{#1}%
+  % several boxes are need to assure that words with ascending and descending letters are underlined at the same 
+  % level, leading to the impression of a continuous stroke
+  \parbox[t]{\LSPTmp}{%restrict first box to the length of first argument
+      \settowidth{\fullllength}{\parbox{\LSPTmp}{~}\parbox{#2mm}{~}}%inner box is larger than outerbox, so underlining will extend beyond length of outer box
+      %             align parbox to bottom
+      %              |           mbox to prevent hyphenation
+      \sout{\parbox[b]{\fullllength}{\mbox{#1}}}%
+    }%
+}
+
+\newcommand{\soute}[1]{%#1: stuff to underline, no extra length
+  \soutp{#1}{0}%
+  } 
 
 
 \newcommand{\longrule}{\rule{1em}{.3pt}}
@@ -437,3 +459,4 @@
 \hspace*{#1mm}%
 \mbox{#3}%
 }
+
