@@ -96,7 +96,8 @@ paperhive:
 firstedition:
 	git checkout gh-pages
 	git pull 
-	python getfirstedition.py `cat ID`
+	basename `pwd` > ID
+	python getfirstedition.py  `cat ID`
 	git add first_edition.pdf 
 	git commit -am 'provide first edition'
 	git push origin gh-pages 
