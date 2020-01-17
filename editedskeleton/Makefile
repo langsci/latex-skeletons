@@ -25,15 +25,6 @@ main.snd: main.bbl
 	sed -i s/.*\\emph.*// main.adx #remove titles which biblatex puts into the name index
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
-	sed -i 's/.*Office.*//' main.adx
-	sed -i 's/.*Team.*//' main.adx
-	sed -i 's/.*Bureau.*//' main.adx
-	sed -i 's/.*Organisation.*//' main.adx
-	sed -i 's/.*Embassy.*//' main.adx
-	sed -i 's/.*Organization.*//' main.adx
-	sed -i 's/.*Embassy.*//' main.adx
-	sed -i 's/.*Association.*//' main.adx
-	sed -i 's/.*Commission.*//' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
 	python3 fixindex.py
 	mv mainmod.adx main.adx
@@ -114,7 +105,7 @@ proofreading.pdf:
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
-	*.log *.blg *.ilg \
+	*.log *.blg *.ilg *.run.xml \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib *bcf \
 	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs\
 	*.run.xml \
