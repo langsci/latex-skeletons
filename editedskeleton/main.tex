@@ -22,7 +22,7 @@
 \input{localpackages.tex}
 \input{localhyphenation.tex}
 \input{localcommands.tex} 
-\bibliography{localbibliography}
+\addbibresource{localbibliography.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%             Frontmatter                      %%%
@@ -46,10 +46,7 @@
 \lsCollectionPaperMainmatterMode % Leave the Frontmatter Mode 
 \setcounter{chapter}{0} % Reset the chapter counter so that preceding prefaces are not counted
 
-
-
-\mainmatter           
-\typeout{mainmatter starts at \therealpage}
+\mainmatter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%             Chapters                         %%%
