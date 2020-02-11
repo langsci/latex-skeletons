@@ -1,97 +1,69 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%     Language Science Press Master File       %%%
-%%%         follow the instructions below        %%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
+%%%     Language Science Press Master File       %%%
+%%%         follow the instructions below        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Everything following a % is ignored
 % Some lines start with %. Remove the % to include them
 
 \documentclass[output=book,nonflat,
-  colorlinks,citecolor=brown, 
-%  draft,draftmode,  
+  colorlinks,citecolor=brown,
+%  draft,draftmode,
 %  showindex,
 %  nobabel,
 %  booklanguage=german,
 %  multiauthors,
-		  ]{langsci/langscibook}    
-  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%          additional packages                 %%% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+		  ]{langsci/langscibook}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%          additional packages                 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{localmetadata.tex}
 \input{localpackages.tex}
 \input{localhyphenation.tex}
 \addbibresource{localbibliography.bib}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%             Frontmatter                      %%% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\begin{document} 
- 
-\input{localcommands.tex} 
-  
-\maketitle                
-\frontmatter 
+
+\WarningsOff[microtype]
+\WarningFilter{microtype}{Unknown slot}
+\WarningFilter{scrbook}{package incompatibility detected}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%             Frontmatter                      %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\input{localcommands.tex}
+
+\maketitle
+\frontmatter
 
 \currentpdfbookmark{Contents}{name} % adds a PDF bookmark
 {\sloppy\tableofcontents}
  \include{chapters/preface}
  \include{chapters/acknowledgments}
- \include{chapters/abbreviations} 
-\mainmatter     
+ \include{chapters/abbreviations}
+\mainmatter
 
-\newcommand{\R}{r\kern-.05ex{̣}\kern.05ex}
-{\itshape
-\Huge
-\noindent
-xṛx\\
-x\d{r}x\\
-x{\R}x
 
-\normalsize
-\noindent
-xṛx\\
-x\d{r}x\\
-x{\R}x
 
-\scriptsize
-\noindent
-xṛx\\
-x\d{r}x\\
-x{\R}x
 
-\footnotesize
-\noindent
-xṛx\\
-x\d{r}x\\
-x{\R}x
-
-\LARGE
-\noindent
-xṛx\\
-x\d{r}x\\
-x{\R}x
-}
-
- 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%             Chapters                         %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%             Chapters                         %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
-  
+
 % % copy the lines above and adapt as necessary
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-%%%             Backmatter                       %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%             Backmatter                       %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{localseealso.tex} 
+\input{localseealso.tex}
 % There is normally no need to change the backmatter section
-\input{backmatter.tex} 
-\end{document} 
+\input{backmatter.tex}
+\end{document}
 
 % you can create your book by running
-% xelatex main.tex 
+% xelatex main.tex
