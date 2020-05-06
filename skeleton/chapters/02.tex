@@ -1,6 +1,28 @@
-\chapter{Change title for chapter 2 in chapters/02.tex}
-Add content in chapters/02.tex
+\documentclass[output=paper]{langscibook}
 
- Ut vestibulum tristique lacus, placerat facilisis ligula accumsan id. Praesent euismod blandit condimentum. Etiam ac nibh mauris. Vivamus consectetur porta ante, id consequat nibh luctus et. Nulla vel commodo justo, id consequat purus. Fusce ac turpis magna. Quisque molestie elit dapibus lacus tristique, in ultricies erat tempor.
+\author{Change author in chapters/02.tex}
+\title{Change title in chapters/02.tex} 
+\abstract{Change the  abstract in chapters/02.tex}
 
-Maecenas quis augue quam. Ut ipsum felis, sodales condimentum nisl ut, tempus finibus tortor. Cras elit magna, porta ac tortor non, condimentum placerat nulla. Proin interdum nisi non malesuada lacinia. Nullam elit ex, elementum id sapien id, ultricies rhoncus augue. Suspendisse porta orci at diam congue laoreet. In eu eros sollicitudin, luctus ipsum vitae, finibus felis. Morbi dignissim id quam ut vehicula. Cras venenatis ultricies est, in tincidunt mi viverra vel. Proin porttitor faucibus ante in hendrerit. Nulla consequat a mauris vitae ullamcorper. Fusce finibus, quam nec efficitur porttitor, est ligula ullamcorper risus, egestas finibus lectus urna ac mauris. Integer placerat orci sit amet odio malesuada, non blandit orci vestibulum. Etiam in libero libero. Nullam tristique interdum leo, vitae commodo sapien pretium sit amet \citep{Chomsky1957}. 
+\begin{document}
+\maketitle
+
+\section{Introduction}
+ 
+ 
+\section*{Abbreviations}
+\begin{tabularx}{.45\textwidth}{lQ}
+... & \\
+... & \\
+\end{tabularx}
+\begin{tabularx}{.45\textwidth}{lQ}
+... & \\
+... & \\
+\end{tabularx}
+
+
+\section*{Acknowledgements}
+\citet{Nordhoff2018} is useful for compiling bibliographies.
+
+{\sloppy\printbibliography[heading=subbibliography,notkeyword=this]}
+\end{document}

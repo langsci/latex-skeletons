@@ -1,23 +1,23 @@
 # specify thh main file and all the files that you are including
-SOURCE=  main.tex $(wildcard local*.tex) $(wildcard chapters/*.tex)
+SOURCE=  main.tex $(wildcard local*.tex) $(wildcard chapters/*.tex) 
 
 # specify your main target here:
 pdf: main.bbl main.pdf  #by the time main.pdf, bib assures there is a newer aux file
-
+ 
 complete: index main.pdf
 
 index:  main.snd
-
+ 
 main.pdf: main.aux
-	xelatex main
+	xelatex main 
 
 main.aux: $(SOURCE)
-	xelatex -no-pdf main
+	xelatex -no-pdf main 
 
 #create only the book
-main.bbl:  $(SOURCE) localbibliography.bib
-	xelatex -no-pdf main
-	biber   main
+main.bbl:  $(SOURCE) localbibliography.bib  
+	xelatex -no-pdf main 
+	biber   main 
 
 
 main.snd: main.bbl
@@ -26,21 +26,13 @@ main.snd: main.bbl
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
-	sed -i 's/.*Office.*//' main.adx
-	sed -i 's/.*Team.*//' main.adx
-	sed -i 's/.*Bureau.*//' main.adx
-	sed -i 's/.*Organisation.*//' main.adx
-	sed -i 's/.*Organization.*//' main.adx
-	sed -i 's/.*Embassy.*//' main.adx
-	sed -i 's/.*Association.*//' main.adx
-	sed -i 's/.*Commission.*//' main.adx
 	python3 fixindex.py
 	mv mainmod.adx main.adx
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
-	makeindex -o main.snd main.sdx
-	xelatex main
-
+	makeindex -o main.snd main.sdx 
+	xelatex main 
+ 
 
 #create a png of the cover
 cover: FORCE
@@ -51,19 +43,20 @@ cover: FORCE
 	display cover.png
 
 openreview: openreview.pdf
+	
 
-openreview.pdf:
-	pdftk main.pdf multistamp orstamp.pdf output openreview.pdf
+openreview.pdf: 
+	pdftk main.pdf multistamp orstamp.pdf output openreview.pdf 
 
 proofreading: proofreading.pdf
-
+	
 githubrepo: localmetadata.tex proofreading versions.json
-	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
+	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
 	git clone https://github.com/langsci/`cat ID`.git
 	cp proofreading.pdf Makefile versions.json `cat ID`
 	mv `cat ID` ..
-
-versions.json:
+	
+versions.json: 
 	grep "^.title{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">title
 	grep "^.author{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+" |sed 's/\\\(last\)\?and/"},{"name":"/g'>author
 	echo '{"versions": [{"versiontype": "proofreading",' >versions.json
@@ -71,8 +64,8 @@ versions.json:
 	echo -n `cat title` >> versions.json
 	echo  '",' >> versions.json
 	echo -n  '		"authors": [{"name": "'>> versions.json
-	echo -n `cat author` >> versions.json
-	echo  '"}],' >> versions.json
+	echo -n `cat author` >> versions.json 
+	echo  '"}],' >> versions.json 
 	echo  '	"license": "CC-BY-4.0",'>> versions.json
 	echo -n '	"publishedAt": "' >> versions.json
 	echo -n `date --rfc-3339=s|sed s/" "/T/|sed s/+.*/.000Z/` >> versions.json
@@ -81,8 +74,8 @@ versions.json:
 	echo  '	]'>> versions.json
 	echo  '}'>> versions.json
 	rm author title
-
-paperhive:
+	
+paperhive:  
 	git branch gh-pages
 	git checkout gh-pages
 	git add proofreading.pdf versions.json
@@ -91,40 +84,31 @@ paperhive:
 	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
 	sleep 3
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
-	git checkout master
-
+	git checkout master 
+	
+			
 firstedition:
 	git checkout gh-pages
-	git pull origin gh-pages
+	git pull 
 	basename `pwd` > ID
 	python getfirstedition.py  `cat ID`
-	git add first_edition.pdf
+	git add first_edition.pdf 
 	git commit -am 'provide first edition'
-	git push origin gh-pages
+	git push origin gh-pages 
 	git checkout master
-	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
-
-
+	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`	
+	
 proofreading.pdf:
-	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf
+	pdftk main.pdf multistamp prstamp.pdf output proofreading.pdf 
 
-
-chop:
-	egrep -o "\{[0-9]+\}\{chapter\*\.[0-9]+\}" main.toc| egrep -o "[0-9]+\}\{chapter"|egrep -o [0-9]+ > cuts.txt
-	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
-	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*"`
-
-chapternames:
-	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames
-
-#housekeeping
+#housekeeping	
 clean:
 	rm -f *.bak *~ *.backup *.tmp \
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
-	*.log *.blg *.ilg \
+	*.log *.blg *.ilg *.run.xml \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib *bcf \
 	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs\
-	main.run.xml\
+	*.run.xml \
 	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
 	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
@@ -132,19 +116,30 @@ realclean: clean
 	rm -f *.dvi *.ps *.pdf
 
 chapterlist:
-	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/"
+	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/" 
+	
+chop: FORCE 
+	egrep -o "\{[0-9]+\}\{chapter\*\.[0-9]+\}" main.toc| egrep -o "[0-9]+\}\{chapter"|egrep -o [0-9]+ > cuts.txt
+	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
+	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*"`
 
+chapternames:
+	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames	
+	
+podcover:
+	bash podcovers.sh
 
 barechapters:
-	cat chapters/*tex | detex > barechapters.txt
+	cat *tex | detex > barechapters.txt
 
 languagecandidates:
-	egrep -oh "[a-z] [A-Z]['a-zA-Z-]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
+	egrep -oh "[a-z] [A-Z][a-z]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
 
 
 FORCE:
 
-README.md:
+
+README.md: 
 	echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\# \1/"` > README.md
 	echo '## Publication Info' >> README.md
 	echo -n '- Authors: ' >> README.md
@@ -154,20 +149,22 @@ README.md:
 	echo `grep "lsSeries}" localmetadata.tex|sed "s/.*lsSeries}{\(.*\)}/\1/"` >> README.md
 	echo "## Description" >> README.md
 	echo -n "[Book page on langsci-press.org](http://langsci-press.org/catalog/book/" >> README.md
-	echo  `grep lsID localmetadata.tex|sed "s/.*lsID\}{\(.*\)}/\1)/"` >> README.md
+	echo  `grep lsID localmetadata.tex|sed "s/.*lsID\}{\(.*\)}/\1)/"` >> README.md 
 	echo "## License" >> README.md
 	echo "Copyright: (c) 2017, the authors." >> README.md
 	echo "All data, code and documentation in this repository is published under the [Creative Commons Attribution 4.0 Licence](http://creativecommons.org/licenses/by/4.0/) (CC BY 4.0)." >> README.md
 
-
+	
+	
 supersede: convert cover.png -fill white -colorize 60%  -pointsize 64 -draw "gravity center fill red rotate -45  text 0,12 'superseded' "  superseded.png; display superseded.png
 
+ 
 
-wikicite:
+wikicite: 
 	echo '<ref name="abc">{{Cite book' > wiki
 	echo -n "| vauthors = " >>wiki; echo `grep author localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\1/"`  >>wiki
 	echo -n "| title =" >>wiki; echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\1/"` >>wiki
-	echo    "| place = Berlin" >>wiki
+	echo    "| place = Berlin" >>wiki 
 	echo    "| publisher = Language Science Press" >>wiki
 	echo    "| date = 2018" >>wiki
 	echo    "| format = pdf" >>wiki
