@@ -1,20 +1,23 @@
-\documentclass[output=paper,citecolor=brown,
+\documentclass[output=paper,colorlinks,citecolor=brown,
 % hidelinks,
-showindex
-]{langsci/langscibook}
+% showindex
+]{langscibook}
 \author{Chap ter Author\affiliation{University of Eden}\and Noam Chimpsky\affiliation{University of Pluto}\orcid{}\lastand  Jane Wilson\affiliation{National Institute for Language}\orcid{}}
 \title{Introduction}
 \abstract{Abstract goes here}
 
 %move the following commands to the "local..." files of the master project when integrating this chapter
 \usepackage{tabularx}
-\usepackage{langsci-gb4e}
+\usepackage{langsci-basic}
 \usepackage{langsci-optional}
+\usepackage{langsci-gb4e}
 \bibliography{localbibliography}
 
 \IfFileExists{../localcommands.tex}{%hack to check whether this is being compiled as part of a collection or standalone
    \input{../localpackages}
    \input{../localcommands}
+   \input{../localhyphenation}
+    \bibliography{localbibliography}
     \togglepaper[23]
 }{}
 
