@@ -60,8 +60,10 @@
 \WarningsOff[microtype]
 \WarningFilter{microtype}{Unknown slot}
 \WarningFilter{scrbook}{package incompatibility}
+\WarningFilter{todonotes}{The length}
+\WarningFilter{biblatex}{'babel/polyglossia'}
 \hbadness=99999 % get rid of underfull box warnings
-\typeout{Warnings are disabled in langscibook.cls for underfull boxes, hyperref, tocstyle, microtype and scrbook package incompatibility}
+\typeout{Warnings are disabled in langscibook.cls for underfull boxes, hyperref, tocstyle, microtype and scrbook package incompatibility, todonotes length and babel/polyglossia csquotes}
 \usepackage{etoolbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -477,8 +479,11 @@
   \lsSchmutztitel}
   %%%%%%%%%%%%%%%%%%%%
   \AtEndDocument{
-        \lsPageStyleEmpty
-        \null\newpage\thispagestyle{empty} % add a final blank page
+    \lsPageStyleEmpty
+    \null\newpage\thispagestyle{empty} % add a final blank page
+	%% Back page:
+    {\lsBackPage}
+    \null\newpage\thispagestyle{empty}
   }
 \fi
 
@@ -1366,27 +1371,31 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newcommand{\lsBookLanguageChinese}{chinese}
 
 \iflsNoBabel
+  \else
+  \ifx\lsBookLanguage\lsBookLanguageChinese
+	    \usepackage{xeCJK}%Chinese doesn't load babel, but xeCJK.
 	\else
-	\iflsBabelShorthands
-		\ifx\lsBookLanguage\lsBookLanguageEnglish
-		  \usepackage[ngerman,\lsBookLanguage]{babel}
-		  \addto\extrasenglish{\languageshorthands{german}\useshorthands{"}}
-	  \fi
+	 \iflsBabelShorthands
+	    \ifx\lsBookLanguage\lsBookLanguageEnglish
+	            \usepackage[ngerman,main=\lsBookLanguage]{babel}
+				\addto\extrasenglish{\languageshorthands{german}\useshorthands{"}}
+	        \fi
 		\ifx\lsBookLanguage\lsBookLanguageFrench
-      \usepackage[ngerman,\lsBookLanguage]{babel}
-			\addto\extrasfrench{\languageshorthands{german}\useshorthands{"}}
-    \fi
-    \ifx\lsBookLanguage\lsBookLanguageGerman
-      \usepackage[ngerman]{babel}% ngerman provides better hyphenation than german.
-    \fi
+                    \usepackage[ngerman,main=\lsBookLanguage]{babel}
+					\addto\extrasfrench{\languageshorthands{german}\useshorthands{"}}
+                \fi
+		\ifx\lsBookLanguage\lsBookLanguageGerman
+                    \usepackage[ngerman]{babel}
+                \fi
 		\ifx\lsBookLanguage\lsBookLanguagePortuguese
-      \usepackage[ngerman,\lsBookLanguage]{babel}
-			\addto\extrasportuges{\languageshorthands{german}\useshorthands{"}}
-    \fi
-	\else
+                    \usepackage[ngerman,main=\lsBookLanguage]{babel}
+                    \addto\extrasportuges{\languageshorthands{german}\useshorthands{"}}
+                \fi
+	   \else
 		\usepackage[\lsBookLanguage]{babel}
-	\fi
-\fi
+	   \fi%Close \iflsBabelShorthands
+     \fi%Close language=chinese
+\fi%Close \iflsNoBabel
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1404,8 +1413,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 	mincrossrefs=99,
 	maxcitenames=2,
 	isbn=false,
-	url=false,
-	eprint=false,
 	autolang=hyphen,
 	\iflsResetCapitals
         language=english,
@@ -2042,6 +2049,43 @@ width=.8\textwidth
   \renewcommand{\figref}[1]{Figura~\ref{#1}}
 \fi
 
+\ifx\lsBookLanguage\lsBookLanguageChinese
+    %%Fonts for Chinese typesetting. If booklanguage=chinese, then 
+    %%xeCJK is loaded, which provides the font commands below.
+    \setCJKmainfont[
+%       Path=\fontpath,
+      BoldFont = SourceHanSerifSC-Semibold.otf
+      ]
+      {SourceHanSerifSC-Regular.otf}
+
+    \setCJKsansfont[
+%       Path=\fontpath,
+      BoldFont = SourceHanSansSC-Bold.otf
+      ]
+      {SourceHanSansSC-Regular.otf}
+      
+      %% Settings for Punctuation
+      \xeCJKsetup{CheckFullRight=true}
+      \xeCJKsetup{PunctStyle=CCT}
+	
+      %% Localisation strings
+      \renewcommand{\sectionname}{节}  
+      \renewcommand{\figurename}{图}  
+      \renewcommand{\tablename}{表}
+      \renewcommand{\contentsname}{目\hspace{1em}录}
+      \renewcommand{\appendixname}{附录}
+      %   \renewcommand{\chapref}[1]{}
+      %   \renewcommand{\partref}[1]{}
+      \renewcommand{\tabref}[1]{表~\ref{#1}}
+      \renewcommand{\figref}[1]{图~\ref{#1}}
+      \renewcommand{\sectref}[1]{节~\ref{#1}}
+      \renewcommand*{\partformat}{第\zhdig{part}部分\hspace{20pt}}
+      \renewcommand*{\partheadmidvskip}{}
+      \renewcommand*{\chapterformat}{第\zhnum{chapter}章\hspace{20pt}}
+      \renewcommand*{\raggedchapter}{\centering}
+      \renewcommand*{\sectionformat}{\thesection\hspace{10pt}}
+\fi
+
 \newcommand{\lsIndexTitle}{Index}
 \newcommand{\lsLanguageIndexTitle}{Language index}	% This can be changed according to the language.
 \newcommand{\lsSubjectIndexTitle}{Subject index}
@@ -2091,6 +2135,16 @@ width=.8\textwidth
 \renewcommand{\lsAbbreviationsTitle}{\colorbox{red}{Translation info for Abbv missing}}
 \renewcommand{\lsReferencesTitle}{portugese}
 % \IfFileExists{{\localepath langsci-hyphenation-pt}}{\input{\localepath langsci-hyphenation-pt}}{}
+\fi
+
+\ifx\lsBookLanguage\lsBookLanguageChinese
+\renewcommand{\lsIndexTitle}{索引}
+\renewcommand{\lsNameIndexTitle}{人名索引}
+\renewcommand{\lsSubjectIndexTitle}{术语索引}
+\renewcommand{\lsLanguageIndexTitle}{语言索引}
+\renewcommand{\lsPrefaceTitle}{前言}
+\renewcommand{\lsAcknowledgementTitle}{致谢}
+\renewcommand{\lsAbbreviationsTitle}{\colorbox{red}{Translation info for Abbv missing}}
 \fi
 
 
