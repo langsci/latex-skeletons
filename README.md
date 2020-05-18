@@ -13,8 +13,8 @@ This depends on your role:
 ## How do I compile the sources?
 There are some recipes in the `Makefile`. For most purposes, it suffices to compile `main.tex` with XeLaTeX, then compiling the bibliography with `biber` (run on file `main`), and compiling `main.tex` with XeLaTeX again so that the bibliography and ToC appear.
 
-## Where do I enter my meta data (`skeleton` and `editedskeleton` only)?
-Here is an overview:
+## Where do I enter my meta data?
+Here is an overview. These settings are for `skeleton` and `editedskeleton` only. The meta data for `paper` are inserted directly in `main.tex`.
 
 File | Setting | Meaning | 
 ---- | ------- | ------- |
