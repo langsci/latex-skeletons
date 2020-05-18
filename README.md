@@ -1,6 +1,6 @@
 # latex-skeletons
 These templates are the ready-to-use LaTeX sources to compile Language Science Press publications.
-They can be obtained as packed `.zip` files from [our website](https://langsci-press.org/templatesAndTools).
+They can be obtained as packed `.zip` files from [our website](https://langsci-press.org/templatesAndTools) or the [`gh-pages`](langsci/latex-skeletons/tree/gh-pages) branch.
 
 ## Which files should I use? 
 This depends on your role:
