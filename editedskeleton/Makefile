@@ -99,7 +99,7 @@ paperhive:
 		
 firstedition:
 	git checkout gh-pages
-	git pull 
+	git pull origin gh-pages
 	basename `pwd` > ID
 	python getfirstedition.py  `cat ID`
 	git add first_edition.pdf 
