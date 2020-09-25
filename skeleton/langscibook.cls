@@ -1315,7 +1315,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newlength{\normalparindent}
 \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
 
-\KOMAoptions{footnotes=multiple}
+\KOMAoptions{footnotes=multiple,draft=false}
 
 %% http://tex.stackexchange.com/questions/28465/multiple-footnotes-at-one-point/71015#71015
 \let\oldFootnote\footnote
