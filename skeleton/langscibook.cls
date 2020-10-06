@@ -434,7 +434,7 @@
                   right,
                   text width=95mm,
                   anchor=north west]
-            {\color{#1}\lsCoverSeriesFont{\lsSeriesTitle\par}};
+            {\color{#1}\lsCoverSeriesFont{\lsSeriesTitle~\lsSeriesNumber\par}};
 }
 \fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1080,14 +1080,14 @@
   {\lsImpressionCitationAuthor}\if\lsEditorSuffix\empty\else\ \lsEditorSuffix\fi. %
   {\lsYear}. %
   \textit{\@title}\if\@subtitle\empty\else: \textit{\@subtitle}\fi\ %
-  (\lsSeriesTitle). %
+  (\lsSeriesTitle~\lsSeriesNumber). %
   Berlin: Language Science Press.
 }
 \newcommand{\lsImpressumExtra}{}%for legal notes required for revised theses ("... in fulfillment of ... ")
 
 \newcommand{\publisherstreetaddress}{%
 Language Science Press\\
-Xhain\\
+xHain\\
 Grünberger Str. 16\\
 10243 Berlin, Germany}
 \newcommand{\publisherurl}{\href{http://langsci-press.org}{langsci-press.org}}
@@ -1315,7 +1315,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newlength{\normalparindent}
 \AtBeginDocument{\setlength{\normalparindent}{\parindent}}
 
-\KOMAoptions{footnotes=multiple,draft=false}
+\KOMAoptions{footnotes=multiple}
 
 %% http://tex.stackexchange.com/questions/28465/multiple-footnotes-at-one-point/71015#71015
 \let\oldFootnote\footnote
