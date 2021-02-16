@@ -34,9 +34,8 @@ main.snd: main.bbl
 	sed -i 's/.*Embassy.*//' main.adx
 	sed -i 's/.*Association.*//' main.adx
 	sed -i 's/.*Commission.*//' main.adx
-	sed -i 's/.*ASALE*//' main.adx
-	sed -i 's/.*Estudis*//' main.adx
-	sed -i 's/.*RAE*//' main.adx
+	sed -i 's/.*committee.*//' main.adx
+	sed -i 's/.*government.*//' main.adx
 	sed -i 's/\\MakeCapital//' main.adx
 	python3 fixindex.py
 	mv mainmod.adx main.adx
@@ -95,7 +94,7 @@ paperhive:
 	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
 	sleep 3
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
-	git checkout master 
+	git checkout main 
 		
 firstedition:
 	git checkout gh-pages
@@ -105,7 +104,7 @@ firstedition:
 	git add first_edition.pdf 
 	git commit -am 'provide first edition'
 	git push origin gh-pages 
-	git checkout master
+	git checkout main 
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
 	
 	
@@ -114,9 +113,9 @@ proofreading.pdf:
 	
 	
 chop:  
-	egrep -o "\{[0-9]+\}\{chapter\*\.[0-9]+\}" main.toc| egrep -o "[0-9]+\}\{chapter"|egrep -o [0-9]+ > cuts.txt
+	egrep -o "\{[0-9]+\}\{chapter\.[0-9]+\}" main.toc| egrep -o "[0-9]+\}\{chapter"|egrep -o [0-9]+ > cuts.txt
 	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
-	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*"`
+	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*" $1 $2`
 	
 chapternames:
 	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames	
@@ -127,9 +126,9 @@ clean:
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib *bcf \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs \
-	main.run.xml \
-	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup \
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs\
+	main.run.xml\
+	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
 	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
 realclean: clean

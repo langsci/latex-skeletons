@@ -13,7 +13,10 @@ url = 'http://www.langsci-press.org/catalog/book/%s'%bookid
 html = requests.get(url).text
 soup = BeautifulSoup(html, 'html.parser')
 
-link = soup.find("div","pub_format_single").find("a","pdf").attrs['href']
+try:
+    link = soup.find("div","pub_format_single").find("a","pdf").attrs['href']
+except ValueError:
+    link = soup.find("div","pub_format_remote").find("a","remote_resource").attrs['href']
 print "downloading", link
 response = urllib2.urlopen(link)
 file = open("first_edition.pdf", 'wb')
