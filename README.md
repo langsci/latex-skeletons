@@ -2,6 +2,8 @@
 These templates are the ready-to-use LaTeX sources to compile Language Science Press publications.
 They can be obtained as packed `.zip` files from [our website](https://langsci-press.org/templatesAndTools) or the [`gh-pages`](https://github.com/langsci/latex-skeletons/tree/gh-pages) branch.
 
+The templates in this GitHub repository work with TeX Live 2020 and up to date CTAN sources.
+
 ## Which files should I use? 
 This depends on your role:
 
