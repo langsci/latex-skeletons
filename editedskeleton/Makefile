@@ -142,7 +142,7 @@ barechapters:
 	cat chapters/*tex | detex > barechapters.txt
 
 languagecandidates:
-	egrep -oh "[a-z] [A-Z]['a-zA-Z-]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
+	grep -ohP "(?<=[a-z]|[0-9])(\))?(,)? (\()?[A-Z]['a-zA-Z-]+" chapters/*tex| grep -o  [A-Z].* |sort -u >languagelist.txt
 
 
 FORCE:
