@@ -2,6 +2,8 @@
 These templates are the ready-to-use LaTeX sources to compile Language Science Press publications.
 They can be obtained as packed `.zip` files from [our website](https://langsci-press.org/templatesAndTools) or the [`gh-pages`](https://github.com/langsci/latex-skeletons/tree/gh-pages) branch.
 
+The templates in this GitHub repository work with TeX Live 2020 and up to date CTAN sources.
+
 ## Which files should I use? 
 This depends on your role:
 
@@ -23,7 +25,7 @@ File | Setting | Meaning |
 `main.tex` | option `booklanguage=<language>` | Set this option if you are writing in another language than English. Currently supported are: `chinese`, `french`, `german`, `portuguese`. Please get in touch if you need another.
 `localmetadata.tex` | `\title` | The book's title of either monograph or collected volume.
 `localmetadata.tex` | `\subtitle` | The book's subtitle of either monograph or collected volume.
-`localmetadata.tex` | `\author` | The name of all contributing author(s) or editor(s). Individuals are separated by `\and`, the last one with `\lastand`.
+`localmetadata.tex` | `\author` | The name of all contributing author(s) or editor(s). Individuals are separated by `and`. Please see [this Wiki page](https://github.com/langsci/langscibook/wiki/Inserting-authors-and-editors-with-langsci-affiliations) for details.
 `localmetadata.tex` | `\BackBody` | The blurb displayed on the back cover.
 `localmetadata.tex` | `\Series` | The shorthand of the series you are publishing your book in.
 `localseealso.tex`  |           | Recipes for links in the Indexes.
