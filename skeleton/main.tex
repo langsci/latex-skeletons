@@ -28,7 +28,59 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%             Frontmatter                      %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[linguistics]{forest}
+\usetikzlibrary{shapes,fit,positioning}
 \begin{document}
+
+\begin{forest}
+ [IP,name=IP
+    [~]
+    [I$'$
+        [VP
+            [~]
+            [V$^0$
+                [o, name=o1]
+            ]
+        ]
+        [I$^0$
+            [T$^0$
+                [o, name=o2]
+            ]
+            [AGR$^0$
+                [o, name=o3]
+            ]
+        ]
+    ]
+ ]
+\node(listA)[above=2cm of IP,xshift=-2cm]{List A: };
+\node(kauf)[right=0mm of listA,draw,dashed,rectangle,rounded corners,inner sep=1mm]{$\sqrt{\text{KAUF}}$};
+\node(rest)[right=0mm of kauf]{, $\sqrt{\text{LAUF}}$,$\sqrt{\text{HUND}}$,$\sqrt{\text{GUT}}$, \ldots\\};
+\node(tensepast)[below=2mm of kauf,draw,dashed,rectangle,rounded corners,inner sep=1mm]{\footnotesize [\textsc{tense}:\textsc{past}]};
+\node(person12)[right=0mm of tensepast]{\footnotesize , [\textsc{person}:1], [\textsc{person}:2], };
+\node(person3numpl)[right=0mm of person12,draw,dashed,rectangle,rounded corners,inner sep=1mm]{\footnotesize [\textsc{person}:3], [\textsc{num}:\textsc{pl}]};
+\node(genf)[right=0mm of person3numpl]{\footnotesize , [\textsc{gen}:\textsc{f}]};
+%
+\node(vkaufpast3pl)[below = 9cm of kauf]{$\sqrt{\text{KAUF}}$-\textsc{past}-3-\textsc{pl}};
+\node(listB)[below = 3cm of vkaufpast3pl,xshift=-2cm]{List B:};
+\node(kaOf)[right=0mm of listB]{/kaOf/,};
+\node(past-t@)[right=0mm of kaOf]{[\textsc{past}] $\leftrightarrow$ /t@/,};
+\node(2pl-t)[right=0mm of past-t@,text width=2.5cm,text align=center]{[2\textsc{pl}] $\leftrightarrow$ /t/, \dots};
+\node(listC)[right=0mm of 2pl-t]{List C: img img img};
+\node(remainder)[below=0mm of 2pl-t,text width=2cm]{[\textsc{pl}] $\leftrightarrow$ /n/\\
+    {}[\textsc{2}] $\leftrightarrow$ /st/\\
+    {}[] $\leftrightarrow$ /$\empty$/};
+\draw[->](o2)--(vkaufpast3pl);
+\draw(kaOf) -- node[above,sloped] {\footnotesize match} (vkaufpast3pl);
+\draw(past-t@)--node[above,sloped] {\footnotesize match} (vkaufpast3pl);
+\draw(2pl-t.north)--node[above,sloped] {\footnotesize 1st trial no match}(vkaufpast3pl);
+\draw(remainder.north)--node[below,sloped] {\footnotesize  2nd trial match}(vkaufpast3pl);
+%
+\path[dashed](o1)edge [bend left=70,in=40] (kauf.north);
+\path[dashed](o2)edge [bend left=70] (tensepast);
+\draw[dashed](o3.east)edge [bend right=40](person3numpl);
+\path[gray](listC.east) edge [out=30,in=30] (kauf.north);
+\end{forest}
+
 
 %\maketitle
 %\frontmatter
