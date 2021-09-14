@@ -93,20 +93,20 @@ paperhive:  proofreading.pdf versions.json README.md
 	git push origin gh-pages
 	sleep 3
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`basename $(pwd)`
-	git checkout main 
+	git checkout main
 	git commit -m 'new README' README.md
 	git push
 		
 firstedition:
 	git checkout gh-pages
 	git pull origin gh-pages
-	cp final.pdf  `basename $(pwd)`
-	python getfirstedition.py
+	basename `pwd` > ID
+	python getfirstedition.py  `cat ID`
 	git add first_edition.pdf 
 	git commit -am 'provide first edition'
 	git push origin gh-pages 
 	git checkout main 
-	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`basename $(pwd)`
+	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
 	
 	
 proofreading.pdf:
