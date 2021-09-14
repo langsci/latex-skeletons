@@ -86,10 +86,10 @@ versions.json:
 	rm author title
 	
 paperhive:  proofreading.pdf versions.json README.md
-	touch README.md
-	git add README.md
-	git commit -m 'touch README' README.md
-	git push
+# 	touch README.md
+# 	git add README.md
+# 	git commit -m 'touch README' README.md
+# 	git push
 	git checkout gh-pages || git branch gh-pages; git checkout gh-pages
 	git add proofreading.pdf versions.json
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
