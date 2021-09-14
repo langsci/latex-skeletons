@@ -85,16 +85,17 @@ versions.json:
 	echo  '}'>> versions.json
 	rm author title
 	
-paperhive:  
-	git branch gh-pages
-	git checkout gh-pages
+paperhive:  proofreading.pdf versions.json README.md
+	(git commit -m 'new README' README.md && git push) || echo "README up to date" #this is needed for empty repositories, otherwise they cannot be branched
+	git checkout gh-pages || git branch gh-pages; git checkout gh-pages
 	git add proofreading.pdf versions.json
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
 	git push origin gh-pages
-	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID
 	sleep 3
-	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
-	git checkout main 
+	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`basename $(pwd)`
+	git checkout main
+	git commit -m 'new README' README.md
+	git push
 		
 firstedition:
 	git checkout gh-pages

@@ -86,10 +86,7 @@ versions.json:
 	rm author title
 	
 paperhive:  proofreading.pdf versions.json README.md
-# 	touch README.md
-# 	git add README.md
-# 	git commit -m 'touch README' README.md
-# 	git push
+	(git commit -m 'new README' README.md && git push) || echo "README up to date" #this is needed for empty repositories, otherwise they cannot be branched
 	git checkout gh-pages || git branch gh-pages; git checkout gh-pages
 	git add proofreading.pdf versions.json
 	git commit -m 'prepare for proofreading' proofreading.pdf versions.json
@@ -97,17 +94,19 @@ paperhive:  proofreading.pdf versions.json README.md
 	sleep 3
 	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`basename $(pwd)`
 	git checkout main 
+	git commit -m 'new README' README.md
+	git push
 		
 firstedition:
 	git checkout gh-pages
 	git pull origin gh-pages
-	basename `pwd` > ID
-	python getfirstedition.py  `cat ID`
+	cp final.pdf  `basename $(pwd)`
+	python getfirstedition.py
 	git add first_edition.pdf 
 	git commit -am 'provide first edition'
 	git push origin gh-pages 
 	git checkout main 
-	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`cat ID`
+	curl -X POST 'https://paperhive.org/api/document-items/remote?type=langsci&id='`basename $(pwd)`
 	
 	
 proofreading.pdf:
