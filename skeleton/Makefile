@@ -37,8 +37,8 @@ main.snd: main.bbl
 	sed -i 's/.*committee.*//' main.adx
 	sed -i 's/.*government.*//' main.adx
 	sed -i 's/\\MakeCapital//' main.adx
-	python3 fixindex.py
-	mv mainmod.adx main.adx
+# 	python3 fixindex.py
+# 	mv mainmod.adx main.adx
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx 
@@ -127,9 +127,9 @@ clean:
 	*.adx *.and *.idx *.ind *.ldx *.lnd *.sdx *.snd *.rdx *.rnd *.wdx *.wnd \
 	*.log *.blg *.ilg \
 	*.aux *.toc *.cut *.out *.tpm *.bbl *-blx.bib *_tmp.bib *bcf \
-	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs\
-	main.run.xml\
-	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup\
+	*.glg *.glo *.gls *.wrd *.wdv *.xdv *.mw *.clr *.pgs \
+	main.run.xml \
+	chapters/*aux chapters/*~ chapters/*.bak chapters/*.backup \
 	langsci/*/*aux langsci/*/*~ langsci/*/*.bak langsci/*/*.backup
 
 realclean: clean

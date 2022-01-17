@@ -46,7 +46,7 @@
 
 \RequirePackage{xparse}
 \ProvidesExplPackage {langsci-affiliations}
-{2021-02-25} {1.0.2}
+{2021-02-17} {1.0.1}
 {A LaTeX3 package to collect and order authors and affiliations}
 
 \NewDocumentCommand{\ResolveAffiliations}{ O{} +m }
@@ -271,25 +271,17 @@
             \group_end:
           }
           {
-            \seq_clear:N \l__affiliations_tmpa_seq
             \prop_map_inline:Nn \l__affiliations_tmpa_prop
               {
-                \seq_put_right:Nx \l__affiliations_tmpa_seq
-                  {
-                    \group_begin:
-                      \exp_not:N \__affiliations_output_authors_font:
-                      \tl_rescan:nn {} {##1}\\[0.5ex]
-                    \group_end:
-                    \group_begin:
-                      \exp_not:N \__affiliations_output_affiliation_font:
-                      \tl_rescan:nn {} {##2}
-                    \group_end:
-                  }
+                  \__affiliations_output_authors_font:
+                  \tl_rescan:nn {} {##1}\\[0.5ex]
+                  \group_begin:
+                    \__affiliations_output_affiliation_font:
+                    \tl_rescan:nn {} {##2}
+                  \group_end:
+                  \medskip\\
               }
-            \seq_use:Nnnn \l__affiliations_tmpa_seq
-                            {\l__affiliations_separator_between_two_tl}
-                            {\l__affiliations_separator_between_mult_tl}
-                            {\l__affiliations_separator_between_last_two_tl}
+            \vspace*{-\baselineskip-\medskipamount}
           }
       }
       {
