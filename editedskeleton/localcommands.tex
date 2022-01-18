@@ -1,5 +1,11 @@
 \newcommand*{\orcid}{}
 
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\makeatother
+
 \newcommand{\togglepaper}[1][0]{
    \bibliography{../localbibliography}
    \papernote{\scriptsize\normalfont
