@@ -2,26 +2,26 @@
 % hidelinks,
 % showindex
 ]{langscibook}
-\author{Chap ter Author\affiliation{University of Eden} and 
-        Noam Chimpsky\affiliation{University of Pluto}\orcid{} and  
-        Jane Wilson\affiliation{National Institute for Language}\orcid{}}
+\author{Chap ter Author\orcid{}\affiliation{University of Eden} and
+        Noam Chimpsky\orcid{}\affiliation{University of Pluto} and
+        Jane Wilson\orcid{}\affiliation{National Institute for Language}}
 \title{Introduction}
 \abstract{Abstract goes here}
 
 %move the following commands to the "local..." files of the master project when integrating this chapter
 \usepackage{tabularx}
-\usepackage{langsci-basic}
 \usepackage{langsci-optional}
 \usepackage{langsci-gb4e}
 \bibliography{localbibliography}
 \newcommand{\orcid}[1]{}
 
-\IfFileExists{../localcommands.tex}{%hack to check whether this is being compiled as part of a collection or standalone
+\IfFileExists{../localcommands.tex}{
+   \addbibresource{../localbibliography.bib}
    \input{../localpackages}
    \input{../localcommands}
    \input{../localhyphenation}
-    \bibliography{localbibliography}
-    \togglepaper[23]
+   \boolfalse{bookcompile}
+   \togglepaper[23]%%chapternumber
 }{}
 
 \begin{document}
@@ -32,15 +32,15 @@ Phasellus maximus erat ligula, accumsan rutrum augue facilisis in. Proin sit ame
 
 \begin{table}
 \caption{Frequencies of word classes}
-\label{tab:1:frequencies}
- \begin{tabular}{l rrrr}
+\label{tab:myname:frequencies}
+ \begin{tabularx}{.8\textwidth}{X rrrr}
   \lsptoprule
             & nouns & verbs  & adjectives & adverbs\\
   \midrule
   absolute  &   12  &    34  &    23      & 13\\
   relative  &   3.1 &   8.9  &    5.7     & 3.2\\
   \lspbottomrule
- \end{tabular}
+ \end{tabularx}
 \end{table}
 
 Sed nisi urna, dignissim sit amet posuere ut, luctus ac lectus. Fusce vel ornare nibh. Nullam non sapien in tortor hendrerit suscipit. Etiam sollicitudin nibh ligula. Praesent dictum gravida est eget maximus. Integer in felis id diam sodales accumsan at at turpis. Maecenas dignissim purus non libero scelerisque porttitor. Integer porttitor mauris ac nisi iaculis molestie. Sed nec imperdiet orci. Suspendisse sed fringilla elit, non varius elit. Sed varius nisi magna, at efficitur orci consectetur a. Cras consequat mi dui, et cursus lacus vehicula vitae. Pellentesque sit amet justo sed lectus luctus vehicula. Suspendisse placerat augue eget felis sagittis placerat.
@@ -72,6 +72,7 @@ Sed cursus eros condimentum mi consectetur, ac consectetur sapien pulvinar. Sed 
 %\section*{Contributions}
 %John Doe contributed to conceptualization, methodology, and validation. 
 %Jane Doe contributed to writing of the original draft, review, and editing.
-\printbibliography[heading=subbibliography,notkeyword=this]
 
+\sloppy
+\printbibliography[heading=subbibliography,notkeyword=this]
 \end{document}
