@@ -1,10 +1,20 @@
-\documentclass[output=paper]{langsci/langscibook} 
-\author{Change author in chapters/03.tex\affiliation{}\orcid{}} 
+\documentclass[output=paper]{langscibook}
+\author{Change author in chapters/03.tex\orcid{}\affiliation{}}
 %\ORCIDs{}
 
 \title{Title of my paper}
 
 \abstract{Change the  abstract in chapters/03.tex}
+
+
+\IfFileExists{../localcommands.tex}{
+   \addbibresource{../localbibliography.bib}
+   \input{../localpackages}
+   \input{../localcommands}
+   \input{../localhyphenation}
+   \boolfalse{bookcompile}
+   \togglepaper[23]%%chapternumber
+}{}
 
 \begin{document}
 \maketitle
@@ -30,6 +40,11 @@ Duis pulvinar lacus id gravida ornare. Phasellus eu mauris sed tortor maximus co
 
 \section*{Acknowledgements}
 \citet{Nordhoff2018} is useful for compiling bibliographies.
+
+%\section*{Contributions}
+%John Doe contributed to conceptualization, methodology, and validation.
+%Jane Doe contributed to writing of the original draft, review, and editing.
+
 
 {\sloppy\printbibliography[heading=subbibliography,notkeyword=this]}
 \end{document}

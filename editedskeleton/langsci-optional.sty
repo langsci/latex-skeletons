@@ -8,6 +8,7 @@
 %%   Licence:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage{pbox}   % boxes with maximum width
 % Heiko Oberdiek
 % http://tex.stackexchange.com/questions/136644/vertical-space-in-interaction-with-figure-center-environment
 \newcommand{\oneline}[1]{%
@@ -109,7 +110,6 @@
 }
 \newcommand{\fittable}[1]{\resizebox{\textwidth}{!}{#1}}
 
-\usepackage{tabularx}
 \usepackage{array}
 \newenvironment{widetabular}[1][1]
   {\tabularx{#1\textwidth}}
@@ -134,6 +134,7 @@
 	\node at (2.25,1) (O) {ɔ};
 }
 
+\usepackage{tabularx} 
 %no hyphenation left alingned
 \newcolumntype{Q}{>{\raggedright\arraybackslash}X}
 %no hyphenation right aligned
@@ -146,9 +147,6 @@
 \newcolumntype{Z}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 %no hyphenation right aligned fixed width
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-
-\newcolumntype{d}[1]{D{.}{.}{#1}}
-
 
 % Underlining in gb4e-example Environments. Usual underlining commands that span multiple words do not work, because gb4e would parse it as one word.
 % Example: \underline{My example phrase} should become \ulp{My}{~~~~~} \ulp{example}{~~~~~} \ule{phrase}
@@ -216,8 +214,8 @@
 % \def\blx@maxline{77}
 % \makeatother
 
+\usepackage{todonotes}
 \newcommand{\rephrase}[2]{{\color{yellow!30!black}#2}\todo{replaced `#1'}}
-
 \newcommand{\missref}[2][]{\todo[#1]{missing reference #2}}
 
 \newenvironment{indentquote}[1]%
@@ -269,7 +267,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % for chapters without abstract
-\newcommand{\noabstract}{\vspace*{-2\baselineskip}}
+\newcommand{\noabstract}{\relax}
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%           %%%%%
@@ -277,9 +275,7 @@
 %%%%           %%%%%
 %%%%%%%%%%%%%%%%%%%%
 
-
 \newcommand{\LSfrac}[1]{{\addfontfeature{Fractions=On}#1}}% Use the fraction glyphs shipped with Libertine. The argument is n/m, where n and m are integers
-
 
 % Provide a raised tie bar for diphthongs and affricates with ascenders
 \newcommand{\hitie}[2]{%
@@ -335,20 +331,35 @@
 \newcommand*{\langscicross}{\ding{55}}
 
 
-\newcommand{\citegen}[2][]{\citeauthor{#2}'s (\citeyear*[#1]{#2})}
-\newcommand{\citeapo}[2][]{\citeauthor{#2}' (\citeyear*[#1]{#2})}
+\providecommand{\citegen}[2][]{\citeauthor{#2}'s (\citeyear*[#1]{#2})}
+\providecommand{\citeapo}[2][]{\citeauthor{#2}' (\citeyear*[#1]{#2})}
 
-\newcommand{\protectedex}[1]{\noindent\parbox{\linewidth}{#1}}
+\providecommand{\protectedex}[1]{\noindent\parbox{\linewidth}{#1}}
 
-\newcommand{\largerpage}[1][1]{\enlargethispage{#1\baselineskip}}
+\providecommand{\largerpage}[1][1]{\enlargethispage{#1\baselineskip}}
 
 % vertical space to structure tables
-\newcommand{\tablevspace}{\\[-.5em]}
+\providecommand{\tablevspace}{\\[-.5em]}
 
-\newcommand{\biberror}[1]{{\color{red}#1}}
+\providecommand{\biberror}[1]{{\color{red}#1}}
+
+\providecommand{\lsptoprule}{\midrule\toprule}
+\providecommand{\lspbottomrule}{\bottomrule\midrule}
+
+\providecommand{\REF}[1]{(\ref{#1})}
 
 
-\newcommand{\lsptoprule}{\midrule\toprule}
-\newcommand{\lspbottomrule}{\bottomrule\midrule}
+\newcommand{\glottocodes}[1]{}
+\newcommand{\keywords}[1]{}
 
-\newcommand{\REF}[1]{(\ref{#1})}
+\providecommand{\ob}{{\upshape [}} %opening bracket
+\providecommand{\cb}{{\upshape ]}} %closing bracket
+\providecommand{\op}{{\upshape (}} %opening paren
+\providecommand{\cp}{{\upshape )}} %closing paren
+\providecommand{\db}{\hphantom{[}} %dummy space for [ in IMT line
+
+% old font commands
+\renewcommand{\it}{\itshape}
+\renewcommand{\bf}{\bfseries}
+\renewcommand{\sc}{\scshape}
+\renewcommand{\rm}{\upshape}

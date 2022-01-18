@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      File: langscibook.cls
 %%    Author: Language Science Press (http://langsci-press.org)
-%%      Date: 2018-08-29 13:12 UTC
+%%      Date: 2021-02-17 18:00 CET
 %%   Purpose: This file defines the basic document class
 %%            for books published with Language Science Press.
 %%  Language: LaTeX
@@ -48,7 +48,7 @@
 %   \_ Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langscibook}[2020/02/12 Language Science Press]
+\ProvidesClass{langscibook}[2021/02/17 Language Science Press]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Early load packages
@@ -57,6 +57,9 @@
 \RequirePackage[]{silence}
 \WarningsOff[hyperref]
 \WarningsOff[microtype]
+\WarningFilter{latex}{Command \mark} %markboth/markright
+\WarningFilter{scrbook}{\float@addtolist}
+\WarningFilter{biblatex}{Macro 'date+extradate}
 \WarningFilter{microtype}{Unknown slot}
 \WarningFilter{scrbook}{package incompatibility}
 \WarningFilter{todonotes}{The length}
@@ -64,6 +67,8 @@
 \hbadness=99999 % get rid of underfull box warnings
 \typeout{Warnings are disabled in langscibook.cls for underfull boxes, hyperref, microtype and scrbook package incompatibility, todonotes length and babel/polyglossia csquotes}
 \usepackage{etoolbox}
+\RequirePackage{xparse}
+\usepackage{langsci-affiliations}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Default values
@@ -83,7 +88,7 @@
 \newcommand{\lsBookDOI}{??}
 \newcommand{\lsChapterDOI}{??}
 \newcommand{\lsID}{000}
-\newcommand{\lsURL}{http://langsci-press.org/catalog/book/\lsID}
+\newcommand{\lsURL}{redefine \ lsURL}
 \newcommand{\lsSeries}{eotms}
 \newcommand{\lsOutput}{book}
 \newcommand{\lsBookLanguage}{english}
@@ -103,9 +108,14 @@
 \newcommand{\newlineCover}{\\}  % \newline only on cover
 \newcommand{\newlineSpine}{\\}  % \newline only on spine
 \newcommand{\newlineTOC}{\\}    % \newline only in TOC entry
+\newcommand{\affiliation}[1]{}     % A dummy command to process the affiliation info.
 
 \newcommand{\lsSpineTitle}{\@title}
-\newcommand{\lsSpineAuthor}{\@author}
+\newcommand{\lsSpineAuthor}
+  {%
+    \ResolveAffiliations[output affiliation=false, 
+                         output authors font=\lsSpineAuthorFont]{\@author}%
+  }
 \newcommand{\SpineTitle}[1]{\renewcommand{\lsSpineTitle}{#1}}
 \newcommand{\SpineAuthor}[1]{\renewcommand{\lsSpineAuthor}{#1}}
 
@@ -138,6 +148,8 @@
 \newbool{oldstylenumbers}
 \newbool{tblseight}%for chinesefonts in tbls series page
 \newbool{lsISBNTwoDigitAddon}
+\newbool{lsFloatCounterWithoutChapter}
+    \booltrue{lsFloatCounterWithoutChapter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Option handling
@@ -194,6 +206,7 @@
   }
 \DeclareVoidOption{uniformtopskip}{\booltrue{uniformtopskip}}
 \DeclareVoidOption{oldstylenumbers}{\booltrue{oldstylenumbers}}
+\DeclareVoidOption{classicfloatnumbers}{\boolfalse{lsFloatCounterWithoutChapter}}
 
 \DeclareVoidOption{chinesefont}{
   \AtEndPreamble{
@@ -289,13 +302,6 @@
 %     Class
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\lsChapterPrefixString}{} 
-% this conditional cannot be put
-% directly into the LoadClass, so we compute the value and store it in a command
-\ifbool{collection}
- {\renewcommand{\lsChapterPrefixString}{chapterprefix=true,}}
- {\ifbool{paper}{\renewcommand{\lsChapterPrefixString}{chapterprefix=true,}}{}}
-
 
 \LoadClass[
     fontsize=\lsFontsize,% default is 11pt
@@ -304,9 +310,20 @@
     toc=bibliography,
     index=totoc,
     headings=optiontohead,
-    \lsChapterPrefixString,
     footnotes=multiple
     ]{scrbook}
+
+\ifbool{collection}
+  {% In collected volumes, write "Chapter n" instead of "n" in the header
+    \KOMAoptions{chapterprefix=true}
+  }
+  {
+    \ifbool{paper}
+      {% The same is applied to papers.
+        \KOMAoptions{chapterprefix=true}
+      }
+      {}
+  }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Packages
@@ -327,7 +344,7 @@
 \urlstyle{same}
 
 %% standard commands
-\usepackage{langsci-basic}
+% \usepackage{langsci-basic}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %      Covers
@@ -340,9 +357,6 @@
         \pagestyle{empty}
         \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
         \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
-        \renewcommand{\and}{, }%
-        \renewcommand{\lastand}{ \& }%
-        \renewcommand{\affiliation}[1]{}
     }
 
     % Fill the canvas for the cover with coloured areas on back and front cover
@@ -403,10 +417,7 @@
     % Argument 1: Text width on the front cover. Input: 12.34mm
     % Argument 2: Font size on the front cover. Adjust to compensate varying text width. Input: 12.34pt
     \newcommand{\frontcovertoptext}[3][white]{%
-    \renewcommand{\and}{\\}
-    \renewcommand{\lastand}{\\}
     \renewcommand{\newlineCover}{\\}
-
     \node [ font=\lsCoverTitleFont,
             below right = 10mm and 7.5mm of CoverColouredRectangleFront.north west,
             text width=#2,
@@ -418,7 +429,15 @@
             right,
             below = 11.2mm of lspcls_covertitle.south,
             text width=#2
-            ] {\color{#1}\nohyphens{\lsEditorPrefix\@author\par}};
+            ] {\color{#1}\nohyphens{%
+            \lsEditorPrefix%
+            \ResolveAffiliations[output in groups=false, 
+                                 output affiliation=false, 
+                                 output authors font=\lsCoverAuthorFont,
+                                 separator between two=\\,
+                                 separator between multiple=\\,
+                                 separator between final two=\\]
+                                 {\@author}\par}};
     \else % If yes, create a node for subtitle and author
     \node [ font=\lsCoverSubTitleFont,
             below = 8mm of lspcls_covertitle.south,
@@ -430,7 +449,15 @@
             right,
             below = 11.2mm of lspcls_coversubtitle.south,
             text width=#2
-            ] {\color{#1}\nohyphens{\lsEditorPrefix\@author\par}};
+            ] {\color{#1}\nohyphens{%
+            \lsEditorPrefix%
+            \ResolveAffiliations[output in groups=false, 
+                                 output affiliation=false, 
+                                 output authors font=\lsCoverAuthorFont,
+                                 separator between two=\\,
+                                 separator between multiple=\\,
+                                 separator between final two=\\]
+                                 {\@author}\par}};
     \fi
     }
 
@@ -555,7 +582,7 @@
         %% this is possible for a complete series only.
         \ifx\lsSeries\sidl
         %\def\exfont{\normalsize\itshape}
-        \providecommand{\eachwordone}{\itshape} % only \gll
+        \let\eachwordone=\itshape % only \gll
 
         \let\oldtable\table   % footnotes in tables without horizontal line
         \let\endoldtable\endtable
@@ -563,13 +590,20 @@
         \fi
 
         \ifx\lsSeries\pmwe
-        \providecommand{\eachwordone}{\normalfont}
+        \let\eachwordone=\normalfont
         \fi
 
         \ifx\lsSeries\nc
-        \providecommand{\eachwordone}{\itshape}
+        \let\eachwordone=\itshape
         \fi
-
+        
+        \ifx\lsSeries\cogl
+        \let\eachwordone=\itshape
+        \fi
+        
+        \ifx\lsSeries\eotms
+        \renewcommand{\sectref}[1]{Section~\ref{#1}}
+        \fi
     } %% \AtBeginDocument
 }{} %notbool paper
 
@@ -750,6 +784,12 @@
     
     % In collected volumes, adjust the spacing for unnumbered chapters
     \ifbool{collection}{
+    \BeforeStartingTOC[toc]{\SetupAffiliations{output affiliation=false,
+                                               output authors font=\normalfont,
+                                               separator between two={~\&~},
+                                               separator between multiple={,~},
+                                               separator between final two={~\&~}}
+                                               }
       \renewcommand{\addtocentrydefault}[3]{%
         \Ifstr{#2}{}{%
           \addcontentsline{toc}{#1}{\protect\numberline{~}#3}%
@@ -878,9 +918,6 @@
     \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
     \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
     \thispagestyle{empty}
-    \renewcommand{\and}{, }%
-    \renewcommand{\lastand}{ \& }%
-    \renewcommand{\affiliation}[1]{}
     \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
         \begin{pgfonlayer}{lspcls_bg}
             \node [ bg,
@@ -904,9 +941,6 @@
     \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
     \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
     \thispagestyle{empty}
-    \renewcommand{\and}{, }%
-    \renewcommand{\lastand}{ \& }%
-    \renewcommand{\affiliation}[1]{}%
     \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
         \begin{pgfonlayer}{lspcls_bg}
             \node [ bg,
@@ -927,9 +961,6 @@
     \pgfdeclarelayer{lspcls_bg}    % Create a background layer that serves as the canvas for the coloured rectangles.
     \pgfsetlayers{lspcls_bg,main}  % Order the background layer behind the main layer of TikZ.
     \pagestyle{empty}
-    \renewcommand{\and}{, }%
-    \renewcommand{\lastand}{ \& }%
-    \renewcommand{\affiliation}[1]{}
     \newcommand{\lsISBNcover}{\lsISBNdigital}
         \begin{tikzpicture}[remember picture, overlay,bg/.style={outer sep=0}]
         \begin{pgfonlayer}{lspcls_bg}
@@ -962,6 +993,50 @@
 
     \renewcommand{\tblseight}{{\cn 语法理论: 从转换语法到基于约束的理论}}
   }{}
+  
+\ExplSyntaxOn
+% A command to output a limited number of items on the series history page.
+% This is useful in case there are too many items in a series history.
+% The number of maximum items are passed to the first, optional argument
+% to the command. Its default is 15.
+\NewDocumentCommand{\lsSeriesHistoryWheel}{O{15} m}
+  {%
+    \begin{enumerate}
+    \langsci_wheel:nn {#1} {#2}
+    \end{enumerate}
+  }
+
+% Setup of data
+\seq_new:N \langsci_wheel_seq
+\int_new:N \langsci_wheel_loop_count_int
+\int_new:N \langsci_wheel_output_difference_int
+\tl_new:N \langsci__wheel_wastebin_tl
+\cs_new:Npn \langsci_wheel:nn #1#2
+  {
+    % Let's split the input at each \item. From the result, remove the 
+    % first item, which will be empty.
+    \seq_set_split:Nnn \langsci_wheel_seq {\item} {#2}
+    \seq_pop_left:NNTF \langsci_wheel_seq \langsci__wheel_wastebin_tl {} {}
+    % The offset is calculated by (length of input - maximum output)
+    \int_set:Nn \langsci_wheel_output_difference_int 
+      {
+        \seq_count:N \langsci_wheel_seq - #1
+      }
+    % An integer used for counting inside the loop.
+    \int_zero:N \langsci_wheel_loop_count_int
+    % Loop over the input and determine, for each item, whether to output
+    % it. The item is output when its number is greater than the difference 
+    % between actual length and maximum.
+    \seq_map_inline:Nn \langsci_wheel_seq 
+      {
+        \int_incr:N \langsci_wheel_loop_count_int
+        \int_compare:nNnTF 
+          \langsci_wheel_loop_count_int > \langsci_wheel_output_difference_int
+          {\item[\int_use:N \langsci_wheel_loop_count_int.] ##1}
+          {}
+      }
+  }
+\ExplSyntaxOff
 
 \newcommand{\lsSeriesHistory}{
     \color{black}
@@ -1011,7 +1086,6 @@
 \newcommand{\ISBNdigital}[1]{\renewcommand{\lsISBNdigital}{#1}}
 \newcommand{\ISBNsoftcover}[1]{\renewcommand{\lsISBNsoftcover}{#1}}
 \newcommand{\ISBNsoftcoverus}[1]{\renewcommand{\lsISBNsoftcoverus}{#1}}
-\RequirePackage{xparse}
 \NewDocumentCommand { \ISBNhardcover } { o m }
   {%
     \renewcommand{\lsISBNhardcover}{#2}%
@@ -1032,6 +1106,9 @@
   {%
     \AtBeginDocument
       {%
+        \bgroup
+        \renewcommand{\newlineCover}{}
+        \renewcommand{\newlineSpine}{}
         \newwrite\metadatafile
         \immediate\openout\metadatafile=langscitmp.bib
         \immediate\write\metadatafile{%
@@ -1050,12 +1127,15 @@
           }
         }
         \immediate\closeout\metadatafile
+        \egroup
         \addbibresource{langscitmp.bib}
       }
   }
 
 \newcommand{\lsImpressumCitationText}
-  {
+  {%
+    \renewcommand{\newlineCover}{}%
+    \renewcommand{\newlineSpine}{}%
     \fullciteImprint{langsci-current-book}
   }
 
@@ -1063,16 +1143,18 @@
 
 \newcommand{\publisherstreetaddress}
   {%
-    Language Science Press\\
-    xHain\\
-    Grünberger Str. 16\\
-    10243 Berlin, Germany
+%     Language Science Press\\
+%     xHain\\
+%     Grünberger Str. 16\\
+%     10243 Berlin, Germany
+redefine \textbackslash publisherstreetaddress
   }
 
-\newcommand{\publisherurl}{\href{http://langsci-press.org}{langsci-press.org}}
-\newcommand{\storageinstitution}{FU Berlin}
-\newcommand{\githubtext}{Source code available from \href{https://www.github.com/langsci/\lsID}{www.github.com/langsci/\lsID}}
-\newcommand{\paperhivetext}{Collaborative~reading:~\href{https://paperhive.org/documents/remote?type=langsci&id=\lsID}{paperhive.org/documents/remote?type=langsci\&id=\lsID}}
+\newcommand{\publisherurl}{redefine \textbackslash publisherurl}
+
+\newcommand{\storageinstitution}{redefine \textbackslash storageinstitution}
+\newcommand{\githubtext}{}
+\newcommand{\paperhivetext}{}
 
 \newcommand{\lsImpressum}{%
 \thispagestyle{empty}
@@ -1206,7 +1288,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 % publication, and does not guarantee that any content on such websites
 % is, or will remain, accurate or appropriate.
 }
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Dedication
@@ -1389,8 +1470,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \usepackage[
 	natbib=true,
 	style=langsci-unified,
-	citestyle=langsci-unified,
-	datamodel=langsci,   % add authauthor and autheditor as possible fields to bibtex entries
 	%refsection=chapter,
 	maxbibnames=99,
 	uniquename=false,
@@ -1405,28 +1484,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 		toc=bib, % make bibliography appear in toc
         }{}
 ]{biblatex}
-
-% If the user provided a shortauthor in the bibtex entry, we use the authentic author (as with the
-% authorindex package) if it is defined, otherwise we use the author.
-% This gets F/T as shorthand right and puts the guys in the index.
-
-\renewbibmacro*{citeindex}{%
-  \ifciteindex
-    {\iffieldequalstr{labelnamesource}{shortauthor} % If biblatex uses shortauthor as the label of a bibitem
-      {\ifnameundef{authauthor}                     % we check whether there is something in authauthor
-        {\indexnames{author}}                       % if not, we use author
-        {\indexnames{authauthor}}}                  % if yes, we use authauthor
-      {\iffieldequalstr{labelnamesource}{author}    % if biblatex uses author we similarly test for
-                                                    % authauthor and use this field
-        {\ifnameundef{authauthor}% if defined use authauthor
-          {\indexnames{author}}
-          {\indexnames{authauthor}}} % if defined use this field
-        {\iffieldequalstr{labelnamesource}{shorteditor} % same for editor
-          {\ifnameundef{autheditor}
-            {\indexnames{editor}}
-            {\indexnames{autheditor}}}
-          {\indexnames{labelname}}}}}               % as a fallback we index on whatever biblatex used.
-    {}}
 
 %% DOIs are handled after hyperref.
 \defbibheading{references}{\chapter{References}\sloppy}
@@ -1704,12 +1761,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newcommand{\abstract}[1]{\renewcommand{\lsCollectionPaperAbstract}{#1}}
 \newcommand{\ChapterDOI}[1]{\renewcommand{\lsChapterDOI}{#1}}
 
-
-%% inside \author:
-\renewcommand{\and}{}
-\newcommand{\lastand}{}
-\newcommand{\affiliation}[1]{}
-
 %% to be used below chapter titles
 \newcommand{\chaptersubtitle}[1]{
   \vspace*{-2ex}
@@ -1719,15 +1770,12 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
   \@afterheading
 }
 
-
-
 \ifbool{collection}{
     \notbool{biblatex}{
             \ClassError{langsci/langscibook}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
     }{}
 
     \AtBeginDocument{% for the citation in the footer
-            \onlyAuthor
             \renewcommand{\newlineCover}{}
             \renewcommand{\newlineSpine}{}
             \edef\lsCollectionTitle{\@title\ifx\@subtitle\empty\else{: \@subtitle}\fi}% \edef immediately expands \@title
@@ -1756,8 +1804,13 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \usepackage{chngcntr}
     \counterwithin{figure}{chapter}
     \counterwithin{table}{chapter}
+    \ifbool{lsFloatCounterWithoutChapter}{
+      \renewcommand{\thefigure}{\arabic{figure}}
+      \renewcommand{\thetable}{\arabic{table}}
+      \renewcommand{\theequation}{\arabic{equation}}
+    }{}
 
-    \NewDocumentCommand{\includepaper}{m}{
+    \NewDocumentCommand{\includepaper}{m}{%
         \bgroup
 		  \renewcommand{\newlineCover}{\\}
           \renewcommand{\documentclass}[2][]{}%
@@ -1779,24 +1832,18 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 }{}
 
 \newcommand{\lsCollectionMetadataToBibliography}[1]{%
-  %% preprocessing of author/editor names
-  \onlyAuthor
   \renewcommand{\newlineCover}{}
   \renewcommand{\newlineSpine}{}
-  \renewcommand{\newlineTOC}{}
-  \StrSubstitute{\@author}{,}{ and }[\authorTemp]
-  \StrSubstitute{\authorTemp}{\&}{ and }[\authorTemp]
-  \StrSubstitute{\lsCollectionEditor}{,}{ and }[\editorTemp]
-  \StrSubstitute{\editorTemp}{\&}{ and }[\editorTemp]
-  
+  \renewcommand{\newlineTOC}{}  
   %% write bib entry to file
-  \immediate\write\tempfile{@incollection{#1,author={\authorTemp},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},keywords={withinvolume}}}
-  \immediate\write\tempfile{@incollection{#1footer,author={\authorTemp},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\editorTemp},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={dataonly=true}}}
+  \immediate\write\tempfile{@incollection{#1,author={\authorToBib},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\lsCollectionEditor},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},keywords={withinvolume}}}
+  \immediate\write\tempfile{@incollection{#1footer,author={\authorToBib},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\lsCollectionEditor},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={dataonly=true}}}
 }
 
 \newcommand{\titleToHead}{}
 \newcommand{\titleTemp}{}
 \newcommand{\titleToToC}{}
+\newcommand{\authorToBib}{}
 
 \newcommand{\lsCollectionPaperHeaderTitle}{%
   \renewcommand{\newlineCover}{}
@@ -1805,12 +1852,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \thechapter\hspace{0.5em}\titleToHead\else\titleToHead
   \fi
 }
-  
-\newcommand{\lsCollectionPaperHeaderAuthor}{{%
-  \renewcommand{\newlineCover}{}%
-  \renewcommand{\newlineTOC}{}%
-  \onlyAuthor\@author}
-}
 
 \newcommand{\includepaper@body}{%
         \RenewDocumentCommand{\title}{O{##2} m O{##2}}{
@@ -1818,7 +1859,10 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
             \renewcommand{\titleTemp}{##2}
             \renewcommand{\titleToToC}{##3}
         }
-        \renewcommand{\author}[1]{\renewcommand{\@author}{##1}}
+        \RenewDocumentCommand{\author}{O{##2} m}{
+          \renewcommand{\authorToBib}{##1}
+          \renewcommand{\@author}{##2}
+        }
         \renewcommand*{\thesection}{\arabic{section}}
         \RedeclareSectionCommand
             [afterskip=1.15\baselineskip plus .1\baselineskip minus .167\baselineskip]
@@ -1826,9 +1870,10 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
         \renewcommand{\maketitle}{%
             % With \setchapterpreamble from scrbook, we ensure that the author(s)
             % and their affiliation(s) are part of the \chapter block.
-            \setchapterpreamble[u]{\onlyAuthor\lsCollectionPaperAuthor}
-            \chapter[tocentry={\titleToToC~\newline{\normalfont \@author}}]{\titleTemp}
-            \vspace{\baselineskip}
+            \setchapterpreamble[u]{\ResolveAffiliations{\@author}\\}
+            \chapter
+            [tocentry={\titleToToC~\newline{\normalfont\ResolveAffiliations{\@author}}}]
+            {\titleTemp}
             \begin{quote}
                 \small\lsCollectionPaperAbstract
             \end{quote}
@@ -1847,23 +1892,16 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
             \enlargethispage{-1\baselineskip}
         }
         \ohead{}
-        \lehead{\lsCollectionPaperHeaderAuthor}
+        \lehead{\ResolveAffiliations[output affiliation=false,
+                                     output authors font=\normalfont\slshape,
+                                     separator between two={~\&~},
+                                     separator between multiple={,~},
+                                     separator between final two={~\&~}
+                                    ]{\@author}}
         \rohead{\lsCollectionPaperHeaderTitle}
         % The following ensure that a chapter is treated as a heading, which
         % controls page break penalties and indentation following the heading.
         \@afterindentfalse\@afterheading
-}
-
-\newcommand{\onlyAuthor}{%    % collection paper
-    \renewcommand{\and}{, }%
-    \renewcommand{\lastand}{ \& }%
-    \renewcommand{\affiliation}[1]{}
-}
-
-\newcommand{\AuthorAffiliation}{
-    \renewcommand{\and}{\newline\newline}
-    \renewcommand{\lastand}{\newline\newline}
-    \renewcommand{\affiliation}[1]{\\[0.5ex]{\normalsize ##1}}
 }
 
 \newcommand{\lsCollectionPaperFooterTitle}{\titleTemp}
