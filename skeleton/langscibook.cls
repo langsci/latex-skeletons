@@ -1699,34 +1699,17 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 
 % Author index
 \newcommand{\ia}[1]{%
-  \if@noftnote%
     \index{#1}%
-    \else%
-    \edef\tempnumber{\thefootnote}%
-    \expandafter\footnoteindex\expandafter{\tempnumber}{#1}%
-    % \index{#1|fn{\thefootnote}}%
-  \fi%
 }
 
 % Subject index
 \newcommand{\is}[1]{%
-  \if@noftnote%
     \index[sbj]{#1}%
-    \else%
-    \edef\tempnumber{\thefootnote}%
-    \expandafter\footnoteindex@sbj\expandafter{\tempnumber}{#1}%
-    %\indexftn{#1}{\value{footnotemark}}%
-  \fi%
 }
 
 % Language index
 \newcommand{\il}[1]{%
-  \if@noftnote
     \index[lan]{#1}%
-    \else%
-    \edef\tempnumber{\thefootnote}%
-    \expandafter\footnoteindex@lan\expandafter{\tempnumber}{#1}%
-  \fi%
 }
 
 % \iflsDraft
