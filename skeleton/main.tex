@@ -9,7 +9,10 @@
 
 \documentclass[output=book,
   colorlinks,citecolor=brown,
-%  draft,draftmode,
+  koreanfont,
+  arabicfont,
+%  draft,
+% draftmode,
 %  booklanguage=german,
 		  ]{langscibook}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,7 +25,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%             Frontmatter                      %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
+
 \input{localcommands.tex}
 \maketitle
 \frontmatter
@@ -38,7 +43,7 @@
 %%%             Chapters                         %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
+\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 % copy the line above and adapt as necessary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
