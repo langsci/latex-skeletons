@@ -40,8 +40,11 @@ main.snd: main.bbl
 # 	python3 fixindex.py
 # 	mv mainmod.adx main.adx
 	makeindex -o main.and main.adx
+	grep -o  ", [^0-9, \\]*," main.and
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx 
+	echo "check for doublets in name index"
+	grep -o  ", [^0-9, \\}]*," main.and|sed "s/, //" | sed "s/,\$//"
 	xelatex main 
  
 
