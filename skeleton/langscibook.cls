@@ -115,6 +115,7 @@
 \newcommand{\lsSpineAuthor}
   {%
     \ResolveAffiliations[output affiliation=false, 
+                         orcid placement=none,
                          output authors font=\lsSpineAuthorFont]{\@author}%
   }
 \newcommand{\SpineTitle}[1]{\renewcommand{\lsSpineTitle}{#1}}
@@ -139,8 +140,6 @@
 \newbool{babelshorthands}
 \newbool{multiauthors}
 \newbool{showindex}
-\newbool{biblatex}
-    \booltrue{biblatex}
 \newbool{newtxmath}
 \newbool{minimal}
 \newbool{collection}
@@ -151,6 +150,8 @@
 \newbool{lsISBNTwoDigitAddon}
 \newbool{lsFloatCounterWithoutChapter}
     \booltrue{lsFloatCounterWithoutChapter}
+\newbool{lsImportPackagesWhenStandalone}
+\newbool{infn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Option handling
@@ -190,7 +191,6 @@
 \DeclareVoidOption{babelshorthands}{\booltrue{babelshorthands}}
 \DeclareVoidOption{multiauthors}{\booltrue{multiauthors}}
 \DeclareVoidOption{showindex}{\booltrue{showindex}}
-\DeclareVoidOption{biblatex}{\booltrue{biblatex}}
 \DeclareVoidOption{nonewtxmath}{\boolfalse{newtxmath}}
 \DeclareVoidOption{newtxmath}{\booltrue{newtxmath}}
 \DeclareVoidOption{minimal}{\booltrue{minimal}}
@@ -274,6 +274,7 @@
   }
 
 \DeclareVoidOption{tblseight}{\booltrue{tblseight}}
+\DeclareVoidOption{infn}{\booltrue{infn}}
 
 \ProcessKeyvalOptions*
 
@@ -327,6 +328,7 @@
     \ifbool{paper}
       {% The same is applied to papers.
         \KOMAoptions{chapterprefix=true}
+        \booltrue{lsImportPackagesWhenStandalone}
       }
       {}
   }
@@ -448,6 +450,7 @@
             \lsEditorPrefix%
             \ResolveAffiliations[output in groups=false, 
                                  output affiliation=false, 
+                                 orcid placement=none,
                                  output authors font=\lsCoverAuthorFont,
                                  separator between two=\\,
                                  separator between multiple=\\,
@@ -468,6 +471,7 @@
             \lsEditorPrefix%
             \ResolveAffiliations[output in groups=false, 
                                  output affiliation=false, 
+                                 orcid placement=none,
                                  output authors font=\lsCoverAuthorFont,
                                  separator between two=\\,
                                  separator between multiple=\\,
@@ -802,6 +806,7 @@
     % In collected volumes, adjust the spacing for unnumbered chapters
     \ifbool{collection}{
     \BeforeStartingTOC[toc]{\SetupAffiliations{output affiliation=false,
+                                               orcid placement=none,
                                                output authors font=\normalfont,
                                                separator between two={~\&~},
                                                separator between multiple={,~},
@@ -922,6 +927,19 @@
     \int_compare:nNnTF
         {\g__affiliations_num_authors_int} > {1}
         {\booltrue{multiauthors}} {}
+  }
+  
+\NewDocumentCommand{\lsDeterminePaperAuthorAffiliationIndexing}{}
+  {%
+    \int_compare:nNnT
+        {\g__affiliations_num_authors_int} = {1}
+        {
+          \SetupAffiliations
+            {
+              mark~style = none, 
+              separator~between~affiliations=\&
+            }
+        } 
   }
 \ExplSyntaxOff
 
@@ -1687,29 +1705,56 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
 %% \index inside footnote
-\def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
-% 	\hyperpage{#2}*%   99*
-	\hyperpage{#2}\textsuperscript{#1}%  99²
-}%
-\newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
-\newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
-\newcommand{\footnoteindex@lan}[2]{\index[lan]{#2|infn{#1}}}
-\newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2|infn{#1}}}
-
+\ifbool{infn}{
+  \def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
+  % 	\hyperpage{#2}*%   99*
+          \hyperpage{#2}\textsuperscript{#1}%  99²
+  }%
+  \newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
+  \newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
+  \newcommand{\footnoteindex@lan}[2]{\index[lan]{#2|infn{#1}}}
+  \newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2|infn{#1}}}
+}{%else
+  \def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
+  % 	\hyperpage{#2}*%   99*
+          \hyperpage{#2}\textsuperscript{#1}%  99²
+  }%
+  \newcommand{\footnoteindex}[2]{\index{#2}}
+  \newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2}}
+  \newcommand{\footnoteindex@lan}[2]{\index[lan]{#2}}
+  \newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2}}
+}
 
 % Author index
 \newcommand{\ia}[1]{%
+  \if@noftnote%
     \index{#1}%
+    \else%
+    \edef\tempnumber{\thefootnote}%
+    \expandafter\footnoteindex\expandafter{\tempnumber}{#1}%
+    % \index{#1|fn{\thefootnote}}%
+  \fi%
 }
 
 % Subject index
 \newcommand{\is}[1]{%
+  \if@noftnote%
     \index[sbj]{#1}%
+    \else%
+    \edef\tempnumber{\thefootnote}%
+    \expandafter\footnoteindex@sbj\expandafter{\tempnumber}{#1}%
+    %\indexftn{#1}{\value{footnotemark}}%
+  \fi%
 }
 
 % Language index
 \newcommand{\il}[1]{%
+  \if@noftnote
     \index[lan]{#1}%
+    \else%
+    \edef\tempnumber{\thefootnote}%
+    \expandafter\footnoteindex@lan\expandafter{\tempnumber}{#1}%
+  \fi%
 }
 
 % \iflsDraft
@@ -1750,9 +1795,9 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newcommand{\name}[3][]{%add person names to text and author index
 #2 %output first name
 \ifstrempty{#1}{%if no optional argument present
-\ia{#3, #2@#3, #2}%add lastname, firstname to index
+\ia{#3, #2}%add lastname, firstname to index
 }{%if optional argument present
-\ia{#1@#1}% add optional argument to index
+\ia{#1}% add optional argument to index
 }%
 #3}%output last name in text
 
@@ -1830,9 +1875,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 }
 
 \ifbool{collection}{
-    \notbool{biblatex}{
-            \ClassError{langsci/langscibook}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
-    }{}
 
     \AtBeginDocument{% for the citation in the footer
             \renewcommand{\newlineCover}{}
@@ -1929,6 +1971,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
         \renewcommand{\maketitle}{%
             % With \setchapterpreamble from scrbook, we ensure that the author(s)
             % and their affiliation(s) are part of the \chapter block.
+            \CountAuthorsFromAffiliations{\@author}
+            \lsDeterminePaperAuthorAffiliationIndexing{}
             \setchapterpreamble[u]{\ResolveAffiliations{\@author}\\}
             \chapter
             [tocentry={\titleToToC~\newline{\normalfont\ResolveAffiliations{\@author}}}]
@@ -1952,6 +1996,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
         }
         \ohead{}
         \lehead{\ResolveAffiliations[output affiliation=false,
+                                     orcid placement=none,
                                      output authors font=\normalfont\slshape,
                                      separator between two={~\&~},
                                      separator between multiple={,~},
@@ -1998,6 +2043,18 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \counterwithout{table}{chapter}
     \includepaper@body
 }{} %end paper
+
+
+% A command that imports the files localpackages.tex, but only if output==paper
+\NewDocumentCommand{\lsConditionalSetupForPaper}{O{localbibliography.bib}}
+  {%
+    \ifbool{lsImportPackagesWhenStandalone}
+           {\input{localpackages.tex}
+            \input{localhyphenation.tex}
+            \input{localcommands.tex}
+            \addbibresource{#1}}
+           {}
+  }
 
 
 %writeout page numbers for separation of chapters
