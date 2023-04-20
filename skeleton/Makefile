@@ -62,12 +62,7 @@ openreview.pdf:
 	pdftk main.pdf multistamp orstamp.pdf output openreview.pdf 
 
 proofreading: proofreading.pdf
-	
-githubrepo: localmetadata.tex proofreading versions.json
-	grep lsID localmetadata.tex |egrep -o "[0-9]*" > ID	
-	git clone https://github.com/langsci/`cat ID`.git
-	cp proofreading.pdf Makefile versions.json `cat ID`
-	mv `cat ID` ..
+
 	
 versions.json: 
 	grep "^.title{" localmetadata.tex|grep -o "{.*"|egrep -o "[^{}]+">title
@@ -121,8 +116,6 @@ chop:
 	egrep -o "\{chapter\}\{Index\}\{[0-9]+\}\{section\*\.[0-9]+\}" main.toc| grep -o "\..*"|egrep -o [0-9]+ >> cuts.txt
 	bash chopchapters.sh `grep "mainmatter starts" main.log|grep -o "[0-9]*" $1 $2`
 	
-chapternames:
-	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames	
 	
 #housekeeping	
 clean:
@@ -141,6 +134,9 @@ realclean: clean
 chapterlist:
 	grep chapter main.toc|sed "s/.*numberline {[0-9]\+}\(.*\).newline.*/\\1/" 
 
+
+chapternames:
+	egrep -o "\{chapter\}\{\\\numberline \{[0-9]+}[A-Z][^\}]+\}" main.toc | egrep -o "[[:upper:]][^\}]+" > chapternames
 
 barechapters:
 	cat chapters/*tex | detex > barechapters.txt
