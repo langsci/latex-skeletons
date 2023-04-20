@@ -1,6 +1,7 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      File: langscibook.cls
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      
+%%      File: langscibook.cls
 %%    Author: Language Science Press (http://langsci-press.org)
-%%      Date: 2021-02-17 18:00 CET
+%%      Date: 2022-02-08 14:00 CET
 %%   Purpose: This file defines the basic document class
 %%            for books published with Language Science Press.
 %%  Language: LaTeX
@@ -14,7 +15,7 @@
 %%  version 2005/12/01 or later.
 %%% This work has the LPPL maintenance status `maintained'.
 %%% The Current Maintainer of this work is Sebastian Nordhoff.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Structure of this file:
 %   \- Early load packages
 %   \- Default values of variables
@@ -45,12 +46,12 @@
 %   \- Hyperref
 %   \- Edited volumes (Collection)
 %   \- Localisation
-%   \_ Miscellaneous
+%   \- Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langscibook}[2021/02/17 Language Science Press]
+\ProvidesClass{langscibook}[2022/02/08 Language Science Press]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Early load packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -114,6 +115,7 @@
 \newcommand{\lsSpineAuthor}
   {%
     \ResolveAffiliations[output affiliation=false, 
+                         orcid placement=none,
                          output authors font=\lsSpineAuthorFont]{\@author}%
   }
 \newcommand{\SpineTitle}[1]{\renewcommand{\lsSpineTitle}{#1}}
@@ -124,7 +126,7 @@
 \newcommand{\includestoragelogo}{~}
 \newcommand{\includepublisherlogo}{~}
 \newcommand{\includechapterfooterlogo}{~}
-
+\newcommand{\lsLicenseInformation}[1]{~}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Conditionals
@@ -138,8 +140,6 @@
 \newbool{babelshorthands}
 \newbool{multiauthors}
 \newbool{showindex}
-\newbool{biblatex}
-    \booltrue{biblatex}
 \newbool{newtxmath}
 \newbool{minimal}
 \newbool{collection}
@@ -150,6 +150,8 @@
 \newbool{lsISBNTwoDigitAddon}
 \newbool{lsFloatCounterWithoutChapter}
     \booltrue{lsFloatCounterWithoutChapter}
+\newbool{lsImportPackagesWhenStandalone}
+\newbool{infn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Option handling
@@ -189,7 +191,6 @@
 \DeclareVoidOption{babelshorthands}{\booltrue{babelshorthands}}
 \DeclareVoidOption{multiauthors}{\booltrue{multiauthors}}
 \DeclareVoidOption{showindex}{\booltrue{showindex}}
-\DeclareVoidOption{biblatex}{\booltrue{biblatex}}
 \DeclareVoidOption{nonewtxmath}{\boolfalse{newtxmath}}
 \DeclareVoidOption{newtxmath}{\booltrue{newtxmath}}
 \DeclareVoidOption{minimal}{\booltrue{minimal}}
@@ -248,13 +249,16 @@
   }
 }
 
+
 \DeclareVoidOption{arabicfont}
   {
-	\newfontfamily\arabicfont[Script=Arabic,ItalicFont=*,Scale=1.4]{arabtype.ttf}
-% 	\newcommand{\textarabic}[1]{{\arabicfont #1}}
+  \AtEndPreamble{
+        \newfontfamily\arabicfont[Script=Arabic,ItalicFont=*,Scale=1.4]{ScheherazadeRegOT_Jazm.ttf}
 	\AdditionalFontImprint{Arabtype}
+	\usepackage{langsci-bidi}
+%         \newcommand{\textarab}[1]{\RL{\arabicfont #1}} %has to be moved to localcommands
   }
-
+}
 \DeclareVoidOption{hebrewfont}
   {
 	\newfontfamily\hebrewfont[Script=Hebrew,ItalicFont=*, Scale=0.9]{SBLHebrew.ttf}
@@ -270,6 +274,7 @@
   }
 
 \DeclareVoidOption{tblseight}{\booltrue{tblseight}}
+\DeclareVoidOption{infn}{\booltrue{infn}}
 
 \ProcessKeyvalOptions*
 
@@ -307,7 +312,9 @@
     fontsize=\lsFontsize,% default is 11pt
     footnotes=multiple,
     numbers=noenddot,% no point after last number of chapters/sections
-    toc=bibliography,
+    \notbool{collection}{
+      toc=bib, % make bibliography appear in toc
+    }{}
     index=totoc,
     headings=optiontohead,
     footnotes=multiple
@@ -321,6 +328,7 @@
     \ifbool{paper}
       {% The same is applied to papers.
         \KOMAoptions{chapterprefix=true}
+        \booltrue{lsImportPackagesWhenStandalone}
       }
       {}
   }
@@ -385,33 +393,42 @@
         \end{pgfonlayer}
     }
 
-    % Generates the content of the back cover
-    % Argument 1: Text width, corresponding to Argument 1 of \frontcovertoptext
-    \newcommand{\backcover}[1]{%
-    \node [ font=\lsBackTitleFont,
-            right,
-            below right = 10mm and 7.5mm of CoverColouredRectangleBack.north west,
-            text width=#1
-            ] (lspcls_backtitle) {\color{white}\raggedright\lsBackTitle\par};
-    \node [ font=\lsBackBodyFont,
-            below = 10mm of lspcls_backtitle,
-            text width=#1,
-            align=justify
-            ] {\color{white}\parindent=15pt\lsBackBody};
-    \node [ above left = 10mm and 7.5mm of CoverColouredRectangleBack.south east ] {%
-        \colorbox{white}{%
-            \ifbool{lsISBNTwoDigitAddon}{%
-              \begin{pspicture}(0,0)(5.25,1in)
-                \psbarcode[transx=.4,transy=.3]{\lsISBNcover\ \lsISBNhardcoverTwoDigitAddon}{includetext guardwhitespace height=.7}{isbn}
-              \end{pspicture}%
-            }{%
-              \begin{pspicture}(0,0)(4.15,1in)
-                  \psbarcode[transx=.4,transy=.3]{\lsISBNcover}{includetext height=.7}{isbn}%
-              \end{pspicture}%
-            }%
-        }%
-        };
-    }
+    % Generates the content of the back cover. The starred variant \backcover*
+    % does not print the ISBN on the back. By default, we use \backcover if 
+    % we are in a cover generation mode, and backcover* otherwise.
+    % Mandatory argument: Text width, corresponding to Argument 1 of \frontcovertoptext
+    \NewDocumentCommand \backcover {s m}
+      {%
+        \node [ font=\lsBackTitleFont,
+                right,
+                below right = 10mm and 7.5mm of CoverColouredRectangleBack.north west,
+                text width=#2
+                ] (lspcls_backtitle) {\color{white}\raggedright\lsBackTitle\par};
+        \node [ font=\lsBackBodyFont,
+                below = 10mm of lspcls_backtitle,
+                text width=#2,
+                align=justify
+                ] {\color{white}\parindent=15pt\lsBackBody};
+        \node [ above left = 10mm and 7.5mm of CoverColouredRectangleBack.south east ] {%
+          \IfBooleanF {#1}
+            {%
+              \colorbox{white}{%
+                \ifbool{lsISBNTwoDigitAddon}{%
+                  \begin{pspicture}(0,0)(5.25,1in)
+                    \psbarcode[transx=.4,transy=.3]
+                              {\lsISBNcover\ \lsISBNhardcoverTwoDigitAddon}
+                              {includetext guardwhitespace height=.7}{isbn}
+                  \end{pspicture}%
+                }{%
+                  \begin{pspicture}(0,0)(4.15,1in)
+                      \psbarcode[transx=.4,transy=.3]
+                                {\lsISBNcover}
+                                {includetext height=.7}{isbn}%
+                  \end{pspicture}%
+                }%
+              }%
+            }};
+      }
 
     % Generates the content on the front cover, including title, author, subtitle. See below for remaining commands
     % Argument 1: Text width on the front cover. Input: 12.34mm
@@ -433,6 +450,7 @@
             \lsEditorPrefix%
             \ResolveAffiliations[output in groups=false, 
                                  output affiliation=false, 
+                                 orcid placement=none,
                                  output authors font=\lsCoverAuthorFont,
                                  separator between two=\\,
                                  separator between multiple=\\,
@@ -453,6 +471,7 @@
             \lsEditorPrefix%
             \ResolveAffiliations[output in groups=false, 
                                  output affiliation=false, 
+                                 orcid placement=none,
                                  output authors font=\lsCoverAuthorFont,
                                  separator between two=\\,
                                  separator between multiple=\\,
@@ -489,6 +508,7 @@
 %we define a command to better encapsulate the logic
 \newcommand{\setuptitle}{%
     \renewcommand{\maketitle}{%first we treat covers to get them out of the way
+
         \ifbool{coverBODhc}{%
             \bodHCcover
             \end{document}
@@ -529,7 +549,6 @@
                 \null\newpage\thispagestyle{empty}
             }
             \end{titlepage}
-    %         \fi
         }{} %end book
 
         \ifbool{guidelines}{%
@@ -541,8 +560,6 @@
             \end{titlepage}
         }{} %end guidelines
 
-        % \null\newpage\thispagestyle{empty}
-        \hypersetup{colorlinks=false, citecolor=brown, pdfborder={0 0 0}}  % for hyperref
         \color{black}
         \lsInsideFont
 
@@ -598,6 +615,10 @@
         \fi
         
         \ifx\lsSeries\cogl
+        \let\eachwordone=\itshape
+        \fi
+        
+        \ifx\lsSeries\rcg
         \let\eachwordone=\itshape
         \fi
         
@@ -785,6 +806,7 @@
     % In collected volumes, adjust the spacing for unnumbered chapters
     \ifbool{collection}{
     \BeforeStartingTOC[toc]{\SetupAffiliations{output affiliation=false,
+                                               orcid placement=none,
                                                output authors font=\normalfont,
                                                separator between two={~\&~},
                                                separator between multiple={,~},
@@ -887,6 +909,9 @@
 % }
 
 \input{langsci-series.def}
+\ifbool{guidelines}
+  {\let\lsSeries\guidelines}
+  {}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Cover
@@ -896,6 +921,28 @@
 \newcommand{\lsCoverFontColor}{white}
 \newcommand{\lsCoverBlockColor}{\lsSeriesColor}
 
+\ExplSyntaxOn
+\NewDocumentCommand{\lsDetermineMultiauthors}{}
+  {%
+    \int_compare:nNnTF
+        {\g__affiliations_num_authors_int} > {1}
+        {\booltrue{multiauthors}} {}
+  }
+  
+\NewDocumentCommand{\lsDeterminePaperAuthorAffiliationIndexing}{}
+  {%
+    \int_compare:nNnT
+        {\g__affiliations_num_authors_int} = {1}
+        {
+          \SetupAffiliations
+            {
+              mark~style = none, 
+              separator~between~affiliations=\&
+            }
+        } 
+  }
+\ExplSyntaxOff
+
 \newcommand{\lsEditorPrefix}{}
 \newcommand{\lsEditorSuffix}{}
 \ifbool{collection}{
@@ -904,9 +951,9 @@
     \renewcommand{\newlineSpine}{}
     \renewcommand{\lsEditorPrefix}{{\Large Edited by\\}}
     \renewcommand{\lsEditorSuffix}{(ed.)}
-      \ifbool{multiauthors}{
-	\renewcommand{\lsEditorSuffix}{(eds.)}
-      }{}
+    \CountAuthorsFromAffiliations{\@author}
+    \lsDetermineMultiauthors{}
+    \ifbool{multiauthors}{\renewcommand{\lsEditorSuffix}{(eds.)}}{}
   } %end AtBeginDocument
 }{} %end collection
 
@@ -971,7 +1018,7 @@
                     minimum height=225mm
                     ] (CoverColouredRectangleBack) {};
         \end{pgfonlayer}
-        \backcover{137mm}
+        \ifbool{cover}{\backcover{137mm}}{\backcover*{137mm}}
     \end{tikzpicture}
   \ifcsname tikz@library@external@loaded\endcsname\tikzexternalenable\fi
   }
@@ -1142,19 +1189,13 @@
 \newcommand{\lsImpressumExtra}{}%for legal notes required for revised theses ("... in fulfillment of ... ")
 
 \newcommand{\publisherstreetaddress}
-  {%
-%     Language Science Press\\
-%     xHain\\
-%     Grünberger Str. 16\\
-%     10243 Berlin, Germany
-redefine \textbackslash publisherstreetaddress
-  }
+  {redefine \textbackslash publisherstreetaddress}
 
 \newcommand{\publisherurl}{redefine \textbackslash publisherurl}
 
 \newcommand{\storageinstitution}{redefine \textbackslash storageinstitution}
-\newcommand{\githubtext}{}
-\newcommand{\paperhivetext}{}
+\newcommand{\githubtext}{~}
+\newcommand{\paperhivetext}{~}
 
 \newcommand{\lsImpressum}{%
 \thispagestyle{empty}
@@ -1176,17 +1217,18 @@ This title can be downloaded at:\\
 
 \newcommand{\ccby}{CC-BY}
 \newcommand{\ccbynd}{CC-BY-ND}
+\newcommand{\ccbysa}{CC-BY-SA}
 \ifx\lsCopyright\ccby
 Published under the Creative Commons Attribution 4.0 Licence (CC BY 4.0):
-http://creativecommons.org/licenses/by/4.0/ \includegraphics[height=.75em]{ccby.pdf}
+http://creativecommons.org/licenses/by/4.0/ \lsLicenseInformation{ccby}
 \fi
 \ifx\lsCopyright\ccbynd
 Published under the Creative Commons Attribution-NoDerivatives 4.0 Licence (CC BY-ND 4.0):
-http://creativecommons.org/licenses/by-nd/4.0/ \includegraphics[height=.75em]{ccbynd.pdf}
+http://creativecommons.org/licenses/by-nd/4.0/ \lsLicenseInformation{ccbynd}
 \fi
-\ifx\lsCopyright\ccbynd
+\ifx\lsCopyright\ccbysa
 Published under the Creative Commons Attribution-ShareAlike 4.0 Licence (CC BY-SA 4.0):
-http://creativecommons.org/licenses/by-sa/4.0/ \includegraphics[height=.75em]{ccbysa.pdf}
+http://creativecommons.org/licenses/by-sa/4.0/ \lsLicenseInformation{ccbysa}
 \fi
 
 {\lsImpressumExtra}
@@ -1246,7 +1288,7 @@ ISBN: &
 Cover and concept of design:
 Ulrike Harbort \\
 \if\@translator\empty\else
-Translator:
+Translation:
 \@translator \\
 \fi
 \if\@typesetter\empty\else
@@ -1359,6 +1401,47 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 %% needed for hyperref
 \def\toclevel@subsubsubsection{4}
 
+% Commands for Sections in Appendices:
+% Use as \appendixsection and \appendixsubsection. 
+% Further commands for lower levels can be defined following this pattern.
+\DeclareNewSectionCommand
+  [
+    counterwithin = chapter,
+    afterskip = 2.3ex plus .2ex,
+    beforeskip = -3.5ex plus -1ex minus -.2ex,
+    indent = 0pt,
+    font = \usekomafont{section},
+    level = 1,
+    tocindent = 1.5em,
+    toclevel = 1,
+    tocnumwidth = 2.3em,
+    tocstyle = section,
+    style = section
+  ]
+  {appendixsection}
+
+\renewcommand*\theappendixsection{\Alph{appendixsection}}
+\renewcommand*{\appendixsectionformat}
+              {\appendixname~\theappendixsection\autodot\enskip}
+\renewcommand*{\appendixsectionmarkformat}
+              {\appendixname~\theappendixsection\autodot\enskip}
+
+\DeclareNewSectionCommand
+  [
+    counterwithin = appendixsection,
+    beforeskip=-10pt,
+    afterskip=1sp,
+    indent = 0pt,
+    font = \usekomafont{subsection},
+    level = 2,
+    tocindent = 3.8em,
+    toclevel = 2,
+    tocnumwidth = 3.2em,
+    tocstyle = section,
+    style = section
+  ]
+  {appendixsubsection}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Epigrams
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1427,7 +1510,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 %% languages
 \newcommand{\lsBookLanguageEnglish}{english}
 \newcommand{\lsBookLanguageFrench}{french}
-% \newcommand{\lsBookLanguageSpanish}{spanish}
+\newcommand{\lsBookLanguageSpanish}{spanish}
 \newcommand{\lsBookLanguagePortuguese}{portuguese}
 \newcommand{\lsBookLanguageGerman}{german}
 \newcommand{\lsBookLanguageChinese}{chinese}
@@ -1445,10 +1528,10 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
                     \usepackage[ngerman,main=\lsBookLanguage]{babel}
 					\addto\extrasfrench{\languageshorthands{german}\useshorthands{"}}
                 \fi
-% 		\ifx\lsBookLanguage\lsBookLanguageSpanish
-%                     \usepackage[ngerman,main=\lsBookLanguage]{babel}
-% 					\addto\extrasspanish{\languageshorthands{german}\useshorthands{"}}
-%                 \fi
+		\ifx\lsBookLanguage\lsBookLanguageSpanish
+                    \usepackage[ngerman,main=\lsBookLanguage,es-minimal]{babel}
+					\addto\extrasspanish{\languageshorthands{german}\useshorthands{"}}
+                \fi
 		\ifx\lsBookLanguage\lsBookLanguageGerman
                     \usepackage[ngerman]{babel}
                 \fi
@@ -1457,7 +1540,11 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
                     \addto\extrasportuges{\languageshorthands{german}\useshorthands{"}}
                 \fi
 	   }{%else babelshorthands
-		\usepackage[\lsBookLanguage]{babel}
+		\ifx\lsBookLanguage\lsBookLanguageSpanish
+                    %the Spanish option does not work out of the box
+                    \usepackage[\lsBookLanguage,es-minimal]{babel}
+                \else
+                    \usepackage[\lsBookLanguage]{babel}
             }
      \fi%Close language=chinese
 }{}
@@ -1479,16 +1566,14 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 	autolang=hyphen,
 	\ifbool{resetcapitals}{language=english,}{}
 	backend=\lsBiblatexBackend,
-	indexing=cite,
-	\notbool{collection}{
-		toc=bib, % make bibliography appear in toc
-        }{}
+	indexing=cite
 ]{biblatex}
 
 %% DOIs are handled after hyperref.
 \defbibheading{references}{\chapter{References}\sloppy}
+\defbibheading{english}{\chapter{References}\sloppy}
 \defbibheading{french}{\chapter{Références bibliographiques}\sloppy}
-% \defbibheading{spanish}{\chapter{Referencias bibliográficas}\sloppy}
+\defbibheading{spanish}{\chapter{Referencias bibliográficas}\sloppy}
 \defbibheading{german}{\chapter{Literaturverzeichnis}\sloppy}
 \defbibheading{portuguese}{\chapter{Referências}\sloppy}
 \defbibheading{chinese}{\chapter{参考文献}\sloppy}
@@ -1539,7 +1624,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 
 \usepackage{setspace}
 \usepackage{caption}
-% \captionsetup{labelfont=bf}
 \captionsetup{font={stretch=.8,small},width=.8\textwidth}
 \setcapindent{0pt}
 
@@ -1566,19 +1650,16 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 
 % For papers that have appendices, a replacement for \appendix.
 % Usage: \begin{paperappendix} \section{Title} ... \end{paperappendix}
-\newenvironment{paperappendix}{%
-    \newcommand*{\appendixmore}{%
-    \renewcommand*\thesection{\Alph{section}}
-    \renewcommand*{\sectionformat}{%
-    \appendixname~\thesection\autodot\enskip}%
-    \renewcommand*{\sectionmarkformat}{%
-    \appendixname~\thesection\autodot\enskip}}
-    \appendix
-}{}
+\newenvironment{paperappendix}
+  {%
+    \let\section\appendixsection
+    \let\subsection\appendixsubsection
+  }
+  {}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Indexes
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{index} %% Wie im Stylefile, aber ohne \MakeUppercase
 \renewenvironment{theindex}{%
@@ -1603,7 +1684,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
   \parindent\z@
   \parskip\z@ \@plus .3\p@\relax
   \let\item\@idxitem
-  \providecommand*\seealso[2]{\emph{see also} ##1}
+  \providecommand*\seealso[2]{\emph{\lsSeeAlsoTerm{}} ##1}
 }{%
   \if@restonecol
 	  \onecolumn
@@ -1624,15 +1705,25 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \indexproofstyle{\setlength{\overfullrule}{0pt}\raggedright\footnotesize}
 
 %% \index inside footnote
-\def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
-% 	\hyperpage{#2}*%   99*
-	\hyperpage{#2}\textsuperscript{#1}%  99²
-}%
-\newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
-\newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
-\newcommand{\footnoteindex@lan}[2]{\index[lan]{#2|infn{#1}}}
-\newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2|infn{#1}}}
-
+\ifbool{infn}{
+  \def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
+  % 	\hyperpage{#2}*%   99*
+          \hyperpage{#2}\textsuperscript{#1}%  99²
+  }%
+  \newcommand{\footnoteindex}[2]{\index{#2|infn{#1}}}
+  \newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2|infn{#1}}}
+  \newcommand{\footnoteindex@lan}[2]{\index[lan]{#2|infn{#1}}}
+  \newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2|infn{#1}}}
+}{%else
+  \def\infn#1#2{% 	\hyperpage{#2}n#1%  99n2
+  % 	\hyperpage{#2}*%   99*
+          \hyperpage{#2}\textsuperscript{#1}%  99²
+  }%
+  \newcommand{\footnoteindex}[2]{\index{#2}}
+  \newcommand{\footnoteindex@sbj}[2]{\index[sbj]{#2}}
+  \newcommand{\footnoteindex@lan}[2]{\index[lan]{#2}}
+  \newcommand{\footnoteindex@wrd}[2]{\index[wrd]{#2}}
+}
 
 % Author index
 \newcommand{\ia}[1]{%
@@ -1704,9 +1795,9 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newcommand{\name}[3][]{%add person names to text and author index
 #2 %output first name
 \ifstrempty{#1}{%if no optional argument present
-\ia{#3, #2@#3, #2}%add lastname, firstname to index
+\ia{#3, #2}%add lastname, firstname to index
 }{%if optional argument present
-\ia{#1@#1}% add optional argument to index
+\ia{#1}% add optional argument to index
 }%
 #3}%output last name in text
 
@@ -1715,16 +1806,17 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[
-	bookmarks=true,bookmarksopen=true,bookmarksopenlevel=1,%
+	bookmarks=true,bookmarksopen=true,bookmarksopenlevel=1,
 	bookmarksdepth=5,
 	bookmarksnumbered=true,
-	hyperindex=true,%
+	hyperindex=true,
 	breaklinks=true,
 	draft=false,
 	plainpages=false,
-	pdfusetitle=true,  % puts author and title in automatically, maybe only in final mode?
+	pdfborder={0 0 0},
+	pdfusetitle=true,
 	pdfkeywords={},
-	pdfpagelayout=TwoPageRight,   % first page is separate
+	pdfpagelayout=TwoPageRight,% first page is separate
 	hyperfootnotes=false,
 	%ps2pdf=true
 	]{hyperref}
@@ -1733,6 +1825,17 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 %% Failed to convert input string to UTF16
 %% http://tex.stackexchange.com/questions/66722/tex-live-2012-xelatex-moderncv-error-failed-to-convert-input-string-to-utf1
 \hypersetup{unicode,pdfencoding=auto,bookmarksopenlevel=0}
+
+%% Reset sections in the Backmatter to the top level.
+\usepackage{bookmark}
+\apptocmd{\backmatter}
+         {\bookmarksetup{startatroot}}
+         {}
+         {%
+           \AtEndDocument{\typeout{langscibook Warning:}
+                          \typeout{It was not possible to set option 'staratroot'}
+                          \typeout{for bookmarks in the backmatter.}}
+         }
 
 %% autoref (part of hyperref)
 \ifx\lsBookLanguage\lsBookLanguageEnglish
@@ -1751,6 +1854,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \providecommand{\partref}[1]{Part~\ref{#1}}
 \providecommand{\tabref}[1]{Table~\ref{#1}}
 \providecommand{\figref}[1]{Figure~\ref{#1}}
+\providecommand{\lsSeeAlsoTerm}{see also}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Collection (edited volume):
@@ -1771,9 +1875,6 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 }
 
 \ifbool{collection}{
-    \notbool{biblatex}{
-            \ClassError{langsci/langscibook}{Collection option not compatible with plain BibTeX. Please use biblatex option}{}
-    }{}
 
     \AtBeginDocument{% for the citation in the footer
             \renewcommand{\newlineCover}{}
@@ -1795,11 +1896,11 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\@pnumwidth}{1.5em}	% width of page numbers
     \ifbool{collectiontoclong}{}{\setcounter{tocdepth}{0}}
     \DeclareTOCStyleEntry%Settings for parts in the TOC of collected volumes
-    [
+      [
         pagenumberbox={\csname @gobble\endcsname},
         raggedentrytext=true,
         linefill={\hfill}
-    ]{tocline}{part}
+      ]{tocline}{part}
 
     \usepackage{chngcntr}
     \counterwithin{figure}{chapter}
@@ -1870,6 +1971,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
         \renewcommand{\maketitle}{%
             % With \setchapterpreamble from scrbook, we ensure that the author(s)
             % and their affiliation(s) are part of the \chapter block.
+            \CountAuthorsFromAffiliations{\@author}
+            \lsDeterminePaperAuthorAffiliationIndexing{}
             \setchapterpreamble[u]{\ResolveAffiliations{\@author}\\}
             \chapter
             [tocentry={\titleToToC~\newline{\normalfont\ResolveAffiliations{\@author}}}]
@@ -1893,6 +1996,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
         }
         \ohead{}
         \lehead{\ResolveAffiliations[output affiliation=false,
+                                     orcid placement=none,
                                      output authors font=\normalfont\slshape,
                                      separator between two={~\&~},
                                      separator between multiple={,~},
@@ -1916,7 +2020,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \includechapterfooterlogo}%
     % \hspace{0.8em}%
     \hfill%
-    \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText \includegraphics[height=.75em]{ccby.pdf}}
+    \parbox[b]{.87\textwidth}{\linespread{0.8}\lsChapterFooterSize\normalfont\lsCollectionPaperCitationText \lsLicenseInformation{ccby}}
 }
 
 \ifbool{paper}{
@@ -1941,6 +2045,18 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 }{} %end paper
 
 
+% A command that imports the files localpackages.tex, but only if output==paper
+\NewDocumentCommand{\lsConditionalSetupForPaper}{O{localbibliography.bib}}
+  {%
+    \ifbool{lsImportPackagesWhenStandalone}
+           {\input{localpackages.tex}
+            \input{localhyphenation.tex}
+            \input{localcommands.tex}
+            \addbibresource{#1}}
+           {}
+  }
+
+
 %writeout page numbers for separation of chapters
 
 % \usepackage{newfile}
@@ -1962,20 +2078,23 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\partref}[1]{Partie~\ref{#1}}
     \renewcommand{\tabref}[1]{Tableau~\ref{#1}}
     \renewcommand{\figref}[1]{Figure~\ref{#1}}
+    \renewcommand{\lsSeeAlsoTerm}{voir aussi}
 \fi
 
-% \ifx\lsBookLanguage\lsBookLanguageSpanish
-%     \renewcommand{\chapref}[1]{Capítulo~\ref{#1}}
-%     \renewcommand{\partref}[1]{Parte~\ref{#1}}
-%     \renewcommand{\tabref}[1]{Tabla~\ref{#1}}
-%     \renewcommand{\figref}[1]{Figura~\ref{#1}}
-% \fi
+\ifx\lsBookLanguage\lsBookLanguageSpanish
+    \renewcommand{\chapref}[1]{Capítulo~\ref{#1}}
+    \renewcommand{\partref}[1]{Parte~\ref{#1}}
+    \renewcommand{\tabref}[1]{Tabla~\ref{#1}}
+    \renewcommand{\figref}[1]{Figura~\ref{#1}}
+    \renewcommand{\lsSeeAlsoTerm}{véase también}
+\fi
 
 \ifx\lsBookLanguage\lsBookLanguageGerman
     \renewcommand{\chapref}[1]{Kapitel~\ref{#1}}
     \renewcommand{\partref}[1]{Teil~\ref{#1}}
     \renewcommand{\tabref}[1]{Tabelle~\ref{#1}}
     \renewcommand{\figref}[1]{Abbildung~\ref{#1}}
+    \renewcommand{\lsSeeAlsoTerm}{siehe auch}
 \fi
 
 \ifx\lsBookLanguage\lsBookLanguagePortuguese
@@ -1983,6 +2102,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\partref}[1]{Parte~\ref{#1}}
     \renewcommand{\tabref}[1]{Tabela~\ref{#1}}
     \renewcommand{\figref}[1]{Figura~\ref{#1}}
+    \renewcommand{\lsSeeAlsoTerm}{ver tambem}
 \fi
 
 \ifx\lsBookLanguage\lsBookLanguageChinese
@@ -2038,16 +2158,16 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     }{}
 \fi
 
-% \ifx\lsBookLanguage\lsBookLanguageSpanish
-%     \renewcommand{\lsIndexTitle}{Índices}
-%     \renewcommand{\lsNameIndexTitle}{Índice nominal}
-%     \renewcommand{\lsSubjectIndexTitle}{Índice temático}
-%     \renewcommand{\lsLanguageIndexTitle}{Índice de idiomas}
-%     \renewcommand{\lsPrefaceTitle}{Prefacio}
-%     \renewcommand{\lsAcknowledgementTitle}{Agradecimientos}
-%     \renewcommand{\lsAbbreviationsTitle}{Abreviaciones}
-%     \renewcommand{\lsReferencesTitle}{spanish}
-% \fi
+\ifx\lsBookLanguage\lsBookLanguageSpanish
+    \renewcommand{\lsIndexTitle}{Índices}
+    \renewcommand{\lsNameIndexTitle}{Índice nominal}
+    \renewcommand{\lsSubjectIndexTitle}{Índice temático}
+    \renewcommand{\lsLanguageIndexTitle}{Índice de idiomas}
+    \renewcommand{\lsPrefaceTitle}{Prefacio}
+    \renewcommand{\lsAcknowledgementTitle}{Agradecimientos}
+    \renewcommand{\lsAbbreviationsTitle}{Abreviaciones}
+    \renewcommand{\lsReferencesTitle}{spanish}
+\fi
 
 \ifx\lsBookLanguage\lsBookLanguageGerman
     \renewcommand{\lsIndexTitle}{Register}
