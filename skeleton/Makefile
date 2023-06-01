@@ -94,12 +94,6 @@ paperhive:  proofreading.pdf versions.json README.md
 	git checkout main
 	git commit -m 'new README' README.md
 	git push
-
-papercurl:
-	$(eval dir=$(shell pwd))
-	$(eval ID=$(shell basename $(dir)))
-	$(eval urlstring="https://paperhive.org/api/document-items/remote?type=langsci&id="$(ID))
-	curl -X POST $(urlstring)
 		
 firstedition:
 	git checkout gh-pages
