@@ -48,9 +48,9 @@ main.snd: main.bbl
 #create a png of the cover
 cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  cover.png
-	cp cover.png googlebooks_frontcover.png
-	convert -geometry 50x50% cover.png covertwitter.png
-	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
+# 	cp cover.png googlebooks_frontcover.png
+# 	convert -geometry 50x50% cover.png covertwitter.png
+# 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
 	display cover.png
 
 openreview: openreview.pdf
