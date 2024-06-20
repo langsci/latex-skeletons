@@ -44,7 +44,7 @@ main.snd: main.bbl
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx 
 	echo "check for doublets in name index"
-	grep -o  ", [^0-9, \\}]*," main.and|sed "s/, //" | sed "s/,\$//"
+	grep -o  ", [^0-9 \\}]*," main.and|sed "s/, //" | sed "s/,\$//"
 	xelatex main 
  
 
