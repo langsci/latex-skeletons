@@ -1,24 +1,3 @@
-# specify thh main file and all the files that you are including
-SOURCE=  main.tex $(wildcard local*.tex) $(wildcard chapters/*.tex) 
-
-# specify your main target here:
-pdf: main.bbl main.pdf  #by the time main.pdf, bib assures there is a newer aux file
- 
-complete: index main.pdf
-
-index:  main.snd
- 
-main.pdf: main.aux
-	xelatex main 
-
-main.aux: $(SOURCE)
-	xelatex -no-pdf main 
-
-#create only the book
-main.bbl:  $(SOURCE) localbibliography.bib  
-	xelatex -no-pdf main 
-	biber   main 
-
 
 main.snd: main.bbl
 	touch main.adx main.sdx main.ldx
@@ -37,20 +16,15 @@ main.snd: main.bbl
 	sed -i 's/.*committee.*//' main.adx
 	sed -i 's/.*government.*//' main.adx
 	sed -i 's/\\MakeCapital//' main.adx
-# 	python3 fixindex.py
-# 	mv mainmod.adx main.adx
+# 	fixindex.
 	makeindex -o main.and main.adx
 	makeindex -o main.lnd main.ldx
 	makeindex -o main.snd main.sdx 
 	xelatex main 
  
 
-#create a png of the cover
 cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  cover.png
-# 	cp cover.png googlebooks_frontcover.png
-# 	convert -geometry 50x50% cover.png covertwitter.png
-# 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  -resize x495 coveromp.png
 	display cover.png
 
 openreview: openreview.pdf

@@ -17,7 +17,7 @@
 %% langsci-affiliations was developed at Language Science Press to help in the
 %% production of scientific texts in linguistics.
 %% 
-%% Copyright (C) 2022 by Felix Kopecky, Language Science Press
+%% Copyright (C) 2023–2024 by Language Science Press
 %% 
 %% This work consists of the file  langsci-affiliations.dtx
 %%           and the derived files langsci-affiliations.sty,
@@ -45,10 +45,8 @@
 
 
 
-
 \RequirePackage{xparse}
-\ProvidesExplPackage {langsci-affiliations}
-{2022-10-11} {1.1}
+\ProvidesExplPackage {langsci-affiliations} {2024-04-09} {1.4}
 {A LaTeX3 package to collect and order authors and affiliations}
 
 \NewDocumentCommand{\ResolveAffiliations}{ O{} +m }
@@ -103,10 +101,18 @@
         = \l__affiliations_separator_between_last_two_tl,
     separator~between~final~two .initial:n
         = {~\&~},
+    separator~between~indices .tl_set:N
+        = \l__affiliations_indices_separator_tl,
+    separator~between~indices .initial:n
+        = {,},
     separator~between~affiliations .tl_set:N
         = \l__affiliations_afil_separator_tl,
     separator~between~affiliations .initial:n
-        = {,},
+        = {~},
+    output~authors~paragraph~format .cs_set:Np
+        = \__affiliations_output_authors_paragraph_format:,
+    output~authors~paragraph~format .initial:n
+        = {\raggedright},
     output~authors~font .cs_set:Np
         = \__affiliations_output_authors_font:,
     output~authors~font .initial:n
@@ -115,6 +121,10 @@
         = \__affiliations_output_affiliation_font:,
     output~affiliation~font .initial:n
         = {\normalsize},
+    output~affiliation~paragraph~format .cs_set:Np
+        = \__affiliations_output_affiliation_paragraph_format:,
+    output~affiliation~paragraph~format .initial:n
+        = {\raggedright},
     input~names~separator .tl_set:N
         = \l__affiliations_input_names_sep_tl,
     input~names~separator .initial:n
@@ -122,7 +132,11 @@
     input~affiliation~separator .tl_set:N
         = \l_affiliations_input_afil_sep_tl,
     input~affiliation~separator .initial:n
-        = {;}
+        = {;},
+    author~affiliation~skip .dim_set:N
+        = \l__author_affil_sep_dim,
+    author~affiliation~skip .initial:n
+        = {0.5ex}
   }
 
 \cs_generate_variant:Nn \prop_put:Nnn { Nxx }
@@ -212,7 +226,12 @@
               }
             {none} { }
           }
-        \tl_rescan:nn {} {##1} ~
+        \tl_rescan:nn {} {##1}
+        \int_compare:nNnT
+          { \int_eval:n {\l__affiliations_tmpa_int + 1} }
+          <
+          { \prop_count:N \l__affiliations_affiliations_prop }
+          { \tl_use:N \l__affiliations_afil_separator_tl }
       }
   }
 \cs_new:Npn \__affiliations_return_afil_text:n #1
@@ -250,7 +269,7 @@
         \tl_set:Nn \l__affiliations_tmpb_tl
           {
             \seq_use:Nn \l__affiliations_tmpb_seq
-                        {\l__affiliations_afil_separator_tl}
+                        {\l__affiliations_indices_separator_tl}
           }
         \str_case_e:nn { \l__affiliations_orcid_place_tl }
           {
@@ -259,7 +278,8 @@
               \seq_put_right:Nx \l__affiliations_tmpa_seq
                 {
                   \tl_rescan:nn {} {##1}
-                  \exp_not:N \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
+                  \exp_not:N
+                    \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
                 }
             }
             {before}
@@ -268,7 +288,8 @@
                 {
                   \exp_not:N \__affiliations_recover_orcid:n { ##1 }
                   \tl_rescan:nn {} {##1}
-                  \exp_not:N \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
+                  \exp_not:N
+                    \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
                 }
             }
             {after}
@@ -277,7 +298,8 @@
                 {
                   \tl_rescan:nn {} {##1}
                   \exp_not:N \__affiliations_recover_orcid:n { ##1 }
-                  \exp_not:N \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
+                  \exp_not:N
+                    \textsuperscript{\tl_use:N \l__affiliations_tmpb_tl}
                 }
             }
           }
@@ -321,6 +343,8 @@
                                {}
                                \l__affiliations_names_tmp_tl
 
+        \tl_trim_spaces:N \l__affiliations_names_tmp_tl
+
 
         \prop_put:Nxx \l__affiliations_tmpa_prop
         { \tl_use:N \l__affiliations_names_tmp_tl }
@@ -337,12 +361,23 @@
             \prop_map_function:NN \l__affiliations_tmpa_prop
                                   \__affiliations_resolve_affiliations:
             \group_begin:
-              \__affiliations_output_authors_font:
-              \__affiliations_output_authors:
-            \group_end:\\[0.5ex]
+              \noindent
+              \parbox {\linewidth}
+                {
+                  \__affiliations_output_authors_paragraph_format:
+                  \__affiliations_output_authors_font:
+                  \__affiliations_output_authors:
+                }
+            \group_end:
+            \skip_vertical:N \l__author_affil_sep_dim
             \group_begin:
-              \__affiliations_output_affiliation_font:
-              \__affiliations_output_affiliations:
+              \noindent
+              \parbox {\linewidth}
+                {
+                  \__affiliations_output_affiliation_paragraph_format:
+                  \__affiliations_output_affiliation_font:
+                  \__affiliations_output_affiliations:
+                }
             \group_end:
           }
           {
@@ -357,8 +392,8 @@
                         {
                           \group_begin:
                             \exp_not:N \__affiliations_output_authors_font:
-                            \tl_rescan:nn {} {##1}\\[0.5ex]
-                          \group_end:
+                            \tl_rescan:nn {} {##1}
+                          \group_end:\\[\dim_use:N \l__author_affil_sep_dim]
                           \group_begin:
                             \exp_not:N \__affiliations_output_affiliation_font:
                             \tl_rescan:nn {} {##2}
@@ -372,7 +407,7 @@
                           \group_begin:
                             \exp_not:N \__affiliations_output_authors_font:
                             \exp_not:N \__affiliations_recover_orcid:n { ##1 }
-                            \tl_rescan:nn {} {##1}\\[0.5ex]
+                            \tl_rescan:nn {} {##1}\\[\dim_use:N \l__author_affil_sep_dim]
                           \group_end:
                           \group_begin:
                             \exp_not:N \__affiliations_output_affiliation_font:
@@ -387,7 +422,8 @@
                           \group_begin:
                             \exp_not:N \__affiliations_output_authors_font:
                             \tl_rescan:nn {} {##1}
-                            \exp_not:N \__affiliations_recover_orcid:n { ##1 }\\[0.5ex]
+                            \exp_not:N \__affiliations_recover_orcid:n { ##1 }
+                            \\[\dim_use:N \l__author_affil_sep_dim]
                           \group_end:
                           \group_begin:
                             \exp_not:N \__affiliations_output_affiliation_font:
@@ -397,6 +433,7 @@
                     }
                   }
               }
+            \noindent
             \seq_use:Nnnn \l__affiliations_tmpa_seq
                             {\l__affiliations_separator_between_two_tl}
                             {\l__affiliations_separator_between_mult_tl}
@@ -413,24 +450,27 @@
               {
                 {none}
                   {
-                    \seq_put_right:Nx \l__affiliations_tmpa_seq
-                                      { \tl_rescan:nn {} {##1} }
+                    \seq_put_right:Nx
+                      \l__affiliations_tmpa_seq
+                      { \tl_rescan:nn {} {##1} }
                   }
                 {before}
                   {
-                    \seq_put_right:Nx \l__affiliations_tmpa_seq
-                                      {
-                                        \exp_not:N \__affiliations_recover_orcid:n { ##1 }
-                                        \tl_rescan:nn {} {##1}
-                                      }
+                    \seq_put_right:Nx
+                      \l__affiliations_tmpa_seq
+                        {
+                          \exp_not:N \__affiliations_recover_orcid:n { ##1 }
+                          \tl_rescan:nn {} {##1}
+                        }
                   }
                 {after}
                   {
-                    \seq_put_right:Nx \l__affiliations_tmpa_seq
-                                      {
-                                        \tl_rescan:nn {} {##1}
-                                        \exp_not:N \__affiliations_recover_orcid:n { ##1 }
-                                      }
+                    \seq_put_right:Nx
+                      \l__affiliations_tmpa_seq
+                        {
+                          \tl_rescan:nn {} {##1}
+                          \exp_not:N \__affiliations_recover_orcid:n { ##1 }
+                        }
                   }
                 }
           }
