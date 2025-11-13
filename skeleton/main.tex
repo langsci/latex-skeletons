@@ -27,24 +27,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\frame{
+\color{red}
+\includegraphics{tmp.pdf}
+\includegraphics{langsci_logo_nocolor.pdf}
+}
 
-
-\input{localcommands.tex}
-\maketitle
-\frontmatter
-\currentpdfbookmark{Contents}{name} % adds a PDF bookmark
-{\sloppy\tableofcontents}
+% \input{localcommands.tex}
+% \maketitle
+% \frontmatter
+% \currentpdfbookmark{Contents}{name} % adds a PDF bookmark
+% {\sloppy\tableofcontents}
 %% remove the % in the following lines if your book has these elements
 %  \include{chapters/preface}
 %  \include{chapters/acknowledgments}
 %  \include{chapters/abbreviations}
-\mainmatter
+% \mainmatter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%             Chapters                         %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
+% \include{chapters/01}  %add a percentage sign in front of the line to exclude this chapter from book
 % copy the line above and adapt as necessary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +57,7 @@
 
 % \input{localseealso.tex}
 % % There is normally no need to change the backmatter section
-\input{backmatter.tex}
+% \input{backmatter.tex}
 \end{document}
 % you can create your book by running
 % xelatex main.tex

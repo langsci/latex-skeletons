@@ -152,3 +152,6 @@ wikicite:
 	echo "}}" >>wiki
 	echo " </ref>" >>wiki
 	more wiki
+
+compress:
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf main.pdf
