@@ -122,7 +122,7 @@ README.md:
 	echo `grep title localmetadata.tex|sed "s/\\\\\title{\(.*\)}/\# \1/"` > README.md
 	echo '## Publication Info' >> README.md
 	echo -n '- Authors: ' >> README.md
-	echo `grep author localmetadata.tex|sed "s/\\\\\author{\(.*\)}/\1/"` >> README.md
+	echo `grep author localmetadata.tex|sed "s/%.*//"|sed "s/\\\\\author{\(.*\)}/\1/"` >> README.md
 	echo "- Publication Date: not yet published" >> README.md
 	echo -n "- Series: " >> README.md
 	echo `grep "lsSeries}" localmetadata.tex|sed "s/.*lsSeries}{\(.*\)}/\1/"` >> README.md
@@ -155,3 +155,14 @@ wikicite:
 
 compress:
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf main.pdf
+
+overleafgithub:
+	git checkout main
+	mv Makefile Makefile.tmp
+	cp -r  ../6*/* .
+	mv Makefile.tmp Makefile
+	rm -f zenodo*
+	rm -rf *aux *png *lg *nd *xml *bbl *toc *log *dx chapters/*aux chapters/*g chapters/*d chapters/*dx *bcf *bak* origs*
+	git add *
+	git commit -am 'copy from Overleaf'
+	git push
