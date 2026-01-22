@@ -4,7 +4,7 @@ main.snd:
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.sdx # ordering of references to footnotes
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.adx
 	sed -i 's/hyperindexformat{\\\(infn {[0-9]*\)}/\1/' main.ldx
-	sed -i 's/.*(Office|Team|Bureau|Organisation|Organization|Embassy|Association|Commission|committee|government).*//' main.adx
+	sed -i 's/.*\(Office\|Team\|Bureau\|Organisation\|Organization\|Embassy\|Association\|Commission\|committee\|government).*//' main.adx
 	sed -i 's/\\MakeCapital//' main.adx
 # 	fixindex
 	makeindex -o main.and main.adx
