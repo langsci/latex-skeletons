@@ -24,6 +24,7 @@
 %   \- Output variables
 %   \- MAIN CLASS
 %   \- General packages
+%   \- Parameters for paragraph composition
 %   \- Covers
 %   \- Output types (book, draft, cover)
 %   \- Page geometry
@@ -49,11 +50,14 @@
 %   \- Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{langscibook}[2022/02/08 Language Science Press]
+\ProvidesClass{langscibook}[2024/12/12 Language Science Press]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Early load packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{ifxetex}
+\RequireXeTeX{}
 
 \RequirePackage[]{silence}
 \WarningsOff[hyperref]
@@ -65,8 +69,9 @@
 \WarningFilter{scrbook}{package incompatibility}
 \WarningFilter{todonotes}{The length}
 \WarningFilter{biblatex}{'babel/polyglossia'}
-\hbadness=99999 % get rid of underfull box warnings
-\typeout{Warnings are disabled in langscibook.cls for underfull boxes, hyperref, microtype and scrbook package incompatibility, todonotes length and babel/polyglossia csquotes}
+\typeout{Warnings are disabled in langscibook.cls for hyperref, microtype and 
+         scrbook package incompatibility, todonotes length and babel/polyglossia 
+         csquotes}
 \usepackage{etoolbox}
 \RequirePackage{xparse}
 \usepackage{langsci-affiliations}
@@ -109,7 +114,8 @@
 \newcommand{\newlineCover}{\\}  % \newline only on cover
 \newcommand{\newlineSpine}{\\}  % \newline only on spine
 \newcommand{\newlineTOC}{\\}    % \newline only in TOC entry
-\newcommand{\affiliation}[1]{}     % A dummy command to process the affiliation info.
+\newcommand{\affiliation}[1]{}  % A dummy command to process the affiliation info.
+\newcommand{\orcid}[1]{}        % A dummy command to process ORCiDs.
 
 \newcommand{\lsSpineTitle}{\@title}
 \newcommand{\lsSpineAuthor}
@@ -140,17 +146,16 @@
 \newbool{babelshorthands}
 \newbool{multiauthors}
 \newbool{showindex}
-\newbool{newtxmath}
 \newbool{minimal}
 \newbool{collection}
 \newbool{collectiontoclong}
 \newbool{uniformtopskip}
 \newbool{oldstylenumbers}
-\newbool{tblseight}%for chinesefonts in tbls series page
 \newbool{lsISBNTwoDigitAddon}
 \newbool{lsFloatCounterWithoutChapter}
     \booltrue{lsFloatCounterWithoutChapter}
 \newbool{lsImportPackagesWhenStandalone}
+\newbool{lsSpineWidthUserConfigured}
 \newbool{infn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -173,7 +178,8 @@
 		\renewcommand{\lsBiblatexBackend}{#1}}
 \DeclareStringOption{spinewidth}[20mm]
 	\define@key{langscibook}{spinewidth}{%
-		\renewcommand{\lsSpinewidth}{#1}}
+		\renewcommand{\lsSpinewidth}{#1}%
+		\booltrue{lsSpineWidthUserConfigured}}
 \DeclareVoidOption{smallfont}{\renewcommand{\lsFontsize}{10pt}}
 \DeclareVoidOption{decapbib}{
         \booltrue{resetcapitals}
@@ -191,8 +197,6 @@
 \DeclareVoidOption{babelshorthands}{\booltrue{babelshorthands}}
 \DeclareVoidOption{multiauthors}{\booltrue{multiauthors}}
 \DeclareVoidOption{showindex}{\booltrue{showindex}}
-\DeclareVoidOption{nonewtxmath}{\boolfalse{newtxmath}}
-\DeclareVoidOption{newtxmath}{\booltrue{newtxmath}}
 \DeclareVoidOption{minimal}{\booltrue{minimal}}
 \DeclareVoidOption{collection}{\booltrue{collection}}
 \DeclareVoidOption{proofs}
@@ -273,7 +277,6 @@
 	\AdditionalFontImprint{Estrangelo Edessa}
   }
 
-\DeclareVoidOption{tblseight}{\booltrue{tblseight}}
 \DeclareVoidOption{infn}{\booltrue{infn}}
 
 \ProcessKeyvalOptions*
@@ -312,9 +315,7 @@
     fontsize=\lsFontsize,% default is 11pt
     footnotes=multiple,
     numbers=noenddot,% no point after last number of chapters/sections
-    \notbool{collection}{
-      toc=bib, % make bibliography appear in toc
-    }{}
+    toc=bib, % make bibliography appear in toc
     index=totoc,
     headings=optiontohead,
     footnotes=multiple
@@ -353,6 +354,18 @@
 
 %% standard commands
 % \usepackage{langsci-basic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Parameters for paragraph composition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Default values for paragraph composition parameters. These mostly follow 
+% Philip Taylor's (1993) recommendations in TUGboat 14(2), pp. 138–140.
+\pretolerance=150
+\tolerance=250
+\hbadness=3000
+\hfuzz=0.5pt
+\emergencystretch=1em
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %      Covers
@@ -430,55 +443,88 @@
             }};
       }
 
-    % Generates the content on the front cover, including title, author, subtitle. See below for remaining commands
+    % Generates the top half of the front cover: title, subtitle, author/editor
     % Argument 1: Text width on the front cover. Input: 12.34mm
     % Argument 2: Font size on the front cover. Adjust to compensate varying text width. Input: 12.34pt
+    % Fixed dimensions (height): 
+    %	title to subtitle = 8mm, 
+    %	title/subtitle block to author/editor block = 11.2mm 
+    %	"Edited by" to editor = 2.5mm
+    % Position lspcls_covertitle is used by another macro, so it must be set.
+    % Position lspcls_current keeps track of the current (vertical) position to print text.
     \newcommand{\frontcovertoptext}[3][white]{%
-    \renewcommand{\newlineCover}{\\}
-    \node [ font=\lsCoverTitleFont,
-            below right = 10mm and 7.5mm of CoverColouredRectangleFront.north west,
+        \renewcommand{\newlineCover}{\\} % used to hard code new lines in custom covers, e.g. revised editions
+    % Initialize current position 
+        \coordinate (lspcls_current) at (CoverColouredRectangleFront.north west);
+    % Print title, first setting position for title
+        \coordinate (lspcls_current) at ($(lspcls_current) + (7.5mm,-10mm)$);
+        \node [ %draw, %debug
+            font=\lsCoverTitleFont,
+            anchor=north west,
             text width=#2,
             align=left
-            ] (lspcls_covertitle) {\color{#1}\raggedright\@title\par};
-
-    \ifx\@subtitle\empty  % Is there a subtitle? If no, just print the author.
-    \node [ font=\lsCoverAuthorFont,
-            right,
-            below = 11.2mm of lspcls_covertitle.south,
-            text width=#2
-            ] {\color{#1}\nohyphens{%
-            \lsEditorPrefix%
-            \ResolveAffiliations[output in groups=false, 
-                                 output affiliation=false, 
-                                 orcid placement=none,
-                                 output authors font=\lsCoverAuthorFont,
-                                 separator between two=\\,
-                                 separator between multiple=\\,
-                                 separator between final two=\\]
-                                 {\@author}\par}};
-    \else % If yes, create a node for subtitle and author
-    \node [ font=\lsCoverSubTitleFont,
-            below = 8mm of lspcls_covertitle.south,
-            text width=#2,
-            align=left
-            ] (lspcls_coversubtitle) {\color{#1}\raggedright\@subtitle\par};
-    \node [
+        ] (lspcls_covertitle) at (lspcls_current) {\color{#1}\raggedright\@title\par};
+        \coordinate (lspcls_current) at (lspcls_covertitle.south west);
+    % Print subtitle?, first adding space between title and subtitle
+        \unless\ifx\@subtitle\empty 
+            \coordinate (lspcls_current) at ($(lspcls_current) + (0,-8mm)$);
+            \node [ %draw, %debug
+                font=\lsCoverSubTitleFont,
+                anchor=north west,
+                text width=#2,
+                align=left
+            ] (lspcls_coversubtitle) at (lspcls_current) {\color{#1}\raggedright\@subtitle\par};
+            \coordinate (lspcls_current) at (lspcls_coversubtitle.south west); 
+        \fi
+    % Add space between title block and author block
+        \coordinate (lspcls_current) at ($(lspcls_current) + (0,-11.2mm)$);
+    % Print author block: "Edited by" editor OR author. In either case, author/editor names are in \@author.
+        \ifbool{collection}{%
+    % Collected volume. Print "Edited by" and add space.
+             \node [ %draw, %debug
+                  font=\lsDedicationFont, % use smaller font?
+                  anchor=north west,
+                  text width=#2,
+                  align=left
+             ] (lspcls_covereditedby) at (lspcls_current) {\color{#1}Edited by};
+             \coordinate (lspcls_current) at (lspcls_covereditedby.south west); 
+             \coordinate (lspcls_current) at ($(lspcls_current) + (0,-2.5mm)$);
+        }{}
+    % Print author/editor
+        \node [ %draw, %debug
             font=\lsCoverAuthorFont,
-            right,
-            below = 11.2mm of lspcls_coversubtitle.south,
+            anchor=north west,
             text width=#2
-            ] {\color{#1}\nohyphens{%
-            \lsEditorPrefix%
+        ] (lspcls_coverauthor) at (lspcls_current) {\color{#1}\nohyphens{%
             \ResolveAffiliations[output in groups=false, 
-                                 output affiliation=false, 
-                                 orcid placement=none,
-                                 output authors font=\lsCoverAuthorFont,
-                                 separator between two=\\,
-                                 separator between multiple=\\,
-                                 separator between final two=\\]
-                                 {\@author}\par}};
-    \fi
-    }
+                output affiliation=false, 
+                orcid placement=none,
+                output authors font=\lsCoverAuthorFont,
+                separator between two=\\,
+                separator between multiple=\\,
+                separator between final two=\\]{\@author}\par}};
+        \coordinate (lspcls_current) at (lspcls_coverauthor.south west);
+%        % Print (optional) contribution
+%        % Add space
+%        \coordinate (lspcls_current) at ($(lspcls_current) + (0,-2.5mm)$);
+%        % Print e.g. "With an introduction by" in small font
+%        \node [ %draw, %debug
+%            font=\lsDedicationFont, % use smaller font
+%            anchor=north west,
+%            text width=#2,
+%            align=left
+%        ] (lspcls_covercontribution) at (lspcls_current) {\color{#1}With an introduction by};
+%        \coordinate (lspcls_current) at (lspcls_covercontribution.south west);
+%        % Add space
+%        \coordinate (lspcls_current) at ($(lspcls_current) + (0,-2.5mm)$); 
+%        % Print e.g. "Ferdinand de Saussure" in font size for author
+%        \node [ %draw, %debug
+%            font=\lsCoverAuthorFont,
+%            anchor=north west,
+%            text width=#2
+%        ] (lspcls_covercontributor) at (lspcls_current) {\color{#1}Ferdinand de Saussure};
+%        \coordinate (lspcls_current) at (lspcls_covercontributor.south west); 
+    } %\frontcovertoptext
 
     % Generates the bottom half of the front cover content: series, series number, logo.
     \newcommand{\coverbottomtext}[1][white]{%
@@ -595,10 +641,12 @@
             \setuptitle
           }
 
-        %% for those who like the example in numbered example sentences to be typeset in italics
-        %% this is possible for a complete series only.
+        %% Series-specific layout settings, governs the entire series
+        %% In SIDL, COGL and RCG, examples are put in italics. Sections are
+        %% referenced using the section sign “§”.
+        
         \ifx\lsSeries\sidl
-        %\def\exfont{\normalsize\itshape}
+        \renewcommand{\sectref}[1]{§\ref{#1}}
         \let\eachwordone=\itshape % only \gll
 
         \let\oldtable\table   % footnotes in tables without horizontal line
@@ -610,20 +658,22 @@
         \let\eachwordone=\normalfont
         \fi
 
+        \ifx\lsSeries\cicl
+        \let\eachwordone=\normalfont
+        \fi
+
         \ifx\lsSeries\nc
         \let\eachwordone=\itshape
         \fi
         
         \ifx\lsSeries\cogl
         \let\eachwordone=\itshape
+        \renewcommand{\sectref}[1]{§\ref{#1}}
         \fi
         
         \ifx\lsSeries\rcg
         \let\eachwordone=\itshape
-        \fi
-        
-        \ifx\lsSeries\eotms
-        \renewcommand{\sectref}[1]{Section~\ref{#1}}
+        \renewcommand{\sectref}[1]{§\ref{#1}}
         \fi
     } %% \AtBeginDocument
 }{} %notbool paper
@@ -644,6 +694,40 @@
 \newlength{\totalheight}
 \setlength{\bleed}{3.175mm}
 \setlength{\spinewidth}{\lsSpinewidth} % Create Space Version
+\ExplSyntaxOn
+% Integers and floats needed for automatic spine width calculation (BoD).
+\int_new:N \l__langsci_bookblock_page_count
+\int_new:N \l_langsci_spine_width_modifier
+\fp_new:N \l__langsci_spine_width
+
+\NewExpandableDocumentCommand{\lsDetermineSpineWidth}{O{Bookblock.pdf} m}
+  {% Collect the page count from input file.
+    \int_set:Nn \l__langsci_bookblock_page_count
+    {\the\XeTeXpdfpagecount"#1"}
+    
+    \str_case:nn {#2}
+      {
+      	{hardcover} % Determine hardcover spine dimensions with 90g white paper
+      	  {
+        	\int_compare:nTF 
+		      { \l__langsci_bookblock_page_count < 300 }
+		      { \int_set:Nn \l_langsci_spine_width_modifier {5} } 
+		      { \int_set:Nn \l_langsci_spine_width_modifier {6} }
+      	  }
+      	{softcover} % Determine softcover spine dimensions with 90g white paper
+      	  {
+        	\int_set:Nn \l_langsci_spine_width_modifier {0}
+      	  }
+      }
+     
+   	\fp_set:Nn \l__langsci_spine_width
+   	  {
+  	    \l__langsci_bookblock_page_count / 2 * 0.12
+  	    + \l_langsci_spine_width_modifier
+   	  }
+    \setlength{\spinewidth}{\fp_use:N \l__langsci_spine_width mm}
+  }
+\ExplSyntaxOff
 \usepackage{calc}
 
 \ifbool{coverCS}{
@@ -655,13 +739,19 @@
 \ifbool{coverBODhc}{
   \booltrue{cover}
   \usepackage{langsci-pod}
-  \bodhcgeometry
+  \ifbool{lsSpineWidthUserConfigured}
+         {}
+         {\lsDetermineSpineWidth{hardcover}}
+  \bodhcgeometry{}
 }{}
 
 \ifbool{coverBODsc}{
   \booltrue{cover}
   \usepackage{langsci-pod}
-  \bodscgeometry
+    \ifbool{lsSpineWidthUserConfigured}
+         {}
+         {\lsDetermineSpineWidth{softcover}}
+  \bodscgeometry{}
 }{}
 
 %Page size and text area if not cover
@@ -682,15 +772,11 @@
 %    Fonts
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{ifxetex}
-\ifxetex\else\ClassError{langscibook}{Please use XeLaTeX!}{}\fi
-
 %% Typesetting of mathematical formulas
 \usepackage{amssymb} % has to be loaded before other stuff
 \usepackage{amsmath} % has to be loaded before mathspec/unicode-math
 
 \notbool{minimal}{% The minimal mode skips font loading
-    \notbool{newtxmath}{
     %% There is a known problem in the interplay between \binom, unicode-math, and OTF
     %% https://tex.stackexchange.com/questions/269980/wrong-parentheses-size-in-binom-with-xelatex-and-unicode-math-in-displaystyle
     \ifx\Umathcode\@undefined\else
@@ -716,10 +802,6 @@
     \fi%umathcode
     %% Provides \setmathfont
     \usepackage{unicode-math}
-    }{%else newtxmath
-    %% Deprecated:
-    \PassOptionsToPackage{no-math}{fontspec} % must appear before metalogo or any fontspec stuff; deactivates fontspec's math settings, which is necessary to let newtxmath do the job
-    }
 
     \usepackage{metalogo}\newcommand{\xelatex}{\XeLaTeX\xspace}
 
@@ -738,12 +820,10 @@
     ItalicFont = Arimo-Italic.ttf,
     BoldItalicFont = Arimo-BoldItalic.ttf
     ]{Arimo-Regular.ttf}
-
-    \notbool{newtxmath}{
+    
     \setmathfont[AutoFakeBold]{LibertinusMath-Regular.otf}
     \setmathfont[range={cal},StylisticSet=1]{XITSMath-Regular.otf}
     \setmathfont[range={bfcal},StylisticSet=1]{XITSMath-Bold.otf}
-    }{}
 
     \ifbool{oldstylenumbers}{
     \defaultfontfeatures[LibertinusSerif-Semibold.otf,LibertinusSerif-Italic.otf,LibertinusSerif-SemiboldItalic.otf,LibertinusSerif-Regular.otf]{SmallCapsFeatures={Numbers=OldStyle}}
@@ -764,26 +844,11 @@
       ]
       {LibertinusSerif-Regular.otf}
 
-    %% Deprecated:
-    \ifbool{newtxmath}{
-            \usepackage[libertine]{newtxmath}
-            %% following http://tex.stackexchange.com/questions/297328/xelatex-does-not-load-newtxmath-with-linuxlibertine-sometimes
-            %% due to a bug in XeTeX. This also seems to fix an issue with \url in footnotes.
-    %% Unfortunately, this is NOT extensively tested!
-            \usepackage{xpatch}
-            \xpretocmd{\textsuperscript}
-            {{\sbox0{$\textstyle x$}}}
-            {}{}
-            \AtBeginDocument{%
-            \DeclareSymbolFont{operators}{\encodingdefault}{\familydefault}{m}{n}%
-            \SetSymbolFont{operators}{bold}{\encodingdefault}{\familydefault}{b}{n}%
-            }
-    }{}
     % Improve the appearance of numbers in tables and the TOC 
     % In those places, they should come out monospaced, unlike in main text.
-    \AtBeginEnvironment{tabular}{\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont}
-    \AtBeginEnvironment{tabularx}{\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont}
-    \AtBeginEnvironment{longtable}{\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont}
+    \AtBeginEnvironment{tabular}{\ifmmode\else\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont\fi}
+    \AtBeginEnvironment{tabularx}{\ifmmode\else\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont\fi}
+    \AtBeginEnvironment{longtable}{\ifmmode\else\addfontfeatures{Numbers={Monospaced,Lining}}\selectfont\fi}
     
     \DeclareTOCStyleEntry
       [  
@@ -937,7 +1002,7 @@
           \SetupAffiliations
             {
               mark~style = none, 
-              separator~between~affiliations=\&
+              separator~between~affiliations={~\&~}
             }
         } 
   }
@@ -1027,19 +1092,13 @@
 %    Series history
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\tblseight}{{\color{red}Chinese fonts for TBLS 8 not loaded! Please set the option \textsc{tblseight} in main.tex for final production}}
-
-\ifbool{tblseight}
-  {
-    \newfontfamily\cn
-      [
-        Scale=MatchLowercase,
-        BoldFont=SourceHanSerifSC-Bold.otf
-      ]
-      {SourceHanSerifSC-Regular.otf}
-
-    \renewcommand{\tblseight}{{\cn 语法理论: 从转换语法到基于约束的理论}}
-  }{}
+% Load Chinese font for TBLS history display (from CTAN package "fandol")
+\AtEndPreamble
+  {%
+    \ifx\lsSeries\tbls
+      \newfontfamily{\lsSeriesHistoryFandolSong}{FandolSong-Regular.otf}
+    \fi
+  }
   
 \ExplSyntaxOn
 % A command to output a limited number of items on the series history page.
@@ -1429,8 +1488,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \DeclareNewSectionCommand
   [
     counterwithin = appendixsection,
-    beforeskip=-10pt,
-    afterskip=1sp,
+    beforeskip=-3.25ex plus -1ex minus -.2ex,
+    afterskip=1.5ex plus .2ex,
     indent = 0pt,
     font = \usekomafont{subsection},
     level = 2,
@@ -1441,6 +1500,22 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     style = section
   ]
   {appendixsubsection}
+  
+\DeclareNewSectionCommand
+  [
+    counterwithin = appendixsubsection,
+    beforeskip=-3.25ex plus -1ex minus -.2ex,
+    afterskip=1.5ex plus .2ex,
+    indent = 0pt,
+    font = \usekomafont{subsubsection},
+    level = 3,
+    tocindent = 7.0em,
+    toclevel = 3,
+    tocnumwidth = 4.1em,
+    tocstyle = section,
+    style = section,
+  ]
+  {appendixsubsubsection}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Epigrams
@@ -1451,24 +1526,22 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \def\epigramsource#1{\gdef\@epigramsource{#1}}
 \epigramsource{}
 
-\usepackage{epigraph}
-\setlength{\epigraphrule}{0pt}
-\renewcommand{\textflush}{flushepinormal}
-\setlength{\epigraphwidth}{.618\textwidth}% Set to the longer part of golden ratio
-\setlength{\afterepigraphskip}{0\baselineskip}
-\setlength{\beforeepigraphskip}{0\baselineskip}
+% Apply settings to dictum from scrbook
+\setkomafont{dictum}{\normalfont\small}
+\setkomafont{dictumauthor}{\normalfont\small}
+\renewcommand*{\dictumauthorformat}[1]{#1}
+\renewcommand{\dictumwidth}{.618\textwidth} % longer part of golden ratio
+\renewcommand*{\dictumrule}{\smallskip\par}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Footnotes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifxetex
 \notbool{minimal}{
     \addtokomafont{footnote}{\addfontfeatures{Numbers=Lining}}      % numbers in footnotes
     %\addtokomafont{footnotelabel}{\addfontfeatures{Numbers=Lining}}  % numbers in footnote labels
     %\addtokomafont{footnotereference}{\addfontfeatures{Numbers=Lining}}  % numbers in footnote references
 }{}
-\fi
 
 \raggedbottom
 \deffootnote[1.5em]{1.5em}{\normalparindent}{\textsuperscript{\thefootnotemark}} % putting a space after footnotemark has undesirable side effects with footnotes that start with an empty line; instead use \xspace in the footnote definition below
@@ -1545,7 +1618,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
                     \usepackage[\lsBookLanguage,es-minimal]{babel}
                 \else
                     \usepackage[\lsBookLanguage]{babel}
-            }
+        \fi
+        }
      \fi%Close language=chinese
 }{}
 
@@ -1560,6 +1634,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 	%refsection=chapter,
 	maxbibnames=99,
 	uniquename=false,
+	uniquelist=false,
 	mincrossrefs=99,
 	maxcitenames=2,
 	isbn=false,
@@ -1569,24 +1644,15 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 	indexing=cite
 ]{biblatex}
 
-%% DOIs are handled after hyperref.
-\defbibheading{references}{\chapter{References}\sloppy}
-\defbibheading{english}{\chapter{References}\sloppy}
-\defbibheading{french}{\chapter{Références bibliographiques}\sloppy}
-\defbibheading{spanish}{\chapter{Referencias bibliográficas}\sloppy}
-\defbibheading{german}{\chapter{Literaturverzeichnis}\sloppy}
-\defbibheading{portuguese}{\chapter{Referências}\sloppy}
-\defbibheading{chinese}{\chapter{参考文献}\sloppy}
-
-%% penalties against widows and orphans in bibliography
-%% http://tex.stackexchange.com/questions/297705/atbeginenvironment-does-not-work-with-natbib/297721#297721
-\apptocmd{\thebibliography}{%
-\clubpenalty\@M
-\@clubpenalty\clubpenalty
-\widowpenalty\@M
+\defbibheading{references}[\lsReferencesTitle]{%
+  \addchap{#1}
+  \markdouble{#1}
+  \clubpenalty\@M
+  \@clubpenalty\clubpenalty
+  \widowpenalty\@M
+  \emergencystretch=3em
+  \hbadness=10000
 }
-{}{}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Floats
@@ -1626,6 +1692,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \usepackage{caption}
 \captionsetup{font={stretch=.8,small},width=.8\textwidth}
 \setcapindent{0pt}
+\AtBeginEnvironment{floatrow}{\captionsetup{margin=.05\linewidth}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1849,7 +1916,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \renewcommand{\Hfootnoteautorefname}{Footnote}%
 \fi
 
-\providecommand{\sectref}[1]{§\ref{#1}}
+\providecommand{\sectref}[1]{Section~\ref{#1}}
 \providecommand{\chapref}[1]{Chapter~\ref{#1}}
 \providecommand{\partref}[1]{Part~\ref{#1}}
 \providecommand{\tabref}[1]{Table~\ref{#1}}
@@ -1899,7 +1966,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
       [
         pagenumberbox={\csname @gobble\endcsname},
         raggedentrytext=true,
-        linefill={\hfill}
+        linefill={\hfill},
+        dynnumwidth=true
       ]{tocline}{part}
 
     \usepackage{chngcntr}
@@ -1937,7 +2005,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
   \renewcommand{\newlineSpine}{}
   \renewcommand{\newlineTOC}{}  
   %% write bib entry to file
-  \immediate\write\tempfile{@incollection{#1,author={\authorToBib},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\lsCollectionEditor},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},keywords={withinvolume}}}
+  \immediate\write\tempfile{@incollection{#1,author={\authorToBib},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\lsCollectionEditor},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},keywords={LSPWithinVolume}}}
   \immediate\write\tempfile{@incollection{#1footer,author={\authorToBib},title={{\expandonce{\titleTemp}}},booktitle={{\expandonce{\lsCollectionTitle}}},editor={\lsCollectionEditor},publisher={Language Science Press.},Address={Berlin},year={\lsYear},pages={\lsCollectionPaperFirstPage --\lsCollectionPaperLastPage},doi={\lsChapterDOI},options={dataonly=true}}}
 }
 
@@ -1973,10 +2041,11 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
             % and their affiliation(s) are part of the \chapter block.
             \CountAuthorsFromAffiliations{\@author}
             \lsDeterminePaperAuthorAffiliationIndexing{}
-            \setchapterpreamble[u]{\ResolveAffiliations{\@author}\\}
+            \setchapterpreamble[u]{\ResolveAffiliations{\@author}}
             \chapter
             [tocentry={\titleToToC~\newline{\normalfont\ResolveAffiliations{\@author}}}]
             {\titleTemp}
+            \vskip1.15\baselineskip plus .1\baselineskip minus .167\baselineskip
             \begin{quote}
                 \small\lsCollectionPaperAbstract
             \end{quote}
@@ -1989,8 +2058,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
                 \ifbool{draft}{Draft of \today, \currenttime}{}
                     }
             \ifx\@epigram\empty
-              \else {\epigraph{\@epigram\\[-2\baselineskip]}{\@epigramsource}
-                \epigram{}\epigramsource{}}
+                  \else \dictum[\@epigramsource]{\@epigram}%
+                        \epigram{}\epigramsource{}
             \fi
             \enlargethispage{-1\baselineskip}
         }
@@ -2141,7 +2210,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
 \newcommand{\lsPrefaceTitle}{Preface}
 \newcommand{\lsAcknowledgementTitle}{Acknowledgments}
 \newcommand{\lsAbbreviationsTitle}{Abbreviations}
-\newcommand{\lsReferencesTitle}{references} % This aligns with \defbibheading
+\newcommand{\lsReferencesTitle}{References} % This aligns with \defbibheading
 
 \ifx\lsBookLanguage\lsBookLanguageFrench
     \renewcommand{\lsIndexTitle}{Index}
@@ -2151,10 +2220,10 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\lsPrefaceTitle}{Préface}
     \renewcommand{\lsAcknowledgementTitle}{Remerciements}
     \renewcommand{\lsAbbreviationsTitle}{Liste des abréviations utilisées dans les gloses des exemples}
-    \renewcommand{\lsReferencesTitle}{french}
+    \renewcommand{\lsReferencesTitle}{Références bibliographiques}
     \ifbool{babel}{
         \renewcommand\frenchfigurename{Figure}
-        \renewcommand\frenchtablename{Table}
+        \renewcommand\frenchtablename{Tableau}
     }{}
 \fi
 
@@ -2166,7 +2235,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\lsPrefaceTitle}{Prefacio}
     \renewcommand{\lsAcknowledgementTitle}{Agradecimientos}
     \renewcommand{\lsAbbreviationsTitle}{Abreviaciones}
-    \renewcommand{\lsReferencesTitle}{spanish}
+    \renewcommand{\lsReferencesTitle}{Referencias bibliográficas}
 \fi
 
 \ifx\lsBookLanguage\lsBookLanguageGerman
@@ -2177,7 +2246,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\lsPrefaceTitle}{Vorwort}
     \renewcommand{\lsAcknowledgementTitle}{Danksagung}
     \renewcommand{\lsAbbreviationsTitle}{Abkürzungsverzeichnis}
-    \renewcommand{\lsReferencesTitle}{german}
+    \renewcommand{\lsReferencesTitle}{Literaturverzeichnis}
 \fi
 
 \ifx\lsBookLanguage\lsBookLanguagePortuguese
@@ -2188,7 +2257,7 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\lsPrefaceTitle}{Prefácio}
     \renewcommand{\lsAcknowledgementTitle}{Agradecimentos}
     \renewcommand{\lsAbbreviationsTitle}{\colorbox{red}{Translation info for Abbv missing}}
-    \renewcommand{\lsReferencesTitle}{portugese}
+    \renewcommand{\lsReferencesTitle}{Referências}
 \fi
 
 \ifx\lsBookLanguage\lsBookLanguageChinese
@@ -2198,7 +2267,8 @@ Storage and cataloguing done by \storageinstitution\\[3ex]
     \renewcommand{\lsLanguageIndexTitle}{语言索引}
     \renewcommand{\lsPrefaceTitle}{前言}
     \renewcommand{\lsAcknowledgementTitle}{致谢}
-    \renewcommand{\lsAbbreviationsTitle}{\colorbox{red}{Translation info for Abbv missing}}
+    \renewcommand{\lsAbbreviationsTitle}{缩写}
+    \renewcommand{\lsReferencesTitle}{参考文献}
 \fi
 
 
