@@ -18,6 +18,7 @@ main.snd:
 
 cover: FORCE
 	convert main.pdf\[0\] -quality 100 -background white -alpha remove -bordercolor "#999999" -border 2  cover.png
+	convert cover.png -crop 486x486+0+0 +repage cover_insta.png
 	display cover.png
 
 openreview: openreview.pdf
