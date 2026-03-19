@@ -165,7 +165,7 @@ wikicite:
 
 
 overleafgithub:
-	git checkout main || master
+	git checkout main
 	mv Makefile Makefile.tmp
 	cp -r  ../6*/* .
 	mv Makefile.tmp Makefile
