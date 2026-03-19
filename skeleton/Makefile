@@ -160,7 +160,7 @@ compress:
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf main.pdf
 
 overleafgithub:
-	git checkout main
+	git checkout main || master
 	mv Makefile Makefile.tmp
 	cp -r  ../6*/* .
 	mv Makefile.tmp Makefile

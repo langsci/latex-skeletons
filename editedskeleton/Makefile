@@ -162,3 +162,15 @@ wikicite:
 	echo "}}" >>wiki
 	echo " </ref>" >>wiki
 	more wiki
+
+
+overleafgithub:
+	git checkout main || master
+	mv Makefile Makefile.tmp
+	cp -r  ../6*/* .
+	mv Makefile.tmp Makefile
+	rm -f zenodo*
+	rm -rf *aux *png *lg *nd *xml *bbl *toc *log *dx chapters/*aux chapters/*g chapters/*d chapters/*dx *bcf *bak* origs*
+	git add *
+	git commit -am 'copy from Overleaf'
+	git push
